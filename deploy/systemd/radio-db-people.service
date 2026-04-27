@@ -1,0 +1,22 @@
+[Unit]
+Description=Radio DB people/profile cycle
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/radio-database
+Environment=APP_DIR=/opt/radio-database
+Environment=PEOPLE_LIMIT=0
+Environment=PEOPLE_DISCOVERY_STATIONS=0
+Environment=PEOPLE_DISCOVERY_QUERIES=1
+Environment=PEOPLE_PREFS_LIMIT=0
+Environment=PEOPLE_PREFS_QUERIES_PER_PERSON=1
+Environment=PEOPLE_PREFS_MIN_HITS_FOR_UPDATE=2
+Environment=PROFILE_LIMIT=0
+ExecStart=/opt/radio-database/scripts/run_people_profile_cycle.sh
+User=radio
+Group=radio
+
+[Install]
+WantedBy=multi-user.target

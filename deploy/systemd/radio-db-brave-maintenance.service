@@ -1,0 +1,15 @@
+[Unit]
+Description=Radio DB Brave maintenance run (budgeted daily discovery)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/radio-database
+Environment=APP_DIR=/opt/radio-database
+ExecStart=/opt/radio-database/scripts/run_brave_maintenance.sh
+User=radio
+Group=radio
+
+[Install]
+WantedBy=multi-user.target

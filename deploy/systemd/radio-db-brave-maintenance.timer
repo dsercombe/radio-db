@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Radio DB Brave maintenance daily (900/32d budget pattern)
+
+[Timer]
+OnCalendar=*-*-* 03:25:00
+RandomizedDelaySec=45m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

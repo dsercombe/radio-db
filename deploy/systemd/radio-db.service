@@ -1,0 +1,19 @@
+[Unit]
+Description=Radio DB API-paced cycle
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/radio-database
+Environment=APP_DIR=/opt/radio-database
+Environment=ENRICH_QUERIES=2
+Environment=STATION_ENRICH_STATIONS=12
+Environment=STATION_ENRICH_QUERIES=1
+Environment=STATION_ENRICH_MIN_CONFIDENCE=0.35
+ExecStart=/opt/radio-database/scripts/run_api_cycle.sh
+User=radio
+Group=radio
+
+[Install]
+WantedBy=multi-user.target

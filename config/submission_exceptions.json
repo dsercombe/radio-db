@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "fm4_soundpark",
+      "active": true,
+      "expires_on": "2027-12-31",
+      "owner": "radio-db",
+      "note": "FM4 Soundpark akzeptiert Artist-Profile/Uploads als Sonderfall.",
+      "match": {
+        "domains": [
+          "fm4.orf.at"
+        ],
+        "name_contains": [
+          "fm4"
+        ],
+        "station_ids": []
+      },
+      "override": {
+        "accepts_music_submissions": true,
+        "accepts_new_artists": true,
+        "is_pitchable": true,
+        "submission_access": "open"
+      }
+    }
+  ]
+}

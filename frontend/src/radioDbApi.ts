@@ -1,0 +1,450 @@
+const API_ROOT = "/api/v1";
+
+export interface StationListItem {
+  id: number;
+  canonical_name: string;
+  country_code: string;
+  city: string | null;
+  language: string;
+  website_url: string | null;
+  status: string;
+  confidence_score: number;
+  updated_at: string;
+  genre_count: number;
+  people_count: number;
+  submission_count: number;
+}
+
+export interface StationListResponse {
+  total: number;
+  page: number;
+  page_size: number;
+  items: StationListItem[];
+}
+
+export interface StationProgramDTO {
+  id: number;
+  name: string;
+  description: string | null;
+  schedule: string | null;
+}
+
+export interface StationSubmissionDTO {
+  id: number;
+  method: string;
+  url: string | null;
+  email: string | null;
+  requirements: string | null;
+  accepts_newcomers: boolean;
+}
+
+export interface StationContactDTO {
+  id: number;
+  name: string | null;
+  role: string;
+  show_name: string | null;
+  email: string | null;
+  contact_url: string | null;
+  notes: string | null;
+  confidence: number;
+}
+
+export interface StationPersonDTO {
+  id: number;
+  name: string | null;
+  role: string;
+  show_name: string | null;
+  email: string | null;
+  contact_url: string | null;
+  linkedin_url: string | null;
+  musical_preferences: string | null;
+  genre_affinities: string[];
+  confidence: number;
+}
+
+export interface StationFormDTO {
+  id: number;
+  url: string;
+  page_title: string | null;
+  language: string | null;
+  form_type: string;
+  status: string;
+  requires_login: boolean;
+  has_captcha: boolean;
+  confidence: number;
+  last_verified_at: string | null;
+}
+
+export interface StationDetailResponse {
+  id: number;
+  canonical_name: string;
+  normalized_name: string;
+  country_code: string;
+  city: string | null;
+  language: string;
+  website_url: string | null;
+  stream_url: string | null;
+  status: string;
+  confidence_score: number;
+  created_at: string;
+  updated_at: string;
+  aliases: string[];
+  genres: string[];
+  programs: StationProgramDTO[];
+  submissions: StationSubmissionDTO[];
+  contacts: StationContactDTO[];
+  people: StationPersonDTO[];
+  forms: StationFormDTO[];
+}
+
+export interface StationUpdateRequest {
+  canonical_name?: string;
+  country_code?: string;
+  city?: string | null;
+  language?: string;
+  website_url?: string | null;
+  stream_url?: string | null;
+  status?: "candidate" | "verified" | "rejected";
+  confidence_score?: number;
+}
+
+export interface StationControlSubmissionDTO {
+  id: number;
+  station_id: number;
+  method: string;
+  url: string | null;
+  email: string | null;
+  requirements: string | null;
+  accepts_newcomers: boolean;
+}
+
+export interface StationControlAssessmentDTO {
+  id: number;
+  station_id: number;
+  assessment_kind: string;
+  status: string;
+  is_real_station: boolean;
+  has_real_editorial_surface: boolean;
+  accepts_music_submissions: boolean;
+  accepts_new_artists: boolean;
+  automation_readiness: number;
+  risk_score: number;
+  notes: string | null;
+  evidence: unknown;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StationControlDetailResponse {
+  station_id: number;
+  station_name: string;
+  status: string;
+  confidence_score: number;
+  website_url: string | null;
+  city: string | null;
+  language: string | null;
+  stream_url: string | null;
+  submissions: StationControlSubmissionDTO[];
+  assessments: StationControlAssessmentDTO[];
+}
+
+export interface ManualConfirmResponse {
+  station_id: number;
+  manual_confirmed: boolean;
+  manual_confirmed_at: string | null;
+}
+
+export interface DeleteStationResponse {
+  station_id: number;
+  status: string;
+}
+
+export interface AgentRunListItem {
+  id: number;
+  station_id: number;
+  station_name: string;
+  form_id: number | null;
+  mode: string;
+  goal: string;
+  status: string;
+  current_state: string;
+  confidence: number;
+  requires_approval: boolean;
+  blocked_reason: string | null;
+  target_url: string | null;
+  started_at: string;
+  finished_at: string | null;
+  step_count: number;
+  issue_count: number;
+}
+
+export interface AgentRunListResponse {
+  total: number;
+  items: AgentRunListItem[];
+}
+
+export interface AgentStepDTO {
+  id: number;
+  step_index: number;
+  state_before: string;
+  state_after: string;
+  screenshot_path: string | null;
+  dom_snapshot_path: string | null;
+  agent_observation: unknown;
+  proposed_action: unknown;
+  executed_action: unknown;
+  execution_result: unknown;
+  confidence: number;
+  latency_ms: number;
+  created_at: string;
+}
+
+export interface AgentIssueDTO {
+  id: number;
+  step_id: number | null;
+  issue_type: string;
+  severity: string;
+  status: string;
+  title: string;
+  details: string | null;
+  payload: unknown;
+  created_at: string;
+}
+
+export interface AgentAssessmentDTO {
+  id: number;
+  assessment_kind: string;
+  status: string;
+  is_real_station: boolean;
+  has_real_editorial_surface: boolean;
+  accepts_music_submissions: boolean;
+  accepts_new_artists: boolean;
+  automation_readiness: number;
+  risk_score: number;
+  notes: string | null;
+  evidence: unknown;
+  updated_at: string;
+}
+
+export interface AgentRunDetailResponse {
+  id: number;
+  station_id: number;
+  station_name: string;
+  station_website_url: string | null;
+  form_id: number | null;
+  mode: string;
+  goal: string;
+  status: string;
+  current_state: string;
+  confidence: number;
+  requires_approval: boolean;
+  blocked_reason: string | null;
+  target_url: string | null;
+  summary: unknown;
+  started_at: string;
+  finished_at: string | null;
+  created_at: string;
+  updated_at: string;
+  steps: AgentStepDTO[];
+  issues: AgentIssueDTO[];
+  latest_assessment: AgentAssessmentDTO | null;
+}
+
+export interface CountryDiscoverySnapshotResponse {
+  state: unknown;
+  memory: unknown;
+  recent_runs: unknown[];
+}
+
+export interface BrowserSessionState {
+  id: string;
+  station_id: number | null;
+  run_id: number | null;
+  url: string;
+  title: string;
+  status: string;
+  last_error: string;
+  screenshot_path: string | null;
+  html_path: string | null;
+  action_count: number;
+  actions: Array<Record<string, unknown>>;
+  timeline: Array<Record<string, unknown>>;
+  event_count: number;
+  metadata: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BrowserSessionListResponse {
+  items: BrowserSessionState[];
+}
+
+export interface BrowserSessionCreateRequest {
+  start_url?: string | null;
+  station_id?: number | null;
+  run_id?: number | null;
+  label?: string | null;
+}
+
+export interface BrowserSessionNavigateRequest {
+  url: string;
+}
+
+export interface BrowserSessionActionRequest {
+  action: "click" | "fill" | "press" | "select" | "goto" | "wait";
+  selector?: string | null;
+  value?: string | null;
+}
+
+function toQuery(params: Record<string, string | number | boolean | undefined | null>): string {
+  const searchParams = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === "") {
+      return;
+    }
+    searchParams.set(key, String(value));
+  });
+  const query = searchParams.toString();
+  return query ? `?${query}` : "";
+}
+
+async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(`${API_ROOT}${path}`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(init?.headers || {}),
+    },
+    ...init,
+  });
+
+  const contentType = response.headers.get("content-type") || "";
+  const isJson = contentType.includes("application/json");
+  const body = isJson ? await response.json().catch(() => null) : await response.text().catch(() => "");
+
+  if (!response.ok) {
+    const detail =
+      typeof body === "string"
+        ? body
+        : body && typeof body === "object" && "detail" in body
+          ? String((body as { detail?: unknown }).detail ?? "Unknown error")
+          : `HTTP ${response.status}`;
+    throw new Error(detail);
+  }
+
+  return body as T;
+}
+
+export function getArtifactUrl(path: string): string {
+  return `${API_ROOT}/agent/artifact${toQuery({ path })}`;
+}
+
+export function listStations(params: {
+  q?: string;
+  country?: string;
+  status?: string;
+  has_submission?: "any" | "yes" | "no";
+  has_people?: "any" | "yes" | "no";
+  min_confidence?: number;
+  page?: number;
+  page_size?: number;
+  sort_by?: "updated_at" | "confidence" | "name";
+  sort_order?: "asc" | "desc";
+} = {}): Promise<StationListResponse> {
+  return requestJson<StationListResponse>(`/stations${toQuery(params)}`);
+}
+
+export function getStationDetail(stationId: number): Promise<StationDetailResponse> {
+  return requestJson<StationDetailResponse>(`/stations/${stationId}`);
+}
+
+export function updateStation(stationId: number, payload: StationUpdateRequest): Promise<StationDetailResponse> {
+  return requestJson<StationDetailResponse>(`/stations/${stationId}`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function getStationControl(stationId: number): Promise<StationControlDetailResponse> {
+  return requestJson<StationControlDetailResponse>(`/control/stations/${stationId}`);
+}
+
+export function setStationManualConfirm(stationId: number, value: boolean): Promise<ManualConfirmResponse> {
+  return requestJson<ManualConfirmResponse>(`/control/stations/${stationId}/manual-confirm`, {
+    method: "PATCH",
+    body: JSON.stringify({ value }),
+  });
+}
+
+export function deleteStation(stationId: number): Promise<DeleteStationResponse> {
+  return requestJson<DeleteStationResponse>(`/control/stations/${stationId}`, {
+    method: "DELETE",
+  });
+}
+
+export function listAgentRuns(params: { stationId?: number; status?: string; limit?: number; offset?: number } = {}): Promise<AgentRunListResponse> {
+  return requestJson<AgentRunListResponse>(
+    `/agent/runs${toQuery({ station_id: params.stationId, status: params.status, limit: params.limit, offset: params.offset })}`
+  );
+}
+
+export function getAgentRunDetail(runId: number): Promise<AgentRunDetailResponse> {
+  return requestJson<AgentRunDetailResponse>(`/agent/runs/${runId}`);
+}
+
+export function startManualScan(payload: { station_id: number; mode?: string; target_url?: string | null; max_pages?: number; force_rescan?: boolean }): Promise<AgentRunDetailResponse> {
+  return requestJson<AgentRunDetailResponse>(`/agent/runs/manual-scan`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function getCountryDiscoverySnapshot(limit = 25): Promise<CountryDiscoverySnapshotResponse> {
+  return requestJson<CountryDiscoverySnapshotResponse>(`/agent/country-discovery${toQuery({ limit })}`);
+}
+
+export function startCountryDiscovery(): Promise<{ started: boolean; message: string }> {
+  return requestJson<{ started: boolean; message: string }>(`/agent/country-discovery/start`, {
+    method: "POST",
+  });
+}
+
+export function listBrowserSessions(): Promise<BrowserSessionListResponse> {
+  return requestJson<BrowserSessionListResponse>(`/browser/sessions`);
+}
+
+export function createBrowserSession(payload: BrowserSessionCreateRequest): Promise<BrowserSessionState> {
+  return requestJson<BrowserSessionState>(`/browser/sessions`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function getBrowserSession(sessionId: string): Promise<BrowserSessionState> {
+  return requestJson<BrowserSessionState>(`/browser/sessions/${sessionId}`);
+}
+
+export function navigateBrowserSession(sessionId: string, payload: BrowserSessionNavigateRequest): Promise<BrowserSessionState> {
+  return requestJson<BrowserSessionState>(`/browser/sessions/${sessionId}/navigate`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function performBrowserAction(sessionId: string, payload: BrowserSessionActionRequest): Promise<BrowserSessionState> {
+  return requestJson<BrowserSessionState>(`/browser/sessions/${sessionId}/action`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function snapshotBrowserSession(sessionId: string): Promise<BrowserSessionState> {
+  return requestJson<BrowserSessionState>(`/browser/sessions/${sessionId}/snapshot`, {
+    method: "POST",
+  });
+}
+
+export function closeBrowserSession(sessionId: string): Promise<{ deleted: true; session_id: string }> {
+  return requestJson<{ deleted: true; session_id: string }>(`/browser/sessions/${sessionId}`, {
+    method: "DELETE",
+  });
+}

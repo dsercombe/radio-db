@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Radio DB country discovery cycle every 30m
+
+[Timer]
+OnCalendar=*:0/30
+RandomizedDelaySec=5m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

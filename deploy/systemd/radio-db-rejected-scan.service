@@ -1,0 +1,18 @@
+[Unit]
+Description=Radio DB rejected-stations scan cycle (Playwright)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/radio-database
+Environment=APP_DIR=/opt/radio-database
+Environment=REJECTED_SCAN_STATION_LIMIT=20
+Environment=REJECTED_SCAN_MAX_PAGES=3
+Environment=REJECTED_SCAN_LOCK_FILE=/tmp/radio-db-rejected-scan.lock
+ExecStart=/opt/radio-database/scripts/run_rejected_scan_cycle.sh
+User=radio
+Group=radio
+
+[Install]
+WantedBy=multi-user.target

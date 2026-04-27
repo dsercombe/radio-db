@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Radio DB rejected scan cycle every 30 minutes
+
+[Timer]
+OnCalendar=*:0/30
+RandomizedDelaySec=10m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

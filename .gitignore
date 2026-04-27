@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+.venv311/
+.env
+.env.*
+!.env.example
+*.db
+.pytest_cache/
+.DS_Store
+.radio_db_state/
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.local.*
+frontend/vite.log
+*.egg-info/
