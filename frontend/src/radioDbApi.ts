@@ -1,4 +1,4 @@
-const API_ROOT = "/api/v1";
+const API_ROOT = (import.meta.env.VITE_API_ROOT || "/api/v1").replace(/\/$/, "");
 
 export type ApiPermissionMode = "read-only" | "dry-run" | "execute";
 

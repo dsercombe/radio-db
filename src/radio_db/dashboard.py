@@ -13,6 +13,7 @@ from urllib.parse import urlencode
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from sqlalchemy import Select, and_, exists, func, or_, select, text
 from sqlalchemy.exc import IntegrityError
@@ -1265,6 +1266,15 @@ def create_app() -> FastAPI:
     init_db()
     _ensure_dashboard_schema()
     app = FastAPI(title="Radio DB Dashboard")
+    cors_origins = [origin.strip() for origin in settings.cors_allowed_origins.split(",") if origin.strip()]
+    if cors_origins:
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=cors_origins,
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
     app.include_router(stations_api_router)
     app.include_router(agent_api_router)
     app.include_router(browser_api_router)

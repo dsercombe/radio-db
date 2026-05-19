@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     api_permission_mode: str = Field(default="dry-run", alias="RADIO_DB_PERMISSION_MODE")
+    cors_allowed_origins: str = Field(default="", alias="RADIO_DB_CORS_ALLOWED_ORIGINS")
     database_url: str = Field(default="sqlite:///radio.db", alias="DATABASE_URL")
     smtp_host: str = Field(default="", alias="SMTP_HOST")
     smtp_port: int = Field(default=587, alias="SMTP_PORT")
