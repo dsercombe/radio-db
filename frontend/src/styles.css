@@ -1117,3 +1117,17 @@ a.radio-db-station-url:hover {
 .radio-db-other-routes {
   margin-top: 0.8rem;
 }
+
+.radio-db-toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: center;
+  color: var(--muted);
+}
+
+.radio-db-toggle-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}

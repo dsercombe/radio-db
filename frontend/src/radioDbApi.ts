@@ -24,6 +24,34 @@ export function setApiPermissionMode(mode: ApiPermissionMode): void {
   currentPermissionMode = mode;
 }
 
+
+export interface SmtpSettingsResponse {
+  host: string;
+  port: number;
+  username: string;
+  from_email: string;
+  from_name: string;
+  use_starttls: boolean;
+  use_ssl: boolean;
+  timeout_seconds: number;
+  password_set: boolean;
+  execute_email: string;
+  anti_spam_notes: string[];
+}
+
+export interface SmtpSettingsUpdateRequest {
+  host: string;
+  port: number;
+  username: string;
+  password?: string | null;
+  from_email: string;
+  from_name: string;
+  use_starttls: boolean;
+  use_ssl: boolean;
+  timeout_seconds: number;
+  execute_email: string;
+}
+
 export interface StationListItem {
   id: number;
   canonical_name: string;
@@ -533,6 +561,18 @@ export function getStationDetail(stationId: number): Promise<StationDetailRespon
 export function updateStation(stationId: number, payload: StationUpdateRequest): Promise<StationDetailResponse> {
   return requestJson<StationDetailResponse>(`/stations/${stationId}`, {
     method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+
+export function getSmtpSettings(): Promise<SmtpSettingsResponse> {
+  return requestJson<SmtpSettingsResponse>(`/control/smtp-settings`);
+}
+
+export function updateSmtpSettings(payload: SmtpSettingsUpdateRequest): Promise<SmtpSettingsResponse> {
+  return requestJson<SmtpSettingsResponse>(`/control/smtp-settings`, {
+    method: "PUT",
     body: JSON.stringify(payload),
   });
 }

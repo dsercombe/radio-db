@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -9,6 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from radio_db.api.common import require_permission_mode
+from radio_db.config import settings
 from radio_db.db import SessionLocal
 from radio_db.models.entities import (
     FormStatus,
@@ -48,6 +50,129 @@ def _parse_json(raw: str | None, fallback: object) -> object:
         return json.loads(raw)
     except Exception:
         return fallback
+
+
+
+
+class SmtpSettingsResponse(BaseModel):
+    host: str = ""
+    port: int = 587
+    username: str = ""
+    from_email: str = ""
+    from_name: str = "Radio DB"
+    use_starttls: bool = True
+    use_ssl: bool = False
+    timeout_seconds: int = 20
+    password_set: bool = False
+    execute_email: str = ""
+    anti_spam_notes: list[str] = Field(default_factory=list)
+
+
+class SmtpSettingsUpdateRequest(BaseModel):
+    host: str = ""
+    port: int = Field(default=587, ge=1, le=65535)
+    username: str = ""
+    password: str | None = None
+    from_email: str = ""
+    from_name: str = "Radio DB"
+    use_starttls: bool = True
+    use_ssl: bool = False
+    timeout_seconds: int = Field(default=20, ge=5, le=120)
+    execute_email: str = ""
+
+
+def _smtp_anti_spam_notes(from_email: str, execute_email: str) -> list[str]:
+    notes = [
+        "Send nur an Primary Routes, nicht an alle gefundenen Adressen.",
+        "Dry-run und manuelle Freigabe vor Execute beibehalten.",
+        "Kleine Batches mit Pausen senden; keine parallelen Massenmails.",
+        "Unsubscribe/Opt-out und Blacklist konsequent respektieren.",
+        "SPF, DKIM und DMARC fuer die Absenderdomain extern korrekt setzen.",
+    ]
+    if from_email and execute_email and from_email.split("@")[-1].lower() != execute_email.split("@")[-1].lower():
+        notes.append("From-Domain und Execute-E-Mail unterscheiden sich; Absenderidentitaet pruefen.")
+    return notes
+
+
+def _env_quote(value: str) -> str:
+    if value == "" or any(ch.isspace() for ch in value) or any(ch in value for ch in ['#', '"', "'"]):
+        return '"' + value.replace('\\', '\\\\').replace('"', '\\"') + '"'
+    return value
+
+
+def _update_env_file(updates: dict[str, str]) -> None:
+    path = Path(".env")
+    lines = path.read_text().splitlines() if path.exists() else []
+    seen: set[str] = set()
+    out: list[str] = []
+    for line in lines:
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or "=" not in line:
+            out.append(line)
+            continue
+        key = line.split("=", 1)[0].strip()
+        if key in updates:
+            out.append(f"{key}={_env_quote(updates[key])}")
+            seen.add(key)
+        else:
+            out.append(line)
+    for key, value in updates.items():
+        if key not in seen:
+            out.append(f"{key}={_env_quote(value)}")
+    path.write_text("\n".join(out) + "\n")
+
+
+@router.get("/smtp-settings", response_model=SmtpSettingsResponse)
+def get_smtp_settings() -> SmtpSettingsResponse:
+    return SmtpSettingsResponse(
+        host=settings.smtp_host,
+        port=settings.smtp_port,
+        username=settings.smtp_username,
+        from_email=settings.smtp_from_email,
+        from_name=settings.smtp_from_name,
+        use_starttls=settings.smtp_use_starttls,
+        use_ssl=settings.smtp_use_ssl,
+        timeout_seconds=settings.smtp_timeout_seconds,
+        password_set=bool(settings.smtp_password),
+        execute_email=settings.contact_execute_email,
+        anti_spam_notes=_smtp_anti_spam_notes(settings.smtp_from_email, settings.contact_execute_email),
+    )
+
+
+@router.put("/smtp-settings", response_model=SmtpSettingsResponse)
+def update_smtp_settings(
+    request: SmtpSettingsUpdateRequest,
+    _mode: str = Depends(require_permission_mode("execute")),
+) -> SmtpSettingsResponse:
+    if request.use_ssl and request.use_starttls:
+        raise HTTPException(status_code=400, detail="choose_ssl_or_starttls_not_both")
+    updates = {
+        "SMTP_HOST": request.host.strip(),
+        "SMTP_PORT": str(request.port),
+        "SMTP_USERNAME": request.username.strip(),
+        "SMTP_FROM_EMAIL": request.from_email.strip().lower(),
+        "SMTP_FROM_NAME": request.from_name.strip() or "Radio DB",
+        "SMTP_USE_STARTTLS": "true" if request.use_starttls else "false",
+        "SMTP_USE_SSL": "true" if request.use_ssl else "false",
+        "SMTP_TIMEOUT_SECONDS": str(request.timeout_seconds),
+        "CONTACT_EXECUTE_EMAIL": request.execute_email.strip().lower(),
+    }
+    if request.password is not None and request.password != "":
+        updates["SMTP_PASSWORD"] = request.password
+    _update_env_file(updates)
+    return SmtpSettingsResponse(
+        host=updates["SMTP_HOST"],
+        port=int(updates["SMTP_PORT"]),
+        username=updates["SMTP_USERNAME"],
+        from_email=updates["SMTP_FROM_EMAIL"],
+        from_name=updates["SMTP_FROM_NAME"],
+        use_starttls=updates["SMTP_USE_STARTTLS"] == "true",
+        use_ssl=updates["SMTP_USE_SSL"] == "true",
+        timeout_seconds=int(updates["SMTP_TIMEOUT_SECONDS"]),
+        password_set=bool(updates.get("SMTP_PASSWORD") or settings.smtp_password),
+        execute_email=updates["CONTACT_EXECUTE_EMAIL"],
+        anti_spam_notes=_smtp_anti_spam_notes(updates["SMTP_FROM_EMAIL"], updates["CONTACT_EXECUTE_EMAIL"]),
+    )
 
 
 class StationControlSubmissionDTO(BaseModel):

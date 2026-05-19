@@ -12,6 +12,7 @@ import {
   OutreachCampaignDTO,
   OutreachCampaignMonitorResponse,
   DataControlOverviewResponse,
+  SmtpSettingsResponse,
   StationGroupDetailResponse,
   StationGroupListItem,
   StationGroupStationDTO,
@@ -30,6 +31,7 @@ import {
   getCountryDiscoverySnapshot,
   getDataControlOverview,
   getOutreachCampaignMonitor,
+  getSmtpSettings,
   getStationGroup,
   getStationContactDraft,
   getStationControl,
@@ -55,6 +57,7 @@ import {
   startCountryDiscovery,
   startManualScan,
   updateScanFocus,
+  updateSmtpSettings,
   updateStation,
   deleteStation,
   generateOutreachEmail,
@@ -542,6 +545,21 @@ function App(): JSX.Element {
   const [contactOutcomes, setContactOutcomes] = useState<ContactOutcomeResponse[]>([]);
   const [contactSendLoading, setContactSendLoading] = useState(false);
   const [systemMessage, setSystemMessage] = useState<string | null>(null);
+
+  const [smtpSettings, setSmtpSettings] = useState<SmtpSettingsResponse | null>(null);
+  const [smtpDraft, setSmtpDraft] = useState({
+    host: "",
+    port: 587,
+    username: "",
+    password: "",
+    from_email: "",
+    from_name: "Radio DB",
+    use_starttls: true,
+    use_ssl: false,
+    timeout_seconds: 20,
+    execute_email: "",
+  });
+  const [smtpLoading, setSmtpLoading] = useState(false);
   const [campaignDraft, setCampaignDraft] = useState<CampaignDraft>(() => emptyCampaignDraft());
   const [selectedOutreachCampaignId, setSelectedOutreachCampaignId] = useState<number | null>(() => {
     if (typeof window === "undefined") {
@@ -826,6 +844,7 @@ function App(): JSX.Element {
     }
     if (activeTab === "system") {
       void refreshDataControl();
+      void refreshSmtpSettings();
       void refreshCountryDiscovery();
     }
   }, [activeTab, runStatusFilter]);
@@ -949,6 +968,45 @@ function App(): JSX.Element {
       setDataOverviewError(error instanceof Error ? error.message : "Systemdaten konnten nicht geladen werden.");
     } finally {
       setDataOverviewLoading(false);
+    }
+  }
+
+
+  async function refreshSmtpSettings(): Promise<void> {
+    try {
+      const response = await getSmtpSettings();
+      setSmtpSettings(response);
+      setSmtpDraft({
+        host: response.host,
+        port: response.port,
+        username: response.username,
+        password: "",
+        from_email: response.from_email,
+        from_name: response.from_name,
+        use_starttls: response.use_starttls,
+        use_ssl: response.use_ssl,
+        timeout_seconds: response.timeout_seconds,
+        execute_email: response.execute_email,
+      });
+    } catch (error) {
+      setSystemMessage(error instanceof Error ? error.message : "SMTP settings konnten nicht geladen werden.");
+    }
+  }
+
+  async function handleSaveSmtpSettings(): Promise<void> {
+    setSmtpLoading(true);
+    try {
+      const response = await updateSmtpSettings({
+        ...smtpDraft,
+        password: smtpDraft.password.trim() ? smtpDraft.password : null,
+      });
+      setSmtpSettings(response);
+      setSmtpDraft((current) => ({ ...current, password: "" }));
+      setSystemMessage("SMTP settings gespeichert. Dashboard/Worker neu starten, damit Runtime-Settings neu geladen werden.");
+    } catch (error) {
+      setSystemMessage(error instanceof Error ? error.message : "SMTP settings konnten nicht gespeichert werden.");
+    } finally {
+      setSmtpLoading(false);
     }
   }
 
@@ -1661,6 +1719,7 @@ function App(): JSX.Element {
       });
       setSystemMessage("Scan focus aktualisiert.");
       await refreshDataControl();
+      await refreshSmtpSettings();
     } catch (error) {
       setSystemMessage(error instanceof Error ? error.message : "Scan focus konnte nicht gesetzt werden.");
     }
@@ -3359,6 +3418,33 @@ function App(): JSX.Element {
                     <SummaryRow label="USD cap" value={String(dataLlmQuota.max_daily_usd ?? 0)} />
                     <SummaryRow label="Calls today" value={String(dataLlmQuota.llm_calls_today ?? 0)} />
                     <SummaryRow label="Call cap" value={String(dataLlmQuota.max_llm_calls_per_day ?? 0)} />
+                  </div>
+                </div>
+
+                <div className="radio-db-box radio-db-box--wide">
+                  <h3>SMTP + anti-spam sending</h3>
+                  <div className="radio-db-edit-form radio-db-smtp-form">
+                    <div className="radio-db-grid radio-db-grid--two-column">
+                      <label>SMTP host<input value={smtpDraft.host} onChange={(event) => setSmtpDraft((current) => ({ ...current, host: event.target.value }))} placeholder="smtp.example.com" /></label>
+                      <label>Port<input type="number" value={smtpDraft.port} onChange={(event) => setSmtpDraft((current) => ({ ...current, port: Number(event.target.value) }))} /></label>
+                      <label>Username<input value={smtpDraft.username} onChange={(event) => setSmtpDraft((current) => ({ ...current, username: event.target.value }))} /></label>
+                      <label>Password<input type="password" value={smtpDraft.password} onChange={(event) => setSmtpDraft((current) => ({ ...current, password: event.target.value }))} placeholder={smtpSettings?.password_set ? "Password set - leave blank to keep" : "SMTP password"} /></label>
+                      <label>From email<input value={smtpDraft.from_email} onChange={(event) => setSmtpDraft((current) => ({ ...current, from_email: event.target.value }))} placeholder="radio@public-air.net" /></label>
+                      <label>From name<input value={smtpDraft.from_name} onChange={(event) => setSmtpDraft((current) => ({ ...current, from_name: event.target.value }))} /></label>
+                      <label>Execute email<input value={smtpDraft.execute_email} onChange={(event) => setSmtpDraft((current) => ({ ...current, execute_email: event.target.value }))} placeholder="radio@public-air.net" /></label>
+                      <label>Timeout seconds<input type="number" min={5} max={120} value={smtpDraft.timeout_seconds} onChange={(event) => setSmtpDraft((current) => ({ ...current, timeout_seconds: Number(event.target.value) }))} /></label>
+                    </div>
+                    <div className="radio-db-toggle-row">
+                      <label><input type="checkbox" checked={smtpDraft.use_starttls} onChange={(event) => setSmtpDraft((current) => ({ ...current, use_starttls: event.target.checked, use_ssl: event.target.checked ? false : current.use_ssl }))} /> STARTTLS</label>
+                      <label><input type="checkbox" checked={smtpDraft.use_ssl} onChange={(event) => setSmtpDraft((current) => ({ ...current, use_ssl: event.target.checked, use_starttls: event.target.checked ? false : current.use_starttls }))} /> SSL</label>
+                      <span>{smtpSettings?.password_set ? "Password saved" : "No password saved"}</span>
+                    </div>
+                    <div className="radio-db-panel__actions">
+                      <button type="button" className="radio-db-button" onClick={() => void handleSaveSmtpSettings()} disabled={permissionMode !== "execute" || smtpLoading}>{smtpLoading ? "Saving…" : "Save SMTP settings"}</button>
+                    </div>
+                    <div className="radio-db-list">
+                      {(smtpSettings?.anti_spam_notes ?? []).map((note) => <div key={note} className="radio-db-list-item"><strong>Anti-spam</strong><span>{note}</span></div>)}
+                    </div>
                   </div>
                 </div>
                 <div className="radio-db-box">
