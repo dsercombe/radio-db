@@ -27,9 +27,9 @@ Target project created:
 - Project ref: `alcaojhizqiifascmvmd`
 - Region: `eu-central-1`
 - API URL: `https://alcaojhizqiifascmvmd.supabase.co`
-- Initial state: active, empty public schema
+- Initial state: active, schema and data restored
 
-Import blocker: the Codex Supabase plugin can execute SQL, but the full data restore is a 108 MB custom-format `pg_dump`. Use `pg_restore` with the project database connection string/password, or run the import from Supabase dashboard/CLI.
+Import completed from `migration_artifacts/radio_db_schema_supabase.sql` and `migration_artifacts/radio_db_data.dump` using direct Postgres connection. Do not commit database passwords or dump files.
 
 ## Vercel Target
 
@@ -45,9 +45,16 @@ Longer term, this frontend can become part of `public-air.net` while the worker/
 ## Cutover Plan
 
 1. Supabase `Radio DB` project created.
-2. Import `radio_db_schema.sql` or `radio_db_schema_supabase.sql`.
-3. Restore `radio_db_data.dump` with `pg_restore` using the Supabase DB connection string.
-4. Run DB smoke checks: table counts, station counts, key API queries.
+2. Imported `radio_db_schema_supabase.sql`.
+3. Restored `radio_db_data.dump` with `pg_restore`.
+4. DB smoke checks passed:
+   - `stations`: 10,795
+   - `submission_channels`: 29,849
+   - `evidence`: 167,216
+   - `forms`: 3,222
+   - `verified stations`: 298
+   - `pitch_ready_stations`: 64
+   - `radio-db stats` succeeds against Supabase.
 5. Point `meinserver` worker/backend `DATABASE_URL` to Supabase.
 6. Deploy Vercel frontend with `VITE_API_ROOT` pointing to the backend.
 7. Add Auth gate for dashboard access.
