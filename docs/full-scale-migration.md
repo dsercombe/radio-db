@@ -21,14 +21,15 @@
 
 ## Supabase Target
 
-Preferred target: a new Supabase project named `Radio DB` in `eu-central-1`.
+Target project created:
 
-Current blocker: Supabase Free project limit. The org currently has two active projects:
+- Name: `Radio DB`
+- Project ref: `alcaojhizqiifascmvmd`
+- Region: `eu-central-1`
+- API URL: `https://alcaojhizqiifascmvmd.supabase.co`
+- Initial state: active, empty public schema
 
-- `PlaylistPilot3` (`xwwyokhjjayqfiddzbnm`)
-- `Public Air Artist Hub` (`ymikudjimpabdbvanept`)
-
-To create `Radio DB`, pause/delete one active project or upgrade the Supabase plan.
+Import blocker: the Codex Supabase plugin can execute SQL, but the full data restore is a 108 MB custom-format `pg_dump`. Use `pg_restore` with the project database connection string/password, or run the import from Supabase dashboard/CLI.
 
 ## Vercel Target
 
@@ -43,9 +44,9 @@ Longer term, this frontend can become part of `public-air.net` while the worker/
 
 ## Cutover Plan
 
-1. Create Supabase `Radio DB` project.
-2. Import `radio_db_schema.sql`.
-3. Restore `radio_db_data.dump` with `pg_restore`.
+1. Supabase `Radio DB` project created.
+2. Import `radio_db_schema.sql` or `radio_db_schema_supabase.sql`.
+3. Restore `radio_db_data.dump` with `pg_restore` using the Supabase DB connection string.
 4. Run DB smoke checks: table counts, station counts, key API queries.
 5. Point `meinserver` worker/backend `DATABASE_URL` to Supabase.
 6. Deploy Vercel frontend with `VITE_API_ROOT` pointing to the backend.
