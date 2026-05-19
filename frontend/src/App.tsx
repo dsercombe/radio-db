@@ -2523,79 +2523,69 @@ function App(): JSX.Element {
         )}
 
         {activeTab === "runs" && (
-          <section className="radio-db-runs-console">
-            <article className="radio-db-panel radio-db-runs-setup">
+          <section className="radio-db-form-console">
+            <aside className="radio-db-panel radio-db-form-sidebar">
               <div className="radio-db-panel__head">
                 <div>
-                  <h2>Form Scan Control</h2>
-                  <p>Starte einen Scan, beobachte Screenshots, prüfe gefundene Routen und entscheide den nächsten Schritt manuell.</p>
+                  <h2>Form Controller</h2>
+                  <p>{selectedStation?.canonical_name || currentStation?.canonical_name || "Wähle links eine Station"}</p>
+                </div>
+                <span className={`radio-db-pill radio-db-pill--${statusTone(selectedRun?.status || browserSessionDetail?.status || "muted")}`}>
+                  {selectedRun?.status || browserSessionDetail?.status || "idle"}
+                </span>
+              </div>
+
+              <div className="radio-db-controller-steps">
+                <div className={selectedStationId ? "is-done" : ""}><span>1</span><strong>Station</strong><small>{selectedStation?.canonical_name || currentStation?.canonical_name || "Keine Station gewählt"}</small></div>
+                <div className={selectedRun ? "is-done" : ""}><span>2</span><strong>Scan</strong><small>{selectedRun ? `Run #${selectedRun.id}` : "Noch kein Run gewählt"}</small></div>
+                <div className={browserScreenshotUrl || selectedRunLatestScreenshotUrl ? "is-done" : ""}><span>3</span><strong>Preview</strong><small>{browserScreenshotUrl || selectedRunLatestScreenshotUrl ? "Screenshot verfügbar" : "Browser öffnen"}</small></div>
+                <div className={monitorCandidates.length ? "is-done" : ""}><span>4</span><strong>Route</strong><small>{monitorCandidates.length ? `${monitorCandidates.length} Kandidaten` : "Nichts gespeichert"}</small></div>
+              </div>
+
+              <div className="radio-db-form-controls">
+                <label>
+                  Start URL
+                  <input value={browserUrlDraft} onChange={(event) => setBrowserUrlDraft(event.target.value)} placeholder={selectedRun?.target_url || selectedStation?.website_url || currentStation?.website_url || "https://example.com"} />
+                </label>
+                <div className="radio-db-grid radio-db-grid--two-column">
+                  <label>
+                    Mode
+                    <input value={manualScanMode} onChange={(event) => setManualScanMode(event.target.value)} />
+                  </label>
+                  <label>
+                    Pages
+                    <input type="number" min={1} max={10} value={manualScanPages} onChange={(event) => setManualScanPages(Number(event.target.value))} />
+                  </label>
                 </div>
                 <div className="radio-db-panel__actions">
                   <button type="button" className="radio-db-button" onClick={() => void handleStartManualScan()} disabled={!selectedStationId || manualScanBusy}>
-                    {manualScanBusy ? "Scan läuft…" : "Start form scan"}
+                    {manualScanBusy ? "Scanning…" : "Start scan"}
                   </button>
-                  <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void refreshRuns(selectedStationId ?? undefined, runStatusFilter || undefined)} disabled={runsLoading}>
-                    Refresh
+                  <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleOpenBrowserSession()}>
+                    Open browser
+                  </button>
+                  <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleBrowserSnapshot()} disabled={!browserSessionId}>
+                    Snapshot
                   </button>
                 </div>
               </div>
 
-              <div className="radio-db-scan-flow" aria-label="Form scan workflow">
-                {[
-                  ["1", "Station wählen", selectedStation?.canonical_name || currentStation?.canonical_name || "keine Station gewählt"],
-                  ["2", "Scan starten", manualScanBusy ? "Scanner arbeitet" : "manual scan oder Browser"],
-                  ["3", "Screenshot prüfen", selectedRunLatestScreenshotUrl || browserScreenshotUrl ? "Screenshot vorhanden" : "noch kein Screenshot"],
-                  ["4", "Route speichern", monitorCandidates.length ? `${monitorCandidates.length} Kandidaten` : "keine Route gespeichert"],
-                ].map(([number, title, detail]) => (
-                  <div key={number} className="radio-db-scan-flow__step">
-                    <span>{number}</span>
-                    <strong>{title}</strong>
-                    <small>{detail}</small>
-                  </div>
-                ))}
-              </div>
-
-              <div className="radio-db-runs-controls">
+              <div className="radio-db-run-filter">
                 <label>
-                  Status
+                  Queue filter
                   <select value={runStatusFilter} onChange={(event) => setRunStatusFilter(event.target.value)}>
-                    <option value="">alle Runs</option>
+                    <option value="">alle</option>
                     <option value="running">running</option>
                     <option value="blocked">blocked</option>
                     <option value="completed">completed</option>
                     <option value="failed">failed</option>
                   </select>
                 </label>
-                <label>
-                  Station
-                  <input value={selectedStation?.canonical_name || currentStation?.canonical_name || ""} readOnly />
-                </label>
-                <label>
-                  Scan mode
-                  <input value={manualScanMode} onChange={(event) => setManualScanMode(event.target.value)} />
-                </label>
-                <label>
-                  Max pages
-                  <input type="number" min={1} max={10} value={manualScanPages} onChange={(event) => setManualScanPages(Number(event.target.value))} />
-                </label>
+                <button type="button" className="radio-db-link-button" onClick={() => void refreshRuns(selectedStationId ?? undefined, runStatusFilter || undefined)} disabled={runsLoading}>Refresh</button>
               </div>
 
-              <div className="radio-db-summary-strip radio-db-summary-strip--compact">
-                <div><span>Runs</span><strong>{runsTotal}</strong></div>
-                <div><span>Selected</span><strong>{selectedRunId ?? "-"}</strong></div>
-                <div><span>Browser</span><strong>{browserSessions.length}</strong></div>
-              </div>
-            </article>
-
-            <article className="radio-db-panel radio-db-runs-queue">
-              <div className="radio-db-panel__head">
-                <div>
-                  <h2>Queue</h2>
-                  <p>Neueste Läufe im aktuellen Stations- und Statusfilter.</p>
-                </div>
-              </div>
-              {runsLoading ? <div className="radio-db-empty">Loading runs…</div> : null}
-              <div className="radio-db-list radio-db-list--runs">
+              <div className="radio-db-list radio-db-list--runs radio-db-run-compact-list">
+                {runsLoading ? <div className="radio-db-empty">Loading runs…</div> : null}
                 {agentRuns.length > 0 ? agentRuns.map((run) => (
                   <button
                     type="button"
@@ -2604,286 +2594,173 @@ function App(): JSX.Element {
                     onClick={() => setSelectedRunId(run.id)}
                   >
                     <div className="radio-db-run__head">
-                      <strong>#{run.id} · {run.station_name}</strong>
+                      <strong>#{run.id}</strong>
                       <span className={`radio-db-pill radio-db-pill--${statusTone(run.status)}`}>{run.status}</span>
                     </div>
-                    <div className="radio-db-subtle">{run.goal}</div>
-                    <div className="radio-db-mini-metrics">
-                      <span>{run.current_state}</span>
-                      <span>{run.step_count} steps</span>
-                      <span>{run.issue_count} issues</span>
-                      <span>{formatDate(run.started_at)}</span>
-                    </div>
+                    <div>{run.station_name}</div>
+                    <small>{run.current_state} · {run.issue_count} issues · {formatDate(run.started_at)}</small>
                   </button>
-                )) : <div className="radio-db-empty">Keine Runs im aktuellen Filter.</div>}
+                )) : <div className="radio-db-empty">Keine Runs im Filter.</div>}
               </div>
-            </article>
+            </aside>
 
-            <article className="radio-db-panel radio-db-panel--wide radio-db-runs-review">
+            <article className="radio-db-panel radio-db-form-main">
               <div className="radio-db-panel__head">
                 <div>
-                  <h2>Review</h2>
-                  <p>Was ist passiert, was wurde gefunden, und was blockiert den Run?</p>
+                  <h2>Live Form View</h2>
+                  <p>{browserSessionDetail?.url || selectedRun?.target_url || "Öffne eine Browser-Session oder wähle einen Run."}</p>
+                </div>
+                <div className="radio-db-panel__actions">
+                  <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleBrowserNavigate()} disabled={!browserSessionId || !browserUrlDraft.trim()}>Navigate</button>
+                  <button type="button" className="radio-db-button radio-db-button--danger" onClick={() => void handleBrowserClose()} disabled={!browserSessionId}>Close</button>
                 </div>
               </div>
 
-              {selectedRun ? (
-                <div className="radio-db-stack">
-                  <div className="radio-db-run-review-grid">
-                    <div className="radio-db-run-status-card">
-                      <span className={`radio-db-pill radio-db-pill--${statusTone(selectedRun.status)}`}>{selectedRun.status}</span>
-                      <h3>{selectedRun.station_name}</h3>
-                      <p>{selectedRun.goal}</p>
-                      <div className="radio-db-mini-metrics">
-                        <span>State: {selectedRun.current_state}</span>
-                        <span>Confidence: {formatPercent(selectedRun.confidence)}</span>
-                        <span>Artifacts: {selectedRunArtifactCount}</span>
-                      </div>
-                    </div>
-                    <div className="radio-db-box">
-                      <h3>Next actions</h3>
-                      <div className="radio-db-panel__actions">
-                        <button type="button" className="radio-db-button" onClick={() => void handleOpenBrowserSession()}>Browser for run</button>
-                        <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => setPrimaryStation(selectedRun.station_id)}>Open station</button>
-                        <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => openArtifact(selectedRun.steps.at(-1)?.screenshot_path)} disabled={!selectedRun.steps.at(-1)?.screenshot_path}>Latest screenshot</button>
-                      </div>
-                      <div className="radio-db-summary-list">
-                        <SummaryRow label="Blocked" value={selectedRun.blocked_reason || "-"} />
-                        <SummaryRow label="Last observation" value={agentObservationTitle} />
-                        <SummaryRow label="Suggested action" value={agentObservationAction} />
-                      </div>
+              <div className="radio-db-form-live-grid">
+                <div className="radio-db-form-preview">
+                  {browserScreenshotUrl ? (
+                    <button type="button" className="radio-db-browser-shot" onClick={() => openArtifact(browserSessionDetail?.screenshot_path)}>
+                      <img src={browserScreenshotUrl} alt="Current supervised browser screenshot" />
+                    </button>
+                  ) : selectedRunLatestScreenshotUrl ? (
+                    <button type="button" className="radio-db-browser-shot" onClick={() => openArtifact(latestRunStep?.screenshot_path)}>
+                      <img src={selectedRunLatestScreenshotUrl} alt="Latest form scan screenshot" />
+                    </button>
+                  ) : (
+                    <div className="radio-db-browser-shot radio-db-browser-shot--empty"><span>No screenshot yet.</span></div>
+                  )}
+                </div>
+
+                <div className="radio-db-form-status">
+                  <div className="radio-db-run-status-card">
+                    <span className={`radio-db-pill radio-db-pill--${statusTone(selectedRun?.status || browserSessionDetail?.status || "muted")}`}>
+                      {selectedRun?.status || browserSessionDetail?.status || "idle"}
+                    </span>
+                    <h3>{browserSessionDetail?.title || selectedRun?.station_name || selectedStation?.canonical_name || "No active form"}</h3>
+                    <p>{selectedRun?.goal || "Supervised browser session"}</p>
+                    <div className="radio-db-summary-list">
+                      <SummaryRow label="Run state" value={selectedRun?.current_state || "-"} />
+                      <SummaryRow label="Blocker" value={runBlocker || browserSessionDetail?.last_error || "-"} />
+                      <SummaryRow label="Last signal" value={agentObservationAction} />
+                      <SummaryRow label="Updated" value={formatDate(browserSessionDetail?.updated_at || latestRunStep?.created_at || selectedRun?.updated_at)} />
                     </div>
                   </div>
 
-                  <div className="radio-db-run-review-grid">
-                    <div className="radio-db-box">
-                      <h3>Issues to resolve</h3>
-                      <div className="radio-db-list">
-                        {selectedRun.issues.length ? selectedRun.issues.map((issue) => (
-                          <div key={issue.id} className="radio-db-list-item">
-                            <strong>{issue.title}</strong>
-                            <span>{issue.issue_type} · {issue.severity}</span>
-                            <small>{issue.details || issue.status}</small>
-                          </div>
-                        )) : <div className="radio-db-empty">Keine Issues für diesen Run.</div>}
-                      </div>
-                    </div>
-                    <div className="radio-db-box">
-                      <h3>Scan timeline</h3>
-                      <div className="radio-db-list radio-db-list--timeline">
-                        {selectedRun.steps.slice().reverse().map((step) => (
-                          <div key={step.id} className="radio-db-list-item">
-                            <div className="radio-db-run__head">
-                              <strong>Step {step.step_index}</strong>
-                              <span>{step.state_after}</span>
-                            </div>
-                            <small>{formatDate(step.created_at)} · {step.latency_ms} ms · confidence {formatPercent(step.confidence)}</small>
-                            <div className="radio-db-inline-actions">
-                              {step.screenshot_path ? <button type="button" className="radio-db-link-button" onClick={() => openArtifact(step.screenshot_path)}>Screenshot</button> : null}
-                              {step.dom_snapshot_path ? <button type="button" className="radio-db-link-button" onClick={() => openArtifact(step.dom_snapshot_path)}>DOM</button> : null}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <details className="radio-db-debug-panel">
-                    <summary>Raw run summary</summary>
-                    <pre>{JSON.stringify(selectedRun.summary, null, 2)}</pre>
-                  </details>
-                </div>
-              ) : runLoading ? (
-                <div className="radio-db-empty">Loading run detail…</div>
-              ) : (
-                <div className="radio-db-empty">Select a run to inspect it.</div>
-              )}
-            </article>
-
-            <article className="radio-db-panel radio-db-panel--wide radio-db-runs-browser">
-              <div className="radio-db-box">
-                <div className="radio-db-panel__head">
-                  <div>
-                    <h2>Browser & Screenshot</h2>
-                    <p>Kontrolliere Formularseiten visuell. Standardaktionen bleiben oben, CSS-Selector-Debug ist eingeklappt.</p>
-                  </div>
-                </div>
-                <div className="radio-db-run-launcher">
-                  <label>
-                    Start URL
-                    <input value={browserUrlDraft} onChange={(event) => setBrowserUrlDraft(event.target.value)} placeholder={selectedRun?.target_url || selectedStation?.website_url || currentStation?.website_url || "https://example.com"} />
-                  </label>
                   <div className="radio-db-panel__actions">
-                    <button type="button" className="radio-db-button" onClick={() => void handleOpenBrowserSession()}>Open browser session</button>
-                    <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleBrowserNavigate()} disabled={!browserSessionId}>Navigate</button>
-                    <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleBrowserSnapshot()} disabled={!browserSessionId}>Snapshot</button>
-                    <button type="button" className="radio-db-button radio-db-button--danger" onClick={() => void handleBrowserClose()} disabled={!browserSessionId}>Close</button>
+                    <button type="button" className="radio-db-button" onClick={() => void handleOpenBrowserSession()}>Open/attach browser</button>
+                    <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => selectedRun && setPrimaryStation(selectedRun.station_id)} disabled={!selectedRun}>Open station</button>
+                    {browserSessionDetail?.screenshot_path ? <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => openArtifact(browserSessionDetail.screenshot_path)}>Full screenshot</button> : null}
+                    {browserSessionDetail?.html_path ? <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => openArtifact(browserSessionDetail.html_path)}>HTML</button> : null}
                   </div>
-                  <details className="radio-db-debug-panel">
-                    <summary>Debug controls</summary>
-                    <div className="radio-db-grid radio-db-grid--two-column">
-                      <label>
-                        Action
-                        <select value={browserAction} onChange={(event) => setBrowserAction(event.target.value as BrowserActionType)}>
-                          <option value="goto">goto</option>
-                          <option value="click">click</option>
-                          <option value="fill">fill</option>
-                          <option value="press">press</option>
-                          <option value="select">select</option>
-                          <option value="wait">wait</option>
-                        </select>
-                      </label>
-                      <label>
-                        Selector
-                        <input value={browserSelectorDraft} onChange={(event) => setBrowserSelectorDraft(event.target.value)} placeholder="input[name=email]" />
-                      </label>
-                    </div>
-                    <label>
-                      Value
-                      <input value={browserValueDraft} onChange={(event) => setBrowserValueDraft(event.target.value)} placeholder="text, key or url" />
-                    </label>
-                    <button type="button" className="radio-db-button" onClick={() => void handleBrowserAction()} disabled={!browserSessionId}>Run action</button>
-                  </details>
                 </div>
+              </div>
 
-                {browserSessionDetail || selectedRunLatestScreenshotUrl ? (
-                  <div className="radio-db-browser-monitor">
-                    <div className="radio-db-browser-preview">
-                      <div className="radio-db-browser-preview__head">
+              <div className="radio-db-form-review-grid">
+                <section className="radio-db-box">
+                  <h3>Operator decision</h3>
+                  <div className="radio-db-decision-list">
+                    <div className={(selectedRun?.issues.length ?? 0) ? "is-warning" : "is-ok"}>
+                      <strong>{(selectedRun?.issues.length ?? 0) ? `${selectedRun?.issues.length} offene Hinweise` : "Keine Run-Issues"}</strong>
+                      <span>{runBlocker || agentObservationTitle}</span>
+                    </div>
+                    <div className={monitorCandidates.length ? "is-ok" : "is-warning"}>
+                      <strong>{monitorCandidates.length ? "Route vorhanden" : "Route fehlt"}</strong>
+                      <span>{monitorCandidates[0]?.route || "Noch keine Formular- oder E-Mail-Route gespeichert."}</span>
+                    </div>
+                    <div className={browserScreenshotUrl || selectedRunLatestScreenshotUrl ? "is-ok" : "is-warning"}>
+                      <strong>{browserScreenshotUrl || selectedRunLatestScreenshotUrl ? "Visuell prüfbar" : "Kein Screenshot"}</strong>
+                      <span>{browserSessionDetail?.title || selectedRun?.station_name || "Browser öffnen und Snapshot erstellen."}</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="radio-db-box">
+                  <h3>Found routes</h3>
+                  <div className="radio-db-route-list">
+                    {monitorCandidates.length ? monitorCandidates.map((candidate) => (
+                      <div key={candidate.id} className="radio-db-route-item">
                         <div>
-                          <strong>{browserSessionDetail?.title || selectedRun?.station_name || "Form scan screenshot"}</strong>
-                          <span>{browserSessionDetail?.url || selectedRun?.target_url || firstText(latestRunAction.form_url, latestRunResult.form_url, "")}</span>
+                          <strong>{candidate.type}</strong>
+                          <span>{candidate.route}</span>
+                          <small>{candidate.note}{candidate.confidence !== null ? ` · ${formatPercent(candidate.confidence)}` : ""}</small>
                         </div>
-                        <span className={`radio-db-pill radio-db-pill--${statusTone(browserSessionDetail?.status || selectedRun?.status || "muted")}`}>{browserSessionDetail?.status || selectedRun?.status || "snapshot"}</span>
+                        <span className={`radio-db-pill radio-db-pill--${statusTone(candidate.status)}`}>{candidate.status}</span>
                       </div>
-                      {browserScreenshotUrl ? (
-                        <button type="button" className="radio-db-browser-shot" onClick={() => openArtifact(browserSessionDetail?.screenshot_path)}>
-                          <img src={browserScreenshotUrl} alt="Current supervised browser screenshot" />
-                        </button>
-                      ) : selectedRunLatestScreenshotUrl ? (
-                        <button type="button" className="radio-db-browser-shot" onClick={() => openArtifact(latestRunStep?.screenshot_path)}>
-                          <img src={selectedRunLatestScreenshotUrl} alt="Latest form scan screenshot" />
-                        </button>
-                      ) : (
-                        <div className="radio-db-browser-shot radio-db-browser-shot--empty">
-                          <span>No screenshot captured yet.</span>
-                        </div>
-                      )}
-                      <div className="radio-db-summary-strip radio-db-summary-strip--compact">
-                        <div><span>Events</span><strong>{browserSessionDetail?.event_count ?? selectedRun?.steps.length ?? 0}</strong></div>
-                        <div><span>Actions</span><strong>{browserSessionDetail?.action_count ?? selectedRunArtifactCount}</strong></div>
-                        <div><span>Updated</span><strong>{formatDate(browserSessionDetail?.updated_at || latestRunStep?.created_at || selectedRun?.updated_at)}</strong></div>
-                      </div>
-                      <div className="radio-db-inline-actions">
-                        {browserSessionDetail?.screenshot_path ? <button type="button" className="radio-db-link-button" onClick={() => openArtifact(browserSessionDetail.screenshot_path)}>Open full screenshot</button> : null}
-                        {!browserSessionDetail?.screenshot_path && latestRunStep?.screenshot_path ? <button type="button" className="radio-db-link-button" onClick={() => openArtifact(latestRunStep.screenshot_path)}>Open full screenshot</button> : null}
-                        {browserSessionDetail?.html_path ? <button type="button" className="radio-db-link-button" onClick={() => openArtifact(browserSessionDetail.html_path)}>Open HTML snapshot</button> : null}
-                        {latestRunStep?.dom_snapshot_path ? <button type="button" className="radio-db-link-button" onClick={() => openArtifact(latestRunStep.dom_snapshot_path)}>Open DOM snapshot</button> : null}
-                      </div>
-                    </div>
-
-                    <div className="radio-db-browser-inspector">
-                      <div className="radio-db-box">
-                        <h3>Scan signal</h3>
-                        <div className="radio-db-summary-list">
-                          <SummaryRow label="Station" value={selectedRun?.station_name || selectedStation?.canonical_name || currentStation?.canonical_name || "-"} />
-                          <SummaryRow label="Run state" value={selectedRun?.current_state || browserSessionDetail?.status || "-"} />
-                          <SummaryRow label="Last step" value={latestRunStep ? `${latestRunStep.state_before} -> ${latestRunStep.state_after}` : "-"} />
-                          <SummaryRow label="Blocker" value={runBlocker || browserSessionDetail?.last_error || "-"} />
-                        </div>
-                      </div>
-                      <div className="radio-db-box">
-                        <h3>Agent observation</h3>
-                        <div className="radio-db-list">
-                          <div className="radio-db-list-item">
-                            <strong>{agentObservationTitle}</strong>
-                            <span>{agentObservationAction}</span>
-                            <small>{agentObservationMeta}</small>
-                          </div>
-                        </div>
-                        <details className="radio-db-debug-panel">
-                          <summary>Raw latest step JSON</summary>
-                          <pre>{JSON.stringify({ observation: latestRunObservation, action: latestRunAction, result: latestRunResult }, null, 2)}</pre>
-                        </details>
-                      </div>
-                    </div>
+                    )) : <div className="radio-db-empty">Keine Routen für diese Station gespeichert.</div>}
                   </div>
-                ) : (
-                  <div className="radio-db-empty">Select or open a session to follow its live screenshot and scan signals.</div>
-                )}
+                </section>
               </div>
-            </article>
 
-            <article className="radio-db-panel radio-db-panel--wide radio-db-runs-evidence">
-              <div className="radio-db-panel__head">
-                <div>
-                  <h2>Evidence</h2>
-                  <p>Gespeicherte Sessions, gefundene Formular-/Submission-Routen und lesbare Browser-Timeline.</p>
-                </div>
-              </div>
+              <details className="radio-db-debug-panel radio-db-form-debug">
+                <summary>Advanced: steps, sessions, selector actions, raw JSON</summary>
                 <div className="radio-db-box-grid radio-db-browser-lower">
                   <div className="radio-db-box">
-                    <h3>Sessions</h3>
-                    {browserSessionsLoading ? <div className="radio-db-empty">Loading sessions…</div> : null}
+                    <h3>Issues</h3>
                     <div className="radio-db-list">
+                      {selectedRun?.issues.length ? selectedRun.issues.map((issue) => (
+                        <div key={issue.id} className="radio-db-list-item">
+                          <strong>{issue.title}</strong>
+                          <span>{issue.issue_type} · {issue.severity}</span>
+                          <small>{issue.details || issue.status}</small>
+                        </div>
+                      )) : <div className="radio-db-empty">Keine Issues.</div>}
+                    </div>
+                  </div>
+                  <div className="radio-db-box">
+                    <h3>Scan timeline</h3>
+                    <div className="radio-db-list radio-db-list--timeline">
+                      {selectedRun?.steps.length ? selectedRun.steps.slice().reverse().map((step) => (
+                        <div key={step.id} className="radio-db-list-item">
+                          <div className="radio-db-run__head"><strong>Step {step.step_index}</strong><span>{step.state_after}</span></div>
+                          <small>{formatDate(step.created_at)} · {step.latency_ms} ms · confidence {formatPercent(step.confidence)}</small>
+                          <div className="radio-db-inline-actions">
+                            {step.screenshot_path ? <button type="button" className="radio-db-link-button" onClick={() => openArtifact(step.screenshot_path)}>Screenshot</button> : null}
+                            {step.dom_snapshot_path ? <button type="button" className="radio-db-link-button" onClick={() => openArtifact(step.dom_snapshot_path)}>DOM</button> : null}
+                          </div>
+                        </div>
+                      )) : <div className="radio-db-empty">Keine Steps.</div>}
+                    </div>
+                  </div>
+                  <div className="radio-db-box">
+                    <h3>Sessions</h3>
+                    <div className="radio-db-list radio-db-list--timeline">
                       {browserSessions.map((session) => (
-                        <button
-                          type="button"
-                          key={session.id}
-                          className={`radio-db-run ${browserSessionId === session.id ? "radio-db-run--active" : ""}`}
-                          onClick={() => setBrowserSessionId(session.id)}
-                        >
-                          <div className="radio-db-run__head">
-                            <strong>{session.title || session.url || session.id}</strong>
-                            <span className={`radio-db-pill radio-db-pill--${statusTone(session.status)}`}>{session.status}</span>
-                          </div>
-                          <div className="radio-db-subtle">{session.url}</div>
-                          <div className="radio-db-mini-metrics">
-                            <span>{session.action_count} actions</span>
-                            <span>{session.event_count} events</span>
-                            <span>{formatDate(session.updated_at)}</span>
-                          </div>
-                          {session.last_error ? <small>{session.last_error}</small> : null}
+                        <button type="button" key={session.id} className={`radio-db-run ${browserSessionId === session.id ? "radio-db-run--active" : ""}`} onClick={() => setBrowserSessionId(session.id)}>
+                          <div className="radio-db-run__head"><strong>{session.title || session.id}</strong><span>{session.status}</span></div>
+                          <small>{session.url} · {formatDate(session.updated_at)}</small>
                         </button>
                       ))}
                     </div>
                   </div>
                   <div className="radio-db-box">
-                    <h3>Found routes</h3>
-                    <div className="radio-db-list">
-                      {monitorCandidates.length ? monitorCandidates.map((candidate) => (
-                        <div key={candidate.id} className="radio-db-list-item">
-                          <div className="radio-db-run__head">
-                            <strong>{candidate.label}</strong>
-                            <span className={`radio-db-pill radio-db-pill--${statusTone(candidate.status)}`}>{candidate.status}</span>
-                          </div>
-                          <span>{candidate.route}</span>
-                          <small>{candidate.type}{candidate.confidence !== null ? ` · confidence ${formatPercent(candidate.confidence)}` : ""} · {candidate.note}</small>
-                        </div>
-                      )) : <div className="radio-db-empty">No saved forms or submission routes for the selected station yet.</div>}
+                    <h3>Selector action</h3>
+                    <div className="radio-db-run-launcher">
+                      <div className="radio-db-grid radio-db-grid--two-column">
+                        <label>Action<select value={browserAction} onChange={(event) => setBrowserAction(event.target.value as BrowserActionType)}><option value="goto">goto</option><option value="click">click</option><option value="fill">fill</option><option value="press">press</option><option value="select">select</option><option value="wait">wait</option></select></label>
+                        <label>Selector<input value={browserSelectorDraft} onChange={(event) => setBrowserSelectorDraft(event.target.value)} placeholder="input[name=email]" /></label>
+                      </div>
+                      <label>Value<input value={browserValueDraft} onChange={(event) => setBrowserValueDraft(event.target.value)} placeholder="text, key or url" /></label>
+                      <button type="button" className="radio-db-button" onClick={() => void handleBrowserAction()} disabled={!browserSessionId}>Run action</button>
                     </div>
                   </div>
                   <div className="radio-db-box radio-db-box--wide">
-                    <h3>Readable timeline</h3>
-                    {browserSessionDetail ? (
-                      <div className="radio-db-stack">
-                        <div className="radio-db-list radio-db-list--timeline">
-                          {browserEvents.length ? browserEvents.map((event) => (
-                            <div key={`${String(event.id)}-${String(event.at)}`} className="radio-db-list-item">
-                              <div className="radio-db-run__head">
-                                <strong>{browserEventLabel(event)}</strong>
-                                <span className={`radio-db-pill radio-db-pill--${browserEventTone(event)}`}>{browserEventPhase(event)}</span>
-                              </div>
-                              <span>{String(event.url || "")}</span>
-                              <small>{formatDate(String(event.at || ""))}</small>
-                            </div>
-                          )) : <div className="radio-db-empty">No browser events recorded yet.</div>}
+                    <h3>Browser timeline</h3>
+                    <div className="radio-db-list radio-db-list--timeline">
+                      {browserEvents.length ? browserEvents.map((event) => (
+                        <div key={`${String(event.id)}-${String(event.at)}`} className="radio-db-list-item">
+                          <div className="radio-db-run__head"><strong>{browserEventLabel(event)}</strong><span className={`radio-db-pill radio-db-pill--${browserEventTone(event)}`}>{browserEventPhase(event)}</span></div>
+                          <span>{String(event.url || "")}</span>
+                          <small>{formatDate(String(event.at || ""))}</small>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="radio-db-empty">Select or open a session to follow its readable event stream.</div>
-                    )}
+                      )) : <div className="radio-db-empty">No browser events recorded yet.</div>}
+                    </div>
+                  </div>
+                  <div className="radio-db-box radio-db-box--wide">
+                    <h3>Raw latest step</h3>
+                    <pre>{JSON.stringify({ summary: selectedRun?.summary, observation: latestRunObservation, action: latestRunAction, result: latestRunResult }, null, 2)}</pre>
                   </div>
                 </div>
+              </details>
             </article>
           </section>
         )}
