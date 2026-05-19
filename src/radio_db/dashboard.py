@@ -30,6 +30,7 @@ from radio_db.api.outreach_campaigns import router as outreach_campaigns_api_rou
 from radio_db.api.outreach_campaigns import redirect_short_press_release_code
 from radio_db.api.data_control import router as data_control_api_router
 from radio_db.api.station_groups import router as station_groups_api_router
+from radio_db.api.scan_jobs import router as scan_jobs_api_router
 from radio_db.config import settings
 from radio_db.db import SessionLocal, engine, init_db, is_sqlite_engine
 from radio_db.models.entities import (
@@ -1286,6 +1287,7 @@ def create_app() -> FastAPI:
     app.include_router(outreach_campaigns_api_router)
     app.include_router(data_control_api_router)
     app.include_router(station_groups_api_router)
+    app.include_router(scan_jobs_api_router)
     frontend_assets_dir = _frontend_dist_dir() / "assets"
     if frontend_assets_dir.exists():
         app.mount("/assets", StaticFiles(directory=str(frontend_assets_dir)), name="spa-assets")
