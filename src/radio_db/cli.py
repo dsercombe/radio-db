@@ -78,6 +78,12 @@ from radio_db.services.phase2_route_queue import (
     run_phase2_route_worker,
     seed_phase2_route_queue,
 )
+from radio_db.services.scan_jobs import (
+    SUPPORTED_JOB_TYPES,
+    enqueue_scan_job,
+    run_scan_worker,
+    scan_job_overview,
+)
 
 app = typer.Typer(help="Radio Database Agent CLI")
 
@@ -130,6 +136,53 @@ def run_country_discovery_cycle_cmd(
             min_confidence=min_confidence,
         )
     print("[green]Country discovery cycle complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("enqueue-scan-job")
+def enqueue_scan_job_cmd(
+    job_type: str = typer.Argument(..., help=f"One of: {', '.join(sorted(SUPPORTED_JOB_TYPES))}"),
+    payload_json: str = typer.Option("{}", help="JSON payload with bounded job options"),
+    priority: int = typer.Option(100, min=1, max=1000),
+    requested_by: str = typer.Option("cli"),
+) -> None:
+    try:
+        payload = json.loads(payload_json or "{}")
+    except json.JSONDecodeError as exc:
+        raise typer.BadParameter(f"Invalid JSON payload: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise typer.BadParameter("payload-json must decode to a JSON object")
+    with SessionLocal() as session:
+        job = enqueue_scan_job(
+            session=session,
+            job_type=job_type,
+            payload=payload,
+            priority=priority,
+            requested_by=requested_by,
+        )
+    print("[green]Scan job queued[/green]")
+    print(json.dumps({"id": job.id, "job_type": job.job_type, "status": job.status, "priority": job.priority}, indent=2))
+
+
+@app.command("scan-worker")
+def scan_worker_cmd(
+    once: bool = typer.Option(False, help="Process at most one available job and exit"),
+    sleep_seconds: int = typer.Option(10, min=1, max=300),
+    worker_id: str = typer.Option("", help="Optional stable worker id"),
+) -> None:
+    result = run_scan_worker(
+        SessionLocal,
+        once=once,
+        sleep_seconds=sleep_seconds,
+        worker_id=worker_id or None,
+    )
+    print(json.dumps(result, indent=2))
+
+
+@app.command("scan-job-stats")
+def scan_job_stats_cmd() -> None:
+    with SessionLocal() as session:
+        result = scan_job_overview(session)
     print(json.dumps(result, indent=2))
 
 

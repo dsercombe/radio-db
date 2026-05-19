@@ -1,0 +1,17 @@
+[Unit]
+Description=Radio DB Supabase-backed scan worker
+After=network-online.target radio-db-dashboard.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=radio
+Group=radio
+WorkingDirectory=/opt/radio-database
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/radio-database/.venv/bin/radio-db scan-worker --sleep-seconds 10
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

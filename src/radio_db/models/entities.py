@@ -843,3 +843,68 @@ class BrowserSessionEvent(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     session: Mapped[BrowserSessionRecord] = relationship(back_populates="events")
+
+
+class ScanJob(Base):
+    __tablename__ = "scan_jobs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    job_type: Mapped[str] = mapped_column(String(80), index=True)
+    status: Mapped[str] = mapped_column(String(32), default="queued", index=True)
+    priority: Mapped[int] = mapped_column(Integer, default=100, index=True)
+    payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    requested_by: Mapped[str] = mapped_column(String(255), default="system", index=True)
+    claimed_by: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
+    claimed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    started_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    heartbeat_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    runs: Mapped[list["ScanRun"]] = relationship(back_populates="job", cascade="all, delete-orphan")
+    events: Mapped[list["ScanEvent"]] = relationship(back_populates="job", cascade="all, delete-orphan")
+
+
+class ScanRun(Base):
+    __tablename__ = "scan_runs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    job_id: Mapped[int] = mapped_column(ForeignKey("scan_jobs.id", ondelete="CASCADE"), index=True)
+    worker_id: Mapped[str] = mapped_column(String(120), index=True)
+    status: Mapped[str] = mapped_column(String(32), default="running", index=True)
+    result_json: Mapped[str] = mapped_column(Text, default="{}")
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    started_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    heartbeat_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
+
+    job: Mapped[ScanJob] = relationship(back_populates="runs")
+
+
+class ScanEvent(Base):
+    __tablename__ = "scan_events"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    job_id: Mapped[int | None] = mapped_column(ForeignKey("scan_jobs.id", ondelete="CASCADE"), nullable=True, index=True)
+    run_id: Mapped[int | None] = mapped_column(ForeignKey("scan_runs.id", ondelete="SET NULL"), nullable=True, index=True)
+    event_type: Mapped[str] = mapped_column(String(80), index=True)
+    level: Mapped[str] = mapped_column(String(20), default="info", index=True)
+    message: Mapped[str] = mapped_column(Text, default="")
+    payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
+
+    job: Mapped[ScanJob | None] = relationship(back_populates="events")
+
+
+class ScanControl(Base):
+    __tablename__ = "scan_controls"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    control_key: Mapped[str] = mapped_column(String(120), unique=True, index=True)
+    enabled: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    value_json: Mapped[str] = mapped_column(Text, default="{}")
+    updated_by: Mapped[str] = mapped_column(String(255), default="system")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
