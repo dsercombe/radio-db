@@ -1749,15 +1749,13 @@ function App(): JSX.Element {
 
   return (
     <div className="radio-db-app">
-      <header className="radio-db-hero">
-        <div className="radio-db-hero__copy">
-          <p className="radio-db-kicker">Radio DB Control Center</p>
-          <h1>Stations first. Manual control now. Automation next.</h1>
-          <p className="radio-db-hero__lede">
-            Die Oberfläche ist jetzt um die Senderliste als Master-Ansicht aufgebaut. Kontakt, Form-Scans und Browser-Supervision hängen direkt an Stationen und Runs statt an isolierten Seiten.
-          </p>
+      <header className="radio-db-header">
+        <div className="radio-db-header__title">
+          <p className="radio-db-kicker">Radio DB</p>
+          <h1>Control Center</h1>
+          <p>Sender, Kampagnen, Form-Scans und Worker in einer kompakten Arbeitsansicht.</p>
         </div>
-        <div className="radio-db-hero__stats">
+        <div className="radio-db-header__stats">
           <MetricCard
             label={filters.status === "all" ? "Sender raw" : "Aktive Sender"}
             value={summary.total.toString()}
