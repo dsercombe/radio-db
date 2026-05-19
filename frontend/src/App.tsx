@@ -144,6 +144,11 @@ function App() {
   const [scanJobs, setScanJobs] = useState<ScanJobOverview | null>(null);
   const [systemOverview, setSystemOverview] = useState<Record<string, unknown>>({});
   const [query, setQuery] = useState("");
+  const [stationStatusFilter, setStationStatusFilter] = useState("");
+  const [stationSubmissionFilter, setStationSubmissionFilter] = useState<"any" | "yes" | "no">("any");
+  const [stationCountryFilter, setStationCountryFilter] = useState("");
+  const [stationOutreachFilter, setStationOutreachFilter] = useState<"" | "verified_submission" | "contact_only">("");
+  const [stationMinConfidence, setStationMinConfidence] = useState(0);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -154,7 +159,18 @@ function App() {
     setBusy(true);
     try {
       const [stationResponse, runResponse, campaignResponse, jobResponse, overviewResponse, sessionResponse] = await Promise.all([
-        listStations({ q: query || undefined, has_submission: "any", page: 1, page_size: 30, sort_by: "updated_at", sort_order: "desc" }),
+        listStations({
+          q: query || undefined,
+          country: stationCountryFilter || undefined,
+          status: stationStatusFilter || undefined,
+          has_submission: stationSubmissionFilter,
+          outreach: stationOutreachFilter,
+          min_confidence: stationMinConfidence,
+          page: 1,
+          page_size: 50,
+          sort_by: "updated_at",
+          sort_order: "desc",
+        }),
         listAgentRuns({ limit: 25 }),
         listOutreachCampaigns(false),
         fetchScanJobs(),
@@ -364,19 +380,69 @@ function App() {
         )}
 
         {view === "stations" && (
-          <div className="rdb-grid rdb-grid--split">
-            <Panel title="Stations">
-              <div className="rdb-list">
+          <div className="rdb-grid rdb-grid--stations">
+            <Panel title="Station Directory">
+              <div className="rdb-filterbar">
+                <label>
+                  Status
+                  <select value={stationStatusFilter} onChange={(event) => setStationStatusFilter(event.target.value)}>
+                    <option value="">All</option>
+                    <option value="verified">Verified</option>
+                    <option value="candidate">Candidate</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </label>
+                <label>
+                  Submission
+                  <select value={stationSubmissionFilter} onChange={(event) => setStationSubmissionFilter(event.target.value as "any" | "yes" | "no")}>
+                    <option value="any">Any</option>
+                    <option value="yes">Has route</option>
+                    <option value="no">No route</option>
+                  </select>
+                </label>
+                <label>
+                  Country
+                  <input value={stationCountryFilter} onChange={(event) => setStationCountryFilter(event.target.value.toUpperCase())} placeholder="DE" />
+                </label>
+                <label>
+                  Outreach
+                  <select value={stationOutreachFilter} onChange={(event) => setStationOutreachFilter(event.target.value as "" | "verified_submission" | "contact_only")}>
+                    <option value="">All</option>
+                    <option value="verified_submission">Verified submission</option>
+                    <option value="contact_only">Contact only</option>
+                  </select>
+                </label>
+                <label>
+                  Min confidence
+                  <input type="number" min={0} max={1} step={0.1} value={stationMinConfidence} onChange={(event) => setStationMinConfidence(Number(event.target.value) || 0)} />
+                </label>
+                <button onClick={() => void refreshAll()}>Apply</button>
+              </div>
+              <div className="rdb-station-table">
+                <div className="rdb-station-table__head">
+                  <span>Station</span>
+                  <span>Market</span>
+                  <span>Routes</span>
+                  <span>People</span>
+                  <span>Quality</span>
+                  <span>Status</span>
+                </div>
                 {stations.map((station) => (
-                  <button key={station.id} className={`rdb-row ${station.id === selectedStationId ? "selected" : ""}`} onClick={() => void selectStation(station.id)}>
-                    <strong>{station.canonical_name}</strong>
-                    <span>{station.country_code || "--"} · {station.submission_count} routes · {station.people_count} people</span>
+                  <button key={station.id} className={`rdb-station-row ${station.id === selectedStationId ? "selected" : ""}`} onClick={() => void selectStation(station.id)}>
+                    <span className="rdb-station-row__name">
+                      <strong>{station.canonical_name}</strong>
+                      <small>{station.website_url || "No website"}</small>
+                    </span>
+                    <span>{station.country_code || "--"}{station.city ? ` · ${station.city}` : ""}</span>
+                    <span>{station.submission_count}</span>
+                    <span>{station.people_count}</span>
+                    <span>{Math.round((station.quality_score ?? station.confidence_score) * 100)}%</span>
                     <Pill tone={statusTone(station.status)}>{station.status}</Pill>
                   </button>
                 ))}
               </div>
             </Panel>
-            <Panel title={stationDetail?.canonical_name || "Station Detail"} action={<button onClick={() => void startSupervisedScan()}>Start form review</button>}>
+            <Panel title="Station Workspace" action={<button onClick={() => void startSupervisedScan()}>Start form review</button>}>
               {stationDetail ? (
                 <div className="rdb-detail rdb-station-detail">
                   <div className="rdb-station-hero">
