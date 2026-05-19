@@ -1090,3 +1090,30 @@ a.radio-db-station-url:hover {
     grid-template-columns: 1fr;
   }
 }
+
+.radio-db-primary-route {
+  border: 1px solid rgba(124, 247, 196, 0.26);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(124, 247, 196, 0.12), rgba(6, 12, 21, 0.7));
+  padding: 0.9rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.radio-db-primary-route > div {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.radio-db-primary-route span,
+.radio-db-primary-route small {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.radio-db-other-routes {
+  margin-top: 0.8rem;
+}

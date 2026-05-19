@@ -1721,6 +1721,14 @@ function App(): JSX.Element {
   const selectedRunLatestScreenshotUrl = latestRunStep?.screenshot_path
     ? `${getArtifactUrl(latestRunStep.screenshot_path)}&t=${encodeURIComponent(latestRunStep.created_at)}`
     : "";
+  const primarySubmissionRoute = selectedStation?.best_submission_route_url || selectedStation?.best_submission_route_email
+    ? {
+        type: selectedStation.best_submission_route_type || "primary",
+        route: selectedStation.best_submission_route_url || selectedStation.best_submission_route_email || "",
+        confidence: selectedStation.best_submission_route_confidence,
+        reason: selectedStation.best_submission_route_reason || "Primary route selected from station evidence.",
+      }
+    : null;
   const monitorCandidates = useMemo<MonitorCandidate[]>(() => {
     const formCandidates = (selectedStation?.forms ?? []).map((form) => ({
       id: `form-${form.id}`,
@@ -1740,9 +1748,9 @@ function App(): JSX.Element {
       label: submission.method,
       route: submission.email || submission.url || "no route",
       type: submission.method,
-      status: submission.accepts_newcomers ? "newcomers ok" : "recorded",
-      confidence: null,
-      note: submission.requirements || "No requirements recorded.",
+      status: submission.manual_confirmed ? "manual confirmed" : submission.accepts_newcomers ? "newcomers ok" : "recorded",
+      confidence: submission.manual_confirmed ? 1 : null,
+      note: submission.requirements || (submission.manual_confirmed ? "Manual confirmed route." : "No requirements recorded."),
     }));
     return [...formCandidates, ...submissionCandidates];
   }, [selectedStation]);
@@ -2663,9 +2671,9 @@ function App(): JSX.Element {
                       <strong>{(selectedRun?.issues.length ?? 0) ? `${selectedRun?.issues.length} offene Hinweise` : "Keine Run-Issues"}</strong>
                       <span>{runBlocker || agentObservationTitle}</span>
                     </div>
-                    <div className={monitorCandidates.length ? "is-ok" : "is-warning"}>
-                      <strong>{monitorCandidates.length ? "Route vorhanden" : "Route fehlt"}</strong>
-                      <span>{monitorCandidates[0]?.route || "Noch keine Formular- oder E-Mail-Route gespeichert."}</span>
+                    <div className={primarySubmissionRoute ? "is-ok" : "is-warning"}>
+                      <strong>{primarySubmissionRoute ? "Primary route gesetzt" : "Primary route fehlt"}</strong>
+                      <span>{primarySubmissionRoute?.route || "Noch kein bevorzugter Submission-Weg berechnet."}</span>
                     </div>
                     <div className={browserScreenshotUrl || selectedRunLatestScreenshotUrl ? "is-ok" : "is-warning"}>
                       <strong>{browserScreenshotUrl || selectedRunLatestScreenshotUrl ? "Visuell prüfbar" : "Kein Screenshot"}</strong>
@@ -2675,19 +2683,34 @@ function App(): JSX.Element {
                 </section>
 
                 <section className="radio-db-box">
-                  <h3>Found routes</h3>
-                  <div className="radio-db-route-list">
-                    {monitorCandidates.length ? monitorCandidates.map((candidate) => (
-                      <div key={candidate.id} className="radio-db-route-item">
-                        <div>
-                          <strong>{candidate.type}</strong>
-                          <span>{candidate.route}</span>
-                          <small>{candidate.note}{candidate.confidence !== null ? ` · ${formatPercent(candidate.confidence)}` : ""}</small>
-                        </div>
-                        <span className={`radio-db-pill radio-db-pill--${statusTone(candidate.status)}`}>{candidate.status}</span>
+                  <h3>Primary route</h3>
+                  {primarySubmissionRoute ? (
+                    <div className="radio-db-primary-route">
+                      <div>
+                        <strong>{primarySubmissionRoute.type}</strong>
+                        <span>{primarySubmissionRoute.route}</span>
+                        <small>{primarySubmissionRoute.reason}{primarySubmissionRoute.confidence !== null ? ` · ${formatPercent(primarySubmissionRoute.confidence)}` : ""}</small>
                       </div>
-                    )) : <div className="radio-db-empty">Keine Routen für diese Station gespeichert.</div>}
-                  </div>
+                      <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => setBrowserUrlDraft(primarySubmissionRoute.route)}>
+                        Use route
+                      </button>
+                    </div>
+                  ) : <div className="radio-db-empty">Keine Primary Route gesetzt. Starte einen Scan oder bestätige manuell eine Route.</div>}
+                  <details className="radio-db-debug-panel radio-db-other-routes">
+                    <summary>Other found routes ({monitorCandidates.length})</summary>
+                    <div className="radio-db-route-list">
+                      {monitorCandidates.length ? monitorCandidates.map((candidate) => (
+                        <div key={candidate.id} className="radio-db-route-item">
+                          <div>
+                            <strong>{candidate.type}</strong>
+                            <span>{candidate.route}</span>
+                            <small>{candidate.note}{candidate.confidence !== null ? ` · ${formatPercent(candidate.confidence)}` : ""}</small>
+                          </div>
+                          <span className={`radio-db-pill radio-db-pill--${statusTone(candidate.status)}`}>{candidate.status}</span>
+                        </div>
+                      )) : <div className="radio-db-empty">Keine weiteren Routen gespeichert.</div>}
+                    </div>
+                  </details>
                 </section>
               </div>
 

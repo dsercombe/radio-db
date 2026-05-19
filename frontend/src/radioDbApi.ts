@@ -63,6 +63,7 @@ export interface StationSubmissionDTO {
   email: string | null;
   requirements: string | null;
   accepts_newcomers: boolean;
+  manual_confirmed: boolean;
 }
 
 export interface StationContactDTO {
@@ -122,6 +123,12 @@ export interface StationDetailResponse {
   contacts: StationContactDTO[];
   people: StationPersonDTO[];
   forms: StationFormDTO[];
+  best_submission_route_type: string;
+  best_submission_route_url: string | null;
+  best_submission_route_email: string | null;
+  best_submission_route_confidence: number | null;
+  best_submission_route_reason: string | null;
+  secondary_submission_routes: Array<Record<string, unknown>>;
 }
 
 export interface StationUpdateRequest {

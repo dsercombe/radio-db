@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from radio_db.api.common import require_permission_mode
 from radio_db.db import SessionLocal, engine
+from radio_db.services.submission_routes import apply_primary_submission_route
 from radio_db.models.entities import (
     FormStatus,
     FormType,
@@ -144,6 +145,7 @@ class StationSubmissionDTO(BaseModel):
     email: str | None = None
     requirements: str | None = None
     accepts_newcomers: bool = False
+    manual_confirmed: bool = False
 
 
 class StationContactDTO(BaseModel):
@@ -210,6 +212,12 @@ class StationDetailResponse(BaseModel):
     contacts: list[StationContactDTO] = Field(default_factory=list)
     people: list[StationPersonDTO] = Field(default_factory=list)
     forms: list[StationFormDTO] = Field(default_factory=list)
+    best_submission_route_type: str = ""
+    best_submission_route_url: str | None = None
+    best_submission_route_email: str | None = None
+    best_submission_route_confidence: float | None = None
+    best_submission_route_reason: str | None = None
+    secondary_submission_routes: list[dict] = Field(default_factory=list)
 
 
 class StationUpdateRequest(BaseModel):
@@ -530,6 +538,9 @@ def get_station_detail(station_id: int, db: Session = Depends(_get_db)) -> Stati
     forms = db.scalars(
         select(SubmissionForm).where(SubmissionForm.station_id == station_id).order_by(SubmissionForm.updated_at.desc())
     ).all()
+    if apply_primary_submission_route(db, station):
+        db.commit()
+        db.refresh(station)
 
     return StationDetailResponse(
         id=station.id,
@@ -563,6 +574,7 @@ def get_station_detail(station_id: int, db: Session = Depends(_get_db)) -> Stati
                 email=item.email,
                 requirements=item.requirements,
                 accepts_newcomers=bool(item.accepts_newcomers),
+                manual_confirmed=bool(item.manual_confirmed),
             )
             for item in submissions
         ],
@@ -594,6 +606,16 @@ def get_station_detail(station_id: int, db: Session = Depends(_get_db)) -> Stati
             )
             for item in people
         ],
+        best_submission_route_type=str(station.best_submission_route_type or ""),
+        best_submission_route_url=station.best_submission_route_url,
+        best_submission_route_email=station.best_submission_route_email,
+        best_submission_route_confidence=(
+            float(station.best_submission_route_confidence)
+            if station.best_submission_route_confidence is not None
+            else None
+        ),
+        best_submission_route_reason=station.best_submission_route_reason,
+        secondary_submission_routes=list(_parse_json(station.secondary_submission_routes_json, [])),
         forms=[
             StationFormDTO(
                 id=item.id,

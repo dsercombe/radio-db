@@ -73,6 +73,7 @@ from radio_db.services.route_discovery import (
     route_discovery_candidates,
     run_route_discovery_batch,
 )
+from radio_db.services.submission_routes import backfill_primary_submission_routes
 from radio_db.services.phase2_route_queue import (
     phase2_route_queue_status,
     run_phase2_route_worker,
@@ -1026,6 +1027,16 @@ def cleanup_entrypoint_stations_cmd(
     with SessionLocal() as session:
         result = cleanup_stations_by_entrypoint_rules(session=session, limit=limit, dry_run=not apply)
     print("[green]Entrypoint station cleanup complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("backfill-primary-submission-routes")
+def backfill_primary_submission_routes_cmd(
+    limit: int | None = typer.Option(None, min=1, help="Optional station limit"),
+) -> None:
+    with SessionLocal() as session:
+        result = backfill_primary_submission_routes(session, limit=limit)
+    print("[green]Primary submission routes backfilled[/green]")
     print(json.dumps(result, indent=2))
 
 
