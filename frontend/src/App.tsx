@@ -2523,28 +2523,43 @@ function App(): JSX.Element {
         )}
 
         {activeTab === "runs" && (
-          <section className="radio-db-grid radio-db-grid--runs">
-            <article className="radio-db-panel">
+          <section className="radio-db-runs-console">
+            <article className="radio-db-panel radio-db-runs-setup">
               <div className="radio-db-panel__head">
                 <div>
-                  <h2>Run Queue</h2>
-                  <p>Manuelle Form-Scans, Review-Läufe und Browser-Supervision in einer Konsole.</p>
+                  <h2>Form Scan Control</h2>
+                  <p>Starte einen Scan, beobachte Screenshots, prüfe gefundene Routen und entscheide den nächsten Schritt manuell.</p>
                 </div>
                 <div className="radio-db-panel__actions">
+                  <button type="button" className="radio-db-button" onClick={() => void handleStartManualScan()} disabled={!selectedStationId || manualScanBusy}>
+                    {manualScanBusy ? "Scan läuft…" : "Start form scan"}
+                  </button>
                   <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void refreshRuns(selectedStationId ?? undefined, runStatusFilter || undefined)} disabled={runsLoading}>
                     Refresh
-                  </button>
-                  <button type="button" className="radio-db-button" onClick={() => void handleOpenBrowserSession()}>
-                    Open browser
                   </button>
                 </div>
               </div>
 
-              <div className="radio-db-grid radio-db-grid--two-column">
+              <div className="radio-db-scan-flow" aria-label="Form scan workflow">
+                {[
+                  ["1", "Station wählen", selectedStation?.canonical_name || currentStation?.canonical_name || "keine Station gewählt"],
+                  ["2", "Scan starten", manualScanBusy ? "Scanner arbeitet" : "manual scan oder Browser"],
+                  ["3", "Screenshot prüfen", selectedRunLatestScreenshotUrl || browserScreenshotUrl ? "Screenshot vorhanden" : "noch kein Screenshot"],
+                  ["4", "Route speichern", monitorCandidates.length ? `${monitorCandidates.length} Kandidaten` : "keine Route gespeichert"],
+                ].map(([number, title, detail]) => (
+                  <div key={number} className="radio-db-scan-flow__step">
+                    <span>{number}</span>
+                    <strong>{title}</strong>
+                    <small>{detail}</small>
+                  </div>
+                ))}
+              </div>
+
+              <div className="radio-db-runs-controls">
                 <label>
-                  Run status
+                  Status
                   <select value={runStatusFilter} onChange={(event) => setRunStatusFilter(event.target.value)}>
-                    <option value="">all</option>
+                    <option value="">alle Runs</option>
                     <option value="running">running</option>
                     <option value="blocked">blocked</option>
                     <option value="completed">completed</option>
@@ -2552,17 +2567,33 @@ function App(): JSX.Element {
                   </select>
                 </label>
                 <label>
-                  Station context
+                  Station
                   <input value={selectedStation?.canonical_name || currentStation?.canonical_name || ""} readOnly />
+                </label>
+                <label>
+                  Scan mode
+                  <input value={manualScanMode} onChange={(event) => setManualScanMode(event.target.value)} />
+                </label>
+                <label>
+                  Max pages
+                  <input type="number" min={1} max={10} value={manualScanPages} onChange={(event) => setManualScanPages(Number(event.target.value))} />
                 </label>
               </div>
 
-              <div className="radio-db-summary-strip">
-                <div><span>Total runs</span><strong>{runsTotal}</strong></div>
-                <div><span>Selected run</span><strong>{selectedRunId ?? "-"}</strong></div>
-                <div><span>Browser sessions</span><strong>{browserSessions.length}</strong></div>
+              <div className="radio-db-summary-strip radio-db-summary-strip--compact">
+                <div><span>Runs</span><strong>{runsTotal}</strong></div>
+                <div><span>Selected</span><strong>{selectedRunId ?? "-"}</strong></div>
+                <div><span>Browser</span><strong>{browserSessions.length}</strong></div>
               </div>
+            </article>
 
+            <article className="radio-db-panel radio-db-runs-queue">
+              <div className="radio-db-panel__head">
+                <div>
+                  <h2>Queue</h2>
+                  <p>Neueste Läufe im aktuellen Stations- und Statusfilter.</p>
+                </div>
+              </div>
               {runsLoading ? <div className="radio-db-empty">Loading runs…</div> : null}
               <div className="radio-db-list radio-db-list--runs">
                 {agentRuns.length > 0 ? agentRuns.map((run) => (
@@ -2578,7 +2609,7 @@ function App(): JSX.Element {
                     </div>
                     <div className="radio-db-subtle">{run.goal}</div>
                     <div className="radio-db-mini-metrics">
-                      <span>{run.mode}</span>
+                      <span>{run.current_state}</span>
                       <span>{run.step_count} steps</span>
                       <span>{run.issue_count} issues</span>
                       <span>{formatDate(run.started_at)}</span>
@@ -2588,42 +2619,45 @@ function App(): JSX.Element {
               </div>
             </article>
 
-            <article className="radio-db-panel radio-db-panel--wide">
+            <article className="radio-db-panel radio-db-panel--wide radio-db-runs-review">
               <div className="radio-db-panel__head">
                 <div>
-                  <h2>Supervisor Console</h2>
-                  <p>Run-Detail, Artefakte und Browser-Überwachung für manuelle Steuerung in Phase 1 bis 3.</p>
+                  <h2>Review</h2>
+                  <p>Was ist passiert, was wurde gefunden, und was blockiert den Run?</p>
                 </div>
               </div>
 
               {selectedRun ? (
                 <div className="radio-db-stack">
-                  <div className="radio-db-box-grid">
-                    <div className="radio-db-box">
-                      <h3>Run overview</h3>
-                      <div className="radio-db-summary-list">
-                        <SummaryRow label="Station" value={selectedRun.station_name} />
-                        <SummaryRow label="Goal" value={selectedRun.goal} />
-                        <SummaryRow label="State" value={selectedRun.current_state} />
-                        <SummaryRow label="Confidence" value={formatPercent(selectedRun.confidence)} />
-                        <SummaryRow label="Artifacts" value={String(selectedRunArtifactCount)} />
-                        <SummaryRow label="Blocked" value={selectedRun.blocked_reason || "-"} />
+                  <div className="radio-db-run-review-grid">
+                    <div className="radio-db-run-status-card">
+                      <span className={`radio-db-pill radio-db-pill--${statusTone(selectedRun.status)}`}>{selectedRun.status}</span>
+                      <h3>{selectedRun.station_name}</h3>
+                      <p>{selectedRun.goal}</p>
+                      <div className="radio-db-mini-metrics">
+                        <span>State: {selectedRun.current_state}</span>
+                        <span>Confidence: {formatPercent(selectedRun.confidence)}</span>
+                        <span>Artifacts: {selectedRunArtifactCount}</span>
                       </div>
                     </div>
                     <div className="radio-db-box">
-                      <h3>Supervisor actions</h3>
+                      <h3>Next actions</h3>
                       <div className="radio-db-panel__actions">
                         <button type="button" className="radio-db-button" onClick={() => void handleOpenBrowserSession()}>Browser for run</button>
                         <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => setPrimaryStation(selectedRun.station_id)}>Open station</button>
-                        <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => openArtifact(selectedRun.steps.at(-1)?.screenshot_path)}>Latest screenshot</button>
+                        <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => openArtifact(selectedRun.steps.at(-1)?.screenshot_path)} disabled={!selectedRun.steps.at(-1)?.screenshot_path}>Latest screenshot</button>
                       </div>
-                      <pre>{JSON.stringify(selectedRun.summary, null, 2)}</pre>
+                      <div className="radio-db-summary-list">
+                        <SummaryRow label="Blocked" value={selectedRun.blocked_reason || "-"} />
+                        <SummaryRow label="Last observation" value={agentObservationTitle} />
+                        <SummaryRow label="Suggested action" value={agentObservationAction} />
+                      </div>
                     </div>
                   </div>
 
-                  <div className="radio-db-box-grid">
+                  <div className="radio-db-run-review-grid">
                     <div className="radio-db-box">
-                      <h3>Issues</h3>
+                      <h3>Issues to resolve</h3>
                       <div className="radio-db-list">
                         {selectedRun.issues.length ? selectedRun.issues.map((issue) => (
                           <div key={issue.id} className="radio-db-list-item">
@@ -2635,7 +2669,7 @@ function App(): JSX.Element {
                       </div>
                     </div>
                     <div className="radio-db-box">
-                      <h3>Steps</h3>
+                      <h3>Scan timeline</h3>
                       <div className="radio-db-list radio-db-list--timeline">
                         {selectedRun.steps.slice().reverse().map((step) => (
                           <div key={step.id} className="radio-db-list-item">
@@ -2653,18 +2687,24 @@ function App(): JSX.Element {
                       </div>
                     </div>
                   </div>
+                  <details className="radio-db-debug-panel">
+                    <summary>Raw run summary</summary>
+                    <pre>{JSON.stringify(selectedRun.summary, null, 2)}</pre>
+                  </details>
                 </div>
               ) : runLoading ? (
                 <div className="radio-db-empty">Loading run detail…</div>
               ) : (
                 <div className="radio-db-empty">Select a run to inspect it.</div>
               )}
+            </article>
 
+            <article className="radio-db-panel radio-db-panel--wide radio-db-runs-browser">
               <div className="radio-db-box">
                 <div className="radio-db-panel__head">
                   <div>
-                    <h3>Live Browser Supervision</h3>
-                    <p>Visuelle manuelle Kontrolle für Forms und navigierte Sessions.</p>
+                    <h2>Browser & Screenshot</h2>
+                    <p>Kontrolliere Formularseiten visuell. Standardaktionen bleiben oben, CSS-Selector-Debug ist eingeklappt.</p>
                   </div>
                 </div>
                 <div className="radio-db-run-launcher">
@@ -2770,7 +2810,16 @@ function App(): JSX.Element {
                 ) : (
                   <div className="radio-db-empty">Select or open a session to follow its live screenshot and scan signals.</div>
                 )}
+              </div>
+            </article>
 
+            <article className="radio-db-panel radio-db-panel--wide radio-db-runs-evidence">
+              <div className="radio-db-panel__head">
+                <div>
+                  <h2>Evidence</h2>
+                  <p>Gespeicherte Sessions, gefundene Formular-/Submission-Routen und lesbare Browser-Timeline.</p>
+                </div>
+              </div>
                 <div className="radio-db-box-grid radio-db-browser-lower">
                   <div className="radio-db-box">
                     <h3>Sessions</h3>
@@ -2835,7 +2884,6 @@ function App(): JSX.Element {
                     )}
                   </div>
                 </div>
-              </div>
             </article>
           </section>
         )}

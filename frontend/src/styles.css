@@ -220,6 +220,109 @@ textarea {
   grid-template-columns: minmax(360px, 0.8fr) minmax(0, 1.2fr);
 }
 
+.radio-db-runs-console {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(320px, 0.7fr) minmax(0, 1.3fr);
+  align-items: start;
+}
+
+.radio-db-runs-setup {
+  grid-column: 1 / -1;
+}
+
+.radio-db-runs-browser,
+.radio-db-runs-evidence {
+  grid-column: 1 / -1;
+}
+
+.radio-db-scan-flow {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 1rem;
+}
+
+.radio-db-scan-flow__step {
+  border: 1px solid rgba(157, 178, 204, 0.14);
+  border-radius: 16px;
+  background: rgba(6, 12, 21, 0.62);
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.32rem;
+  min-width: 0;
+}
+
+.radio-db-scan-flow__step > span {
+  width: 1.65rem;
+  height: 1.65rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(124, 247, 196, 0.14);
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.radio-db-scan-flow__step strong,
+.radio-db-scan-flow__step small {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.radio-db-scan-flow__step small {
+  color: var(--muted);
+}
+
+.radio-db-runs-controls {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 0.8fr minmax(220px, 1.6fr) 0.9fr 0.65fr;
+  align-items: end;
+}
+
+.radio-db-runs-controls label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.radio-db-runs-controls input,
+.radio-db-runs-controls select {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 14px;
+  border: 1px solid rgba(157, 178, 204, 0.18);
+  background: rgba(6, 13, 22, 0.92);
+  color: var(--text);
+  padding: 0.72rem 0.85rem;
+}
+
+.radio-db-run-review-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+
+.radio-db-run-status-card {
+  border: 1px solid rgba(124, 247, 196, 0.2);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(124, 247, 196, 0.11), rgba(6, 12, 21, 0.74));
+  padding: 1rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.radio-db-run-status-card h3,
+.radio-db-run-status-card p {
+  margin: 0;
+}
+
+.radio-db-run-status-card p {
+  color: var(--muted);
+}
+
 .radio-db-grid--campaigns {
   grid-template-columns: minmax(0, 0.9fr) minmax(380px, 0.8fr) minmax(0, 1fr);
 }
@@ -724,6 +827,8 @@ a.radio-db-station-url:hover {
 
 @media (max-width: 1280px) {
   .radio-db-header,
+  .radio-db-runs-console,
+  .radio-db-run-review-grid,
   .radio-db-workbench,
   .radio-db-browser-monitor,
   .radio-db-grid--runs,
@@ -745,10 +850,23 @@ a.radio-db-station-url:hover {
   .radio-db-filters--dense {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+
+  .radio-db-runs-setup,
+  .radio-db-runs-browser,
+  .radio-db-runs-evidence {
+    grid-column: auto;
+  }
+
+  .radio-db-scan-flow,
+  .radio-db-runs-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 980px) {
   .radio-db-header__stats,
+  .radio-db-scan-flow,
+  .radio-db-runs-controls,
   .radio-db-summary-strip,
   .radio-db-action-grid,
   .radio-db-grid--two-column,
