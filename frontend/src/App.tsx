@@ -1315,7 +1315,7 @@ function App(): JSX.Element {
       const response = await startManualScan({
         station_id: selectedStationId,
         mode: manualScanMode,
-        target_url: selectedStation?.website_url ?? currentStation?.website_url ?? null,
+        target_url: browserUrlDraft.trim() || selectedStation?.website_url || currentStation?.website_url || null,
         max_pages: manualScanPages,
       });
       setSelectedRunId(response.id);
