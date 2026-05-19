@@ -308,51 +308,65 @@ function App() {
         </header>
 
         {view === "command" && (
-          <div className="rdb-grid rdb-grid--command">
-            <Panel title="Today">
-              <div className="rdb-metrics">
-                <Metric label="Stations" value={numberFmt(monitor.stations_total)} detail={`${numberFmt(monitor.stations_verified)} verified`} />
-                <Metric label="Submission routes" value={numberFmt(monitor.submission_channels)} detail={`${numberFmt(monitor.pitch_ready_stations)} pitch ready`} />
-                <Metric label="Queue succeeded" value={numberFmt(scanJobs?.by_status.succeeded)} detail={`${numberFmt(scanJobs?.by_status.failed)} failed`} />
-                <Metric label="Worker" value={scanJobs ? "online" : "unknown"} detail={`${browserSessions.length} browser sessions`} />
+          <div className="rdb-stack">
+            <Panel title="Operations Overview">
+              <div className="rdb-command-hero">
+                <div>
+                  <span className="rdb-eyebrow">Radio outreach database</span>
+                  <h2>{numberFmt(monitor.pitch_ready_stations)} pitch-ready stations</h2>
+                  <p>{numberFmt(monitor.stations_total)} total stations, {numberFmt(monitor.submission_channels)} submission routes, worker queue online.</p>
+                </div>
+                <div className="rdb-command-status">
+                  <Pill tone={scanJobs ? "good" : "work"}>{scanJobs ? "worker online" : "worker unknown"}</Pill>
+                  <span>{browserSessions.length} browser sessions</span>
+                </div>
               </div>
-              <div className="rdb-workflow-strip">
-                <span>1. Pick station</span>
-                <span>2. Scan forms</span>
-                <span>3. Review fields</span>
-                <span>4. Dry run</span>
-                <span>5. Approve submit</span>
+              <div className="rdb-metrics rdb-metrics--wide">
+                <Metric label="Verified stations" value={numberFmt(monitor.stations_verified)} />
+                <Metric label="Decision makers" value={numberFmt(monitor.stations_with_decision_maker)} />
+                <Metric label="Queue succeeded" value={numberFmt(scanJobs?.by_status.succeeded)} />
+                <Metric label="Queue failed" value={numberFmt(scanJobs?.by_status.failed)} />
+              </div>
+              <div className="rdb-process">
+                {["Pick station", "Scan forms", "Map fields", "Dry run", "Approve submit"].map((step, index) => (
+                  <div key={step}><span>{index + 1}</span><strong>{step}</strong></div>
+                ))}
               </div>
             </Panel>
             <Panel title="Needs Attention">
-              <div className="rdb-list">
+              <div className="rdb-run-table">
+                <div className="rdb-run-table__head"><span>Run</span><span>State</span><span>Issues</span><span>Status</span></div>
                 {runs.filter((run) => run.status !== "completed").slice(0, 8).map((run) => (
-                  <button key={run.id} className="rdb-row" onClick={() => void openRun(run.id)}>
-                    <strong>#{run.id} {run.station_name}</strong>
-                    <span>{run.current_state} {run.blocked_reason ? `· ${run.blocked_reason}` : ""}</span>
+                  <button key={run.id} className="rdb-run-row" onClick={() => void openRun(run.id)}>
+                    <span><strong>#{run.id}</strong><small>{run.station_name}</small></span>
+                    <span>{run.current_state}</span>
+                    <span>{run.blocked_reason || `${run.issue_count} issues`}</span>
                     <Pill tone={statusTone(run.status)}>{run.status}</Pill>
                   </button>
                 ))}
+                {!runs.filter((run) => run.status !== "completed").length ? <div className="rdb-empty rdb-empty--small">No open runs need attention.</div> : null}
               </div>
             </Panel>
           </div>
         )}
 
         {view === "campaigns" && (
-          <div className="rdb-grid rdb-grid--split">
+          <div className="rdb-grid rdb-grid--campaigns">
             <Panel title="Campaigns">
-              <div className="rdb-list">
+              <div className="rdb-campaign-table">
+                <div className="rdb-campaign-table__head"><span>Campaign</span><span>Release</span><span>Clicks</span><span>Status</span></div>
                 {campaigns.map((campaign) => (
                   <button
                     key={campaign.id}
-                    className={`rdb-row ${campaign.id === selectedCampaignId ? "selected" : ""}`}
+                    className={`rdb-campaign-row ${campaign.id === selectedCampaignId ? "selected" : ""}`}
                     onClick={async () => {
                       setSelectedCampaignId(campaign.id);
                       setCampaignMonitor(await getOutreachCampaignMonitor(campaign.id));
                     }}
                   >
-                    <strong>{campaign.name}</strong>
-                    <span>{campaign.artist_name} · {campaign.song_title}</span>
+                    <span><strong>{campaign.name}</strong><small>{campaign.artist_name}</small></span>
+                    <span>{campaign.song_title}</span>
+                    <span>{campaign.press_release_click_count}</span>
                     <Pill tone={campaign.is_active ? "good" : "muted"}>{campaign.is_active ? "active" : "archived"}</Pill>
                   </button>
                 ))}
@@ -495,13 +509,17 @@ function App() {
         )}
 
         {view === "forms" && (
-          <div className="rdb-grid rdb-grid--forms">
-            <Panel title="Form Review Workflow" action={<button onClick={() => void openSupervisedBrowser()}>Open supervised browser</button>}>
-              <div className="rdb-stepper">
-                {["Scan", "Map", "Fill Preview", "Human Review", "Submit"].map((step, index) => (
-                  <div key={step} className={index < 3 ? "done" : ""}><span>{index + 1}</span>{step}</div>
-                ))}
+          <div className="rdb-stack">
+            <Panel title="Form Review Workbench" action={<button onClick={() => void openSupervisedBrowser()}>Open supervised browser</button>}>
+              <div className="rdb-form-board">
+                <section><span>01</span><h3>Find</h3><p>Scan the station site and detect candidate forms or submission emails.</p></section>
+                <section><span>02</span><h3>Understand</h3><p>Map fields to campaign data, note required files, captcha or login.</p></section>
+                <section><span>03</span><h3>Preview</h3><p>Fill a dry-run in the supervised browser and capture screenshots.</p></section>
+                <section><span>04</span><h3>Approve</h3><p>Only after review, submit manually or queue an execute job.</p></section>
               </div>
+            </Panel>
+            <div className="rdb-grid rdb-grid--forms">
+              <Panel title="Current Run">
               {selectedRun ? (
                 <div className="rdb-run-card">
                   <h3>Run #{selectedRun.id} · {selectedRun.station_name}</h3>
@@ -518,7 +536,7 @@ function App() {
                 </div>
               ) : <div className="rdb-empty">Start or select a form run to review steps.</div>}
             </Panel>
-            <Panel title="Visual Inspector" action={<><button onClick={() => void snapshotBrowser()} disabled={!browserSession}>Snapshot</button><button onClick={() => void closeBrowser()} disabled={!browserSession}>Close</button></>}>
+              <Panel title="Visual Inspector" action={<><button onClick={() => void snapshotBrowser()} disabled={!browserSession}>Snapshot</button><button onClick={() => void closeBrowser()} disabled={!browserSession}>Close</button></>}>
               {screenshotUrl ? (
                 <button className="rdb-screenshot" onClick={() => window.open(screenshotUrl, "_blank")}>
                   <img src={screenshotUrl} alt="Current form screenshot" />
@@ -529,6 +547,7 @@ function App() {
                 <button disabled={!browserSession} onClick={() => browserSession && void snapshotBrowser()}>Capture</button>
               </div>
             </Panel>
+            </div>
           </div>
         )}
 
@@ -546,10 +565,10 @@ function App() {
               </div>
             </Panel>
             <Panel title="Quick Jobs">
-              <div className="rdb-actions-grid">
-                <button onClick={() => void queueJob("stats_snapshot", {})}>Stats snapshot</button>
-                <button onClick={() => void queueJob("submission_country_form_cycle", { station_limit: 3, max_forms_per_station: 2 })}>Country form cycle</button>
-                <button onClick={() => selectedCampaignId && void queueJob("campaign_monitor", { campaign_id: selectedCampaignId })}>Campaign monitor</button>
+              <div className="rdb-job-grid">
+                <button onClick={() => void queueJob("stats_snapshot", {})}><strong>Stats snapshot</strong><span>Refresh operational counters.</span></button>
+                <button onClick={() => void queueJob("submission_country_form_cycle", { station_limit: 3, max_forms_per_station: 2 })}><strong>Form scan cycle</strong><span>Scan a small country batch for forms.</span></button>
+                <button onClick={() => selectedCampaignId && void queueJob("campaign_monitor", { campaign_id: selectedCampaignId })}><strong>Campaign monitor</strong><span>Rebuild campaign progress view.</span></button>
               </div>
             </Panel>
           </div>
