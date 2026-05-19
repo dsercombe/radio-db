@@ -1131,3 +1131,39 @@ a.radio-db-station-url:hover {
   align-items: center;
   gap: 0.4rem;
 }
+
+.radio-db-controller-steps > div.is-current {
+  border-color: rgba(255, 184, 107, 0.42);
+  background: rgba(255, 184, 107, 0.1);
+}
+
+.radio-db-controller-steps > div.is-current > span {
+  background: rgba(255, 184, 107, 0.18);
+  color: var(--accent-2);
+}
+
+.radio-db-wizard-card {
+  border: 1px solid rgba(124, 247, 196, 0.2);
+  border-radius: 16px;
+  background: rgba(6, 12, 21, 0.55);
+  padding: 0.85rem;
+}
+
+.radio-db-wizard-card h3,
+.radio-db-wizard-card p {
+  margin: 0;
+}
+
+.radio-db-wizard-card p {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.radio-db-button--wide-action {
+  width: 100%;
+  justify-content: center;
+}
+
+.radio-db-wizard-secondary {
+  align-items: center;
+}

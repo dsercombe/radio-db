@@ -1814,6 +1814,42 @@ function App(): JSX.Element {
     return [...formCandidates, ...submissionCandidates];
   }, [selectedStation]);
 
+
+  const formControllerStep = !selectedStationId
+    ? 0
+    : !browserSessionDetail
+      ? 1
+      : !selectedRun
+        ? 2
+        : !primarySubmissionRoute
+          ? 3
+          : 4;
+  const formControllerStepLabel = ["Station", "Load form", "Analyze", "Review", "Use route"][formControllerStep];
+  async function handleFormControllerPrimaryAction(): Promise<void> {
+    if (formControllerStep === 1) {
+      await handleOpenBrowserSession();
+      return;
+    }
+    if (formControllerStep === 2 || formControllerStep === 3) {
+      await handleStartManualScan();
+      return;
+    }
+    if (formControllerStep === 4 && primarySubmissionRoute) {
+      setBrowserUrlDraft(primarySubmissionRoute.route);
+      await handleOpenBrowserSession();
+    }
+  }
+  const formControllerPrimaryLabel = formControllerStep === 0
+    ? "Select station first"
+    : formControllerStep === 1
+      ? "1. Load form"
+      : formControllerStep === 2
+        ? "2. Analyze form"
+        : formControllerStep === 3
+          ? "3. Re-scan / set route"
+          : "4. Open primary route";
+
+
   return (
     <div className="radio-db-app">
       <header className="radio-db-header">
@@ -2602,38 +2638,36 @@ function App(): JSX.Element {
                 </span>
               </div>
 
-              <div className="radio-db-controller-steps">
+              <div className="radio-db-controller-steps radio-db-controller-steps--wizard">
                 <div className={selectedStationId ? "is-done" : ""}><span>1</span><strong>Station</strong><small>{selectedStation?.canonical_name || currentStation?.canonical_name || "Keine Station gewählt"}</small></div>
-                <div className={selectedRun ? "is-done" : ""}><span>2</span><strong>Scan</strong><small>{selectedRun ? `Run #${selectedRun.id}` : "Noch kein Run gewählt"}</small></div>
-                <div className={browserScreenshotUrl || selectedRunLatestScreenshotUrl ? "is-done" : ""}><span>3</span><strong>Preview</strong><small>{browserScreenshotUrl || selectedRunLatestScreenshotUrl ? "Screenshot verfügbar" : "Browser öffnen"}</small></div>
-                <div className={monitorCandidates.length ? "is-done" : ""}><span>4</span><strong>Route</strong><small>{monitorCandidates.length ? `${monitorCandidates.length} Kandidaten` : "Nichts gespeichert"}</small></div>
+                <div className={browserSessionDetail ? "is-done" : formControllerStep === 1 ? "is-current" : ""}><span>2</span><strong>Load form</strong><small>{browserSessionDetail?.title || "Browser-Preview öffnen"}</small></div>
+                <div className={selectedRun ? "is-done" : formControllerStep === 2 ? "is-current" : ""}><span>3</span><strong>Analyze</strong><small>{selectedRun ? `Run #${selectedRun.id}` : "Form scannen"}</small></div>
+                <div className={primarySubmissionRoute ? "is-done" : formControllerStep === 3 ? "is-current" : ""}><span>4</span><strong>Route</strong><small>{primarySubmissionRoute?.type || "Primary Route bestimmen"}</small></div>
               </div>
 
-              <div className="radio-db-form-controls">
-                <label>
-                  Start URL
-                  <input value={browserUrlDraft} onChange={(event) => setBrowserUrlDraft(event.target.value)} placeholder={selectedRun?.target_url || selectedStation?.website_url || currentStation?.website_url || "https://example.com"} />
-                </label>
-                <div className="radio-db-grid radio-db-grid--two-column">
-                  <label>
-                    Mode
-                    <input value={manualScanMode} onChange={(event) => setManualScanMode(event.target.value)} />
-                  </label>
-                  <label>
-                    Pages
-                    <input type="number" min={1} max={10} value={manualScanPages} onChange={(event) => setManualScanPages(Number(event.target.value))} />
-                  </label>
+              <div className="radio-db-form-controls radio-db-wizard-card">
+                <div>
+                  <span className="radio-db-kicker">Current step</span>
+                  <h3>{formControllerStepLabel}</h3>
+                  <p>{formControllerStep === 0 ? "Wähle zuerst eine Station in der Stations-Liste." : formControllerStep === 1 ? "Öffne die Start URL im kontrollierten Browser und erzeuge eine visuelle Vorschau." : formControllerStep === 2 ? "Analysiere das Formular: Felder, CAPTCHA/Login, Submission-Tauglichkeit und Primary Route." : formControllerStep === 3 ? "Prüfe die gefundenen Wege. Falls nötig erneut scannen oder manuell Route bestätigen." : "Nutze nur die Primary Route für den Kampagnenworkflow."}</p>
                 </div>
-                <div className="radio-db-panel__actions">
-                  <button type="button" className="radio-db-button" onClick={() => void handleStartManualScan()} disabled={!selectedStationId || manualScanBusy}>
-                    {manualScanBusy ? "Scanning…" : "Start scan"}
-                  </button>
-                  <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleOpenBrowserSession()}>
-                    Open browser
-                  </button>
-                  <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleBrowserSnapshot()} disabled={!browserSessionId}>
-                    Snapshot
-                  </button>
+                <label>
+                  Form URL
+                  <input value={browserUrlDraft} onChange={(event) => setBrowserUrlDraft(event.target.value)} placeholder={primarySubmissionRoute?.route || selectedRun?.target_url || selectedStation?.website_url || currentStation?.website_url || "https://example.com"} />
+                </label>
+                <button type="button" className="radio-db-button radio-db-button--wide-action" onClick={() => void handleFormControllerPrimaryAction()} disabled={!selectedStationId || manualScanBusy || (formControllerStep === 4 && !primarySubmissionRoute)}>
+                  {manualScanBusy ? "Scanning…" : formControllerPrimaryLabel}
+                </button>
+                <div className="radio-db-panel__actions radio-db-wizard-secondary">
+                  <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleBrowserSnapshot()} disabled={!browserSessionId}>Refresh screenshot</button>
+                  <button type="button" className="radio-db-button radio-db-button--ghost" onClick={() => void handleStartManualScan()} disabled={!selectedStationId || manualScanBusy}>Re-analyze</button>
+                  <details className="radio-db-debug-panel">
+                    <summary>Scan options</summary>
+                    <div className="radio-db-grid radio-db-grid--two-column">
+                      <label>Mode<input value={manualScanMode} onChange={(event) => setManualScanMode(event.target.value)} /></label>
+                      <label>Pages<input type="number" min={1} max={10} value={manualScanPages} onChange={(event) => setManualScanPages(Number(event.target.value))} /></label>
+                    </div>
+                  </details>
                 </div>
               </div>
 
