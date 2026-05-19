@@ -339,6 +339,9 @@ def create_outreach_campaign(
     operator_notes: str | None = None,
     press_release_url: str | None = None,
     tracking_code: str | None = None,
+    submission_defaults: dict[str, Any] | None = None,
+    artist_profile: dict[str, Any] | None = None,
+    release_assets: dict[str, Any] | None = None,
     is_active: bool = True,
 ) -> OutreachCampaign:
     row = OutreachCampaign(
@@ -352,6 +355,9 @@ def create_outreach_campaign(
         operator_notes=(operator_notes.strip() if operator_notes else None) or None,
         press_release_url=_clean_press_release_url(press_release_url),
         tracking_code=_clean_tracking_code(tracking_code),
+        submission_defaults_json=json.dumps(submission_defaults or {}, ensure_ascii=False, sort_keys=True),
+        artist_profile_json=json.dumps(artist_profile or {}, ensure_ascii=False, sort_keys=True),
+        release_assets_json=json.dumps(release_assets or {}, ensure_ascii=False, sort_keys=True),
         is_active=is_active,
     )
     session.add(row)
@@ -390,6 +396,12 @@ def patch_outreach_campaign(session: Session, campaign_id: int, patch: dict[str,
         row.press_release_url = _clean_press_release_url(patch["press_release_url"])
     if "tracking_code" in patch:
         row.tracking_code = _clean_tracking_code(patch["tracking_code"]) or f"c{row.id}"
+    if "submission_defaults" in patch and patch["submission_defaults"] is not None:
+        row.submission_defaults_json = json.dumps(dict(patch["submission_defaults"]), ensure_ascii=False, sort_keys=True)
+    if "artist_profile" in patch and patch["artist_profile"] is not None:
+        row.artist_profile_json = json.dumps(dict(patch["artist_profile"]), ensure_ascii=False, sort_keys=True)
+    if "release_assets" in patch and patch["release_assets"] is not None:
+        row.release_assets_json = json.dumps(dict(patch["release_assets"]), ensure_ascii=False, sort_keys=True)
     if "is_active" in patch and patch["is_active"] is not None:
         row.is_active = bool(patch["is_active"])
     session.commit()

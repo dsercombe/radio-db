@@ -94,6 +94,27 @@ interface CampaignDraft {
   releaseDate: string;
   pressReleaseUrl: string;
   trackingCode: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  labelName: string;
+  artistCity: string;
+  artistCountry: string;
+  artistWebsite: string;
+  genre: string;
+  spotifyUrl: string;
+  soundcloudUrl: string;
+  youtubeUrl: string;
+  bandcampUrl: string;
+  audioFileUrl: string;
+  downloadUrl: string;
+  pressPhotoUrl: string;
+  coverArtUrl: string;
+  pressKitUrl: string;
+  lyricsUrl: string;
+  labelCode: string;
+  artistBioShort: string;
+  artistBioLong: string;
   notes: string;
   referenceTemplate: string;
 }
@@ -108,12 +129,36 @@ function emptyCampaignDraft(): CampaignDraft {
     releaseDate: "",
     pressReleaseUrl: "",
     trackingCode: "",
+    contactName: "Jonas Sercombe",
+    contactEmail: "radio@public-air.net",
+    contactPhone: "+4915777870496",
+    labelName: "Public Air Records",
+    artistCity: "",
+    artistCountry: "",
+    artistWebsite: "",
+    genre: "",
+    spotifyUrl: "",
+    soundcloudUrl: "",
+    youtubeUrl: "",
+    bandcampUrl: "",
+    audioFileUrl: "",
+    downloadUrl: "",
+    pressPhotoUrl: "",
+    coverArtUrl: "",
+    pressKitUrl: "",
+    lyricsUrl: "",
+    labelCode: "",
+    artistBioShort: "",
+    artistBioLong: "",
     notes: "",
     referenceTemplate: "",
   };
 }
 
 function campaignDtoToForm(row: OutreachCampaignDTO): CampaignDraft {
+  const defaults = row.submission_defaults ?? {};
+  const profile = row.artist_profile ?? {};
+  const assets = row.release_assets ?? {};
   return {
     name: row.name,
     artist: row.artist_name,
@@ -123,6 +168,27 @@ function campaignDtoToForm(row: OutreachCampaignDTO): CampaignDraft {
     releaseDate: row.release_date ?? "",
     pressReleaseUrl: row.press_release_url ?? "",
     trackingCode: row.tracking_code ?? "",
+    contactName: defaults.contact_name ?? "Jonas Sercombe",
+    contactEmail: defaults.contact_email ?? "radio@public-air.net",
+    contactPhone: defaults.contact_phone ?? "+4915777870496",
+    labelName: defaults.label_name ?? "Public Air Records",
+    artistCity: profile.artist_city ?? "",
+    artistCountry: profile.artist_country ?? "",
+    artistWebsite: profile.artist_website ?? "",
+    genre: profile.genre ?? "",
+    spotifyUrl: profile.spotify_url ?? "",
+    soundcloudUrl: profile.soundcloud_url ?? "",
+    youtubeUrl: profile.youtube_url ?? "",
+    bandcampUrl: profile.bandcamp_url ?? "",
+    audioFileUrl: assets.audio_file_url ?? "",
+    downloadUrl: assets.download_url ?? "",
+    pressPhotoUrl: assets.press_photo_url ?? "",
+    coverArtUrl: assets.cover_art_url ?? "",
+    pressKitUrl: assets.press_kit_url ?? "",
+    lyricsUrl: assets.lyrics_url ?? "",
+    labelCode: assets.label_code ?? "",
+    artistBioShort: profile.artist_bio_short ?? "",
+    artistBioLong: profile.artist_bio_long ?? "",
     notes: row.operator_notes ?? "",
     referenceTemplate: row.reference_template ?? "",
   };
@@ -1345,6 +1411,38 @@ function App(): JSX.Element {
     return selectedOutreachCampaignId != null ? { campaign_id: selectedOutreachCampaignId } : {};
   }
 
+  function campaignSubmissionPayload() {
+    return {
+      submission_defaults: {
+        contact_name: campaignDraft.contactName,
+        contact_email: campaignDraft.contactEmail,
+        contact_phone: campaignDraft.contactPhone,
+        label_name: campaignDraft.labelName,
+      },
+      artist_profile: {
+        artist_city: campaignDraft.artistCity,
+        artist_country: campaignDraft.artistCountry,
+        artist_website: campaignDraft.artistWebsite,
+        genre: campaignDraft.genre,
+        spotify_url: campaignDraft.spotifyUrl,
+        soundcloud_url: campaignDraft.soundcloudUrl,
+        youtube_url: campaignDraft.youtubeUrl,
+        bandcamp_url: campaignDraft.bandcampUrl,
+        artist_bio_short: campaignDraft.artistBioShort,
+        artist_bio_long: campaignDraft.artistBioLong,
+      },
+      release_assets: {
+        audio_file_url: campaignDraft.audioFileUrl,
+        download_url: campaignDraft.downloadUrl,
+        press_photo_url: campaignDraft.pressPhotoUrl,
+        cover_art_url: campaignDraft.coverArtUrl,
+        press_kit_url: campaignDraft.pressKitUrl,
+        lyrics_url: campaignDraft.lyricsUrl,
+        label_code: campaignDraft.labelCode,
+      },
+    };
+  }
+
   async function handleSaveOutreachCampaign(): Promise<void> {
     if (!campaignDraft.name.trim() || !campaignDraft.artist.trim() || !campaignDraft.songTitle.trim()) {
       setSystemMessage("Campaign name, artist und song title sind Pflichtfelder.");
@@ -1364,6 +1462,7 @@ function App(): JSX.Element {
           pitch_text: campaignDraft.pitch,
           reference_template: campaignDraft.referenceTemplate,
           operator_notes: campaignDraft.notes || null,
+          ...campaignSubmissionPayload(),
         });
         setSystemMessage("Kampagne gespeichert.");
       } else {
@@ -1378,6 +1477,7 @@ function App(): JSX.Element {
           pitch_text: campaignDraft.pitch,
           reference_template: campaignDraft.referenceTemplate,
           operator_notes: campaignDraft.notes || null,
+          ...campaignSubmissionPayload(),
         });
         setSelectedOutreachCampaignId(created.id);
         setSystemMessage(`Kampagne #${created.id} angelegt.`);
@@ -2863,6 +2963,105 @@ function App(): JSX.Element {
                       </div>
                     ) : null;
                   })() : null}
+                  <div className="radio-db-box">
+                    <div className="radio-db-section-title">Submission identity</div>
+                    <div className="radio-db-grid radio-db-grid--two-column">
+                      <label>
+                        Contact name
+                        <input value={campaignDraft.contactName} onChange={(event) => setCampaignDraft((current) => ({ ...current, contactName: event.target.value }))} />
+                      </label>
+                      <label>
+                        Contact email
+                        <input value={campaignDraft.contactEmail} onChange={(event) => setCampaignDraft((current) => ({ ...current, contactEmail: event.target.value }))} />
+                      </label>
+                      <label>
+                        Contact phone
+                        <input value={campaignDraft.contactPhone} onChange={(event) => setCampaignDraft((current) => ({ ...current, contactPhone: event.target.value }))} />
+                      </label>
+                      <label>
+                        Label
+                        <input value={campaignDraft.labelName} onChange={(event) => setCampaignDraft((current) => ({ ...current, labelName: event.target.value }))} />
+                      </label>
+                    </div>
+                  </div>
+                  <div className="radio-db-box">
+                    <div className="radio-db-section-title">Artist / release form data</div>
+                    <div className="radio-db-grid radio-db-grid--two-column">
+                      <label>
+                        Artist city
+                        <input value={campaignDraft.artistCity} onChange={(event) => setCampaignDraft((current) => ({ ...current, artistCity: event.target.value }))} />
+                      </label>
+                      <label>
+                        Artist country
+                        <input value={campaignDraft.artistCountry} onChange={(event) => setCampaignDraft((current) => ({ ...current, artistCountry: event.target.value }))} />
+                      </label>
+                      <label>
+                        Genre
+                        <input value={campaignDraft.genre} onChange={(event) => setCampaignDraft((current) => ({ ...current, genre: event.target.value }))} />
+                      </label>
+                      <label>
+                        Artist website
+                        <input value={campaignDraft.artistWebsite} onChange={(event) => setCampaignDraft((current) => ({ ...current, artistWebsite: event.target.value }))} />
+                      </label>
+                      <label>
+                        Spotify URL
+                        <input value={campaignDraft.spotifyUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, spotifyUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        SoundCloud URL
+                        <input value={campaignDraft.soundcloudUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, soundcloudUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        YouTube URL
+                        <input value={campaignDraft.youtubeUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, youtubeUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        Bandcamp URL
+                        <input value={campaignDraft.bandcampUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, bandcampUrl: event.target.value }))} />
+                      </label>
+                    </div>
+                    <label>
+                      Short artist bio
+                      <textarea rows={3} value={campaignDraft.artistBioShort} onChange={(event) => setCampaignDraft((current) => ({ ...current, artistBioShort: event.target.value }))} />
+                    </label>
+                    <label>
+                      Long artist bio
+                      <textarea rows={4} value={campaignDraft.artistBioLong} onChange={(event) => setCampaignDraft((current) => ({ ...current, artistBioLong: event.target.value }))} />
+                    </label>
+                  </div>
+                  <div className="radio-db-box">
+                    <div className="radio-db-section-title">Release assets</div>
+                    <div className="radio-db-grid radio-db-grid--two-column">
+                      <label>
+                        Audio file URL
+                        <input value={campaignDraft.audioFileUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, audioFileUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        Download URL
+                        <input value={campaignDraft.downloadUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, downloadUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        Press photo URL
+                        <input value={campaignDraft.pressPhotoUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, pressPhotoUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        Cover art URL
+                        <input value={campaignDraft.coverArtUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, coverArtUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        Press kit URL
+                        <input value={campaignDraft.pressKitUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, pressKitUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        Lyrics URL
+                        <input value={campaignDraft.lyricsUrl} onChange={(event) => setCampaignDraft((current) => ({ ...current, lyricsUrl: event.target.value }))} />
+                      </label>
+                      <label>
+                        Label code
+                        <input value={campaignDraft.labelCode} onChange={(event) => setCampaignDraft((current) => ({ ...current, labelCode: event.target.value }))} />
+                      </label>
+                    </div>
+                  </div>
                   <label>
                     Pitch (radio hook)
                     <textarea rows={5} value={campaignDraft.pitch} onChange={(event) => setCampaignDraft((current) => ({ ...current, pitch: event.target.value }))} placeholder="Kurzpitch, Story, relevante Hooks." />

@@ -90,6 +90,9 @@ def _ensure_legacy_schema_compatibility() -> None:
         "outreach_campaigns": [
             ("press_release_url", "press_release_url VARCHAR(2048)"),
             ("tracking_code", "tracking_code VARCHAR(120)"),
+            ("submission_defaults_json", "submission_defaults_json TEXT DEFAULT '{}'"),
+            ("artist_profile_json", "artist_profile_json TEXT DEFAULT '{}'"),
+            ("release_assets_json", "release_assets_json TEXT DEFAULT '{}'"),
         ],
         "candidate_rescan_queue": [
             ("claim_token", "claim_token VARCHAR(64)"),

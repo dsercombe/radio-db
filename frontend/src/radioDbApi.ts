@@ -734,6 +734,9 @@ export interface OutreachCampaignDTO {
   operator_notes: string | null;
   press_release_url: string | null;
   tracking_code: string | null;
+  submission_defaults: Record<string, string>;
+  artist_profile: Record<string, string>;
+  release_assets: Record<string, string>;
   press_release_tracking_url: string | null;
   press_release_short_tracking_url: string | null;
   press_release_click_count: number;
@@ -798,6 +801,9 @@ export function createOutreachCampaign(payload: {
   operator_notes?: string | null;
   press_release_url?: string | null;
   tracking_code?: string | null;
+  submission_defaults?: Record<string, string>;
+  artist_profile?: Record<string, string>;
+  release_assets?: Record<string, string>;
 }): Promise<OutreachCampaignDTO> {
   return requestJson<OutreachCampaignDTO>(`/outreach-campaigns`, {
     method: "POST",
@@ -818,6 +824,9 @@ export function patchOutreachCampaign(
     operator_notes?: string | null;
     press_release_url?: string | null;
     tracking_code?: string | null;
+    submission_defaults?: Record<string, string> | null;
+    artist_profile?: Record<string, string> | null;
+    release_assets?: Record<string, string> | null;
     is_active?: boolean | null;
   },
 ): Promise<OutreachCampaignDTO> {

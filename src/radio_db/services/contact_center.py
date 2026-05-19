@@ -617,6 +617,35 @@ def _submit_profile() -> dict[str, str]:
     }
 
 
+def _submission_payload_for_draft(draft: ContactDraft) -> dict[str, str]:
+    profile = _submit_profile()
+    campaign = draft.campaign
+    if campaign is None:
+        return profile
+
+    for raw in (
+        getattr(campaign, "submission_defaults_json", "{}"),
+        getattr(campaign, "artist_profile_json", "{}"),
+        getattr(campaign, "release_assets_json", "{}"),
+    ):
+        data = _parse_json(raw, {})
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if value is not None and str(value).strip():
+                    profile[str(key)] = str(value).strip()
+
+    profile.setdefault("artist_name", campaign.artist_name)
+    profile.setdefault("release_title", campaign.song_title)
+    profile.setdefault("song_title", campaign.song_title)
+    profile.setdefault("release_date", campaign.release_date or "")
+    profile.setdefault("song_language", campaign.song_language or "")
+    profile.setdefault("press_release_url", campaign.press_release_url or "")
+    profile.setdefault("streaming_link", campaign.press_release_url or profile.get("website", ""))
+    profile.setdefault("pitch_message_short", campaign.pitch_text or "")
+    profile.setdefault("pitch_message_long", campaign.pitch_text or "")
+    return profile
+
+
 def _resolve_form_for_execute(session: Session, draft: ContactDraft, target_value: str | None) -> SubmissionForm | None:
     station = draft.station
     if target_value:
@@ -641,7 +670,7 @@ def _field_selector(field: SubmissionFormField) -> str | None:
 
 
 def _field_value_candidates(draft: ContactDraft, field: SubmissionFormField, mapping: dict[str, str]) -> list[str]:
-    profile = _submit_profile()
+    profile = _submission_payload_for_draft(draft)
     hay = f"{field.label or ''} {field.name or ''} {field.field_key or ''}".lower()
     candidates: list[str] = []
 
@@ -653,29 +682,50 @@ def _field_value_candidates(draft: ContactDraft, field: SubmissionFormField, map
         elif logical == "contact_email":
             candidates.append(profile["contact_email"])
         elif logical == "streaming_link":
-            candidates.append(profile["streaming_link"])
+            candidates.append(profile.get("streaming_link", ""))
         elif logical == "bio_short":
-            candidates.append(draft.body[:500])
+            candidates.append(profile.get("artist_bio_short", "") or draft.body[:500])
+        elif logical:
+            candidates.append(profile.get(logical, ""))
 
     if "email" in hay:
-        candidates.append(profile["contact_email"])
+        candidates.append(profile.get("contact_email", ""))
     if any(token in hay for token in ("name", "artist", "band", "act", "performer")):
-        candidates.append(profile["artist_name"])
+        candidates.append(profile.get("artist_name", ""))
     if any(token in hay for token in ("message", "bio", "description", "comments", "about")):
+        candidates.append(profile.get("pitch_message_long", ""))
+        candidates.append(profile.get("artist_bio_short", ""))
+        candidates.append(profile.get("artist_bio_long", ""))
         candidates.append(draft.body)
     if any(token in hay for token in ("subject", "title", "release", "track", "song")):
+        candidates.append(profile.get("release_title", ""))
+        candidates.append(profile.get("song_title", ""))
         candidates.append(draft.subject)
     if any(token in hay for token in ("website", "url", "spotify", "youtube", "soundcloud", "link", "stream")):
-        if profile["website"]:
-            candidates.append(profile["website"])
+        for key in (
+            "spotify_url",
+            "soundcloud_url",
+            "youtube_url",
+            "bandcamp_url",
+            "streaming_link",
+            "artist_website",
+            "press_release_url",
+            "website",
+        ):
+            if profile.get(key):
+                candidates.append(profile[key])
     if "phone" in hay or "mobile" in hay:
-        if profile["phone"]:
-            candidates.append(profile["phone"])
+        if profile.get("contact_phone") or profile.get("phone"):
+            candidates.append(profile.get("contact_phone", "") or profile.get("phone", ""))
     if "company" in hay or "label" in hay:
-        candidates.append(profile["company"])
+        candidates.append(profile.get("label_name", "") or profile.get("company", ""))
+    if "genre" in hay or "style" in hay:
+        candidates.append(profile.get("genre", ""))
+    if "country" in hay:
+        candidates.append(profile.get("artist_country", "") or profile.get("country", ""))
     if "city" in hay:
-        if profile["city"]:
-            candidates.append(profile["city"])
+        if profile.get("artist_city") or profile.get("city"):
+            candidates.append(profile.get("artist_city", "") or profile.get("city", ""))
 
     cleaned = []
     for value in candidates:

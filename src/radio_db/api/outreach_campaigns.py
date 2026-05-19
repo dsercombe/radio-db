@@ -47,6 +47,9 @@ class OutreachCampaignDTO(BaseModel):
     operator_notes: str | None = None
     press_release_url: str | None = None
     tracking_code: str | None = None
+    submission_defaults: dict = Field(default_factory=dict)
+    artist_profile: dict = Field(default_factory=dict)
+    release_assets: dict = Field(default_factory=dict)
     press_release_tracking_url: str | None = None
     press_release_short_tracking_url: str | None = None
     press_release_click_count: int = 0
@@ -71,6 +74,9 @@ class OutreachCampaignCreateRequest(BaseModel):
     operator_notes: str | None = None
     press_release_url: str | None = Field(default=None, max_length=2048)
     tracking_code: str | None = Field(default=None, max_length=120)
+    submission_defaults: dict = Field(default_factory=dict)
+    artist_profile: dict = Field(default_factory=dict)
+    release_assets: dict = Field(default_factory=dict)
 
 
 class OutreachCampaignPatchRequest(BaseModel):
@@ -84,6 +90,9 @@ class OutreachCampaignPatchRequest(BaseModel):
     operator_notes: str | None = None
     press_release_url: str | None = Field(default=None, max_length=2048)
     tracking_code: str | None = Field(default=None, max_length=120)
+    submission_defaults: dict | None = None
+    artist_profile: dict | None = None
+    release_assets: dict | None = None
     is_active: bool | None = None
 
 
@@ -135,6 +144,15 @@ class OutreachCampaignMonitorResponse(BaseModel):
 
 
 def _dto(row: object, db: Session) -> OutreachCampaignDTO:
+    import json
+
+    def _loads(value: str | None) -> dict:
+        try:
+            decoded = json.loads(value or "{}")
+        except json.JSONDecodeError:
+            return {}
+        return decoded if isinstance(decoded, dict) else {}
+
     stats = campaign_click_stats(db, row.id)
     return OutreachCampaignDTO(
         id=row.id,
@@ -148,6 +166,9 @@ def _dto(row: object, db: Session) -> OutreachCampaignDTO:
         operator_notes=row.operator_notes,
         press_release_url=row.press_release_url,
         tracking_code=row.tracking_code,
+        submission_defaults=_loads(getattr(row, "submission_defaults_json", "{}")),
+        artist_profile=_loads(getattr(row, "artist_profile_json", "{}")),
+        release_assets=_loads(getattr(row, "release_assets_json", "{}")),
         press_release_tracking_url=build_press_release_tracking_url(row.id) if row.press_release_url else None,
         press_release_short_tracking_url=build_short_press_release_tracking_url(row) if row.press_release_url else None,
         press_release_click_count=stats["press_release_click_count"],
@@ -185,6 +206,9 @@ def create_campaign(
         operator_notes=request.operator_notes,
         press_release_url=request.press_release_url,
         tracking_code=request.tracking_code,
+        submission_defaults=request.submission_defaults,
+        artist_profile=request.artist_profile,
+        release_assets=request.release_assets,
     )
     return _dto(row, db)
 
