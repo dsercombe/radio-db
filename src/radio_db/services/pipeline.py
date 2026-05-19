@@ -195,7 +195,7 @@ def _build_station_priority_pool(
         select(Station)
         .where(
             Station.website_url.is_not(None),
-            Station.status != StationStatus.REJECTED,
+            Station.status.in_([StationStatus.CANDIDATE, StationStatus.VERIFIED]),
             Station.confidence_score >= min_station_confidence,
         )
         .order_by(Station.updated_at.desc())
@@ -645,7 +645,9 @@ def _upsert_station(session: Session, payload: dict, source_type: SourceType, so
             city=payload.get("city"),
             website_url=website_url,
             stream_url=payload.get("stream_url"),
-            status=StationStatus.CANDIDATE,
+            # Discovery/enrichment is not a promotion gate. New rows stay staged until
+            # candidate_rescan runs the Playwright + LLM quality flow and applies status.
+            status=StationStatus.ARCHIVED,
             confidence_score=float(payload.get("confidence", 0.4)),
             fingerprint=station_fingerprint(name, website_url, country_code),
         )
@@ -772,16 +774,7 @@ def _upsert_station(session: Session, payload: dict, source_type: SourceType, so
             station_genres=[normalize_text(g) for g in payload.get("genres", []) if normalize_text(g)],
         )
 
-    # Promote to verified when we have strong evidence and at least one submission channel.
-    submission_count = session.scalar(
-        select(func.count(SubmissionChannel.id)).where(SubmissionChannel.station_id == station.id)
-    )
-    if float(payload.get("confidence", 0.0)) >= 0.75 and submission_count and submission_count > 0:
-        if is_probable_radio_station:
-            station.status = StationStatus.VERIFIED
-        else:
-            station.status = StationStatus.REJECTED
-    elif (not is_probable_radio_station or bad_identity) and station.status != StationStatus.REJECTED:
+    if (not is_probable_radio_station or bad_identity) and station.status != StationStatus.REJECTED:
         station.status = StationStatus.REJECTED
         station.confidence_score = min(station.confidence_score, 0.45)
 
@@ -1865,7 +1858,7 @@ def boost_top_major_station_ids(session: Session, min_station_confidence: float)
     rows = session.scalars(
         select(Station)
         .where(
-            Station.status != StationStatus.REJECTED,
+            Station.status.in_([StationStatus.CANDIDATE, StationStatus.VERIFIED]),
             Station.website_url.is_not(None),
             Station.confidence_score >= min_station_confidence,
             func.upper(Station.country_code).in_(sorted(countries)),
@@ -1893,7 +1886,7 @@ def run_brave_boost_round(
         station_query = (
             select(Station)
             .where(
-                Station.status != StationStatus.REJECTED,
+                Station.status.in_([StationStatus.CANDIDATE, StationStatus.VERIFIED]),
                 Station.website_url.is_not(None),
                 Station.confidence_score >= settings.brave_boost_min_station_confidence,
             )
@@ -2054,7 +2047,7 @@ def stats(session: Session) -> dict:
     ) or 0
     pitch_ready_stations = session.scalar(
         select(func.count(Station.id)).where(
-            Station.status != StationStatus.REJECTED,
+            Station.status.in_([StationStatus.CANDIDATE, StationStatus.VERIFIED]),
             Station.confidence_score >= settings.station_enrich_min_station_confidence,
             Station.id.in_(select(SubmissionChannel.station_id)),
             Station.id.in_(

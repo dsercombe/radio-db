@@ -2,18 +2,17 @@ from __future__ import annotations
 
 import json
 import re
-import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
-import httpx
 from openai import OpenAI
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from radio_db.config import settings
+from radio_db.connectors.gemini_generate import gemini_generate_content_json
 from radio_db.connectors.http import get_text
 from radio_db.models.entities import (
     Evidence,
@@ -22,13 +21,17 @@ from radio_db.models.entities import (
     Station,
     StationStatus,
     StationSubmissionAssessment,
+    SubmissionAgentRun,
     SubmissionMethod,
 )
 from radio_db.services.budget import CostGuard
 
 
 AGGREGATOR_DOMAIN_HINTS = (
+    "emisora.org",
+    "emisora.org.es",
     "radio.net",
+    "radio-usa.net",
     "onlineradiobox",
     "mytuner",
     "tunein",
@@ -36,6 +39,41 @@ AGGREGATOR_DOMAIN_HINTS = (
     "radio.garden",
     "zeno.fm",
     "liveonlineradio",
+    "earshot-distro",
+    "soundcloud.com",
+    "topradio.me",
+)
+PLATFORM_EMAIL_DOMAINS = {
+    "soundcloud.com",
+    "spotify.com",
+    "youtube.com",
+    "google.com",
+    "gmail.com",
+}
+GENERIC_PLATFORM_EMAILS = {
+    "music@soundcloud.com",
+    "support@soundcloud.com",
+    "info@soundcloud.com",
+}
+NON_STATION_ENTRYPOINT_HINTS = (
+    "airplay guide",
+    "award submission",
+    "call for entries",
+    "call for scores",
+    "distro",
+    "distribution",
+    "how to submit",
+    "independent radio exchange",
+    "music distribution",
+    "music submission",
+    "music submissions",
+    "send music to stations",
+    "sending music to stations",
+    "submission guidelines",
+    "submissions —",
+    "submissions -",
+    "submit music",
+    "submitting music",
 )
 INVALID_DISCOVERED_EMAIL_TLDS = {
     "png",
@@ -51,7 +89,10 @@ INVALID_DISCOVERED_EMAIL_TLDS = {
     "mp4",
     "wav",
     "pdf",
+    "outside",
+    "purroy",
 }
+BEST_ROUTE_STRONG_TYPES = frozenset({"direct_music_form", "gated_music_form", "explicit_submission_email"})
 PROMOTE_BLOCKER_REASON_CODES = {
     "aggregator_domain",
     "is_aggregator_domain",
@@ -195,6 +236,96 @@ DEEP_SUBMISSION_HINTS = (
     "vurdert for vare spillelister",
     "soundpark",
 )
+STRONG_SUBMISSION_CONTEXT_HINTS = (
+    "submit",
+    "submission",
+    "submit music",
+    "music submission",
+    "demo",
+    "demo submission",
+    "playlist submission",
+    "send your music",
+    "new artist",
+    "unsigned",
+    "unsigned artist",
+    "musik einreichen",
+    "airplay",
+    "music director",
+    "program director",
+    "playlisting",
+    "soundpark",
+)
+DIRECT_MUSIC_SUBMISSION_PHRASES = (
+    "submit music",
+    "submit your music",
+    "submit tracks",
+    "submit your tracks",
+    "send music",
+    "send your music",
+    "send us your music",
+    "get your music on",
+    "get your music played",
+    "music submission",
+    "music submissions",
+    "new music submission",
+    "new music submissions",
+    "demo submission",
+    "demo submissions",
+    "playlist submission",
+    "playlist submissions",
+    "airplay consideration",
+    "for airplay",
+    "music for airplay",
+    "tracks for airplay",
+    "artist submission",
+    "artist submissions",
+    "musik einreichen",
+    "musique soumettre",
+    "soumettre votre musique",
+    "envoyez votre musique",
+    "enviar musica",
+    "envie sua musica",
+    "invia la tua musica",
+)
+DEDICATED_SUBMISSION_EMAIL_LOCALS = {
+    "airplay",
+    "artists",
+    "demo",
+    "demos",
+    "music",
+    "musicdirector",
+    "musicmail",
+    "musicsubmissions",
+    "newmusic",
+    "playlist",
+    "playlisting",
+    "songs",
+    "submit",
+    "submissions",
+    "submitmusic",
+    "tracks",
+}
+GENERIC_CONTACT_EMAIL_LOCALS = {
+    "admin",
+    "ads",
+    "advertising",
+    "contact",
+    "hello",
+    "info",
+    "mail",
+    "marketing",
+    "news",
+    "office",
+    "press",
+    "promo",
+    "promos",
+    "programming",
+    "promotion",
+    "promotions",
+    "sales",
+    "studio",
+    "webmaster",
+}
 OBFUSCATED_EMAIL_REGEX = re.compile(
     r"\b([a-z0-9._%+\-]+)\s*(?:@|\[at\]|\(at\)|\sat\s)\s*([a-z0-9.\-]+\.[a-z]{2,})\b",
     flags=re.I,
@@ -210,6 +341,40 @@ def _safe_domain(url: str | None) -> str:
 def _is_aggregator_domain(url: str | None) -> bool:
     d = _safe_domain(url)
     return bool(d) and any(hint in d for hint in AGGREGATOR_DOMAIN_HINTS)
+
+
+def _domain_matches(left: str, right: str) -> bool:
+    if not left or not right:
+        return False
+    return left == right or left.endswith(f".{right}") or right.endswith(f".{left}")
+
+
+def _route_matches_station_domain(station: Station, url: str = "", email: str = "") -> bool:
+    station_domain = _safe_domain(station.website_url)
+    route_domain = _safe_domain(url)
+    if route_domain and station_domain and _domain_matches(route_domain, station_domain):
+        return True
+    if email and "@" in email and station_domain:
+        email_domain = email.lower().split("@", 1)[1]
+        if _domain_matches(email_domain, station_domain):
+            return True
+    return False
+
+
+def _is_blocked_submission_route(station: Station, url: str = "", email: str = "", requirements: str = "") -> bool:
+    route_domain = _safe_domain(url)
+    email_lower = str(email or "").strip().lower()
+    email_domain = email_lower.split("@", 1)[1] if "@" in email_lower else ""
+    text = f"{url} {email_lower} {requirements}".lower()
+    if route_domain and any(hint in route_domain for hint in AGGREGATOR_DOMAIN_HINTS):
+        return True
+    if email_lower in GENERIC_PLATFORM_EMAILS:
+        return True
+    if email_domain in PLATFORM_EMAIL_DOMAINS and not _route_matches_station_domain(station, url=url, email=email_lower):
+        return True
+    if "submit your radio station" in text or "directory for" in text and "radio stations" in text:
+        return True
+    return False
 
 
 def _extract_emails(text: str) -> list[str]:
@@ -275,7 +440,406 @@ def _extract_keyword_contexts(text: str, url: str, radius: int = 180) -> list[di
 
 def _context_has_submission_signal(snippet: str) -> bool:
     lowered = _compact_text(snippet).lower()
-    return any(hint in lowered for hint in DEEP_SUBMISSION_HINTS)
+    return any(hint in lowered for hint in STRONG_SUBMISSION_CONTEXT_HINTS)
+
+
+def _has_direct_music_submission_phrase(text: str) -> bool:
+    lowered = _compact_text(text).lower()
+    return any(phrase in lowered for phrase in DIRECT_MUSIC_SUBMISSION_PHRASES)
+
+
+def _email_local_part(email: str) -> str:
+    local = str(email or "").split("@", 1)[0].lower()
+    return re.sub(r"[^a-z0-9]+", "", local)
+
+
+def _is_dedicated_submission_email(email: str) -> bool:
+    local = _email_local_part(email)
+    if not local or local in GENERIC_CONTACT_EMAIL_LOCALS:
+        return False
+    return local in DEDICATED_SUBMISSION_EMAIL_LOCALS or any(
+        token in local
+        for token in (
+            "airplay",
+            "demo",
+            "newmusic",
+            "playlist",
+            "songsubmit",
+            "submitmusic",
+            "submission",
+        )
+    )
+
+
+def _is_strong_submission_email_context(email: str, snippet: str) -> bool:
+    text = _compact_text(snippet)
+    if not text:
+        return False
+    if _has_direct_music_submission_phrase(text):
+        return True
+    return _is_dedicated_submission_email(email) and _context_has_submission_signal(text)
+
+
+def _url_has_submission_path(url: str) -> bool:
+    lowered = str(url or "").lower()
+    return any(
+        token in lowered
+        for token in (
+            "airplay",
+            "demo-submission",
+            "music-submission",
+            "music_submissions",
+            "send-music",
+            "submit-music",
+            "submit_music",
+        )
+    )
+
+
+def _has_direct_submission_page_signal(features: dict[str, Any]) -> bool:
+    latest_page_evidence = (
+        features.get("latest_scan_page_evidence")
+        if isinstance(features.get("latest_scan_page_evidence"), list)
+        else []
+    )
+    for page in latest_page_evidence:
+        if not isinstance(page, dict):
+            continue
+        if _url_has_submission_path(str(page.get("url") or "")):
+            return True
+        contexts = page.get("submission_keyword_contexts") if isinstance(page.get("submission_keyword_contexts"), list) else []
+        if any(_has_direct_music_submission_phrase(str(ctx.get("snippet") or "")) for ctx in contexts if isinstance(ctx, dict)):
+            return True
+
+    for value in features.get("deep_submission_url_samples") or []:
+        if _url_has_submission_path(str(value or "")):
+            return True
+    for value in features.get("deep_submission_context_samples") or []:
+        if _has_direct_music_submission_phrase(str(value or "")):
+            return True
+    return False
+
+
+def _looks_like_non_music_submission_surface(url: str, requirements: str = "") -> bool:
+    text = f"{str(url or '').lower()} {str(requirements or '').lower()}"
+    path = urlparse(str(url or "")).path.lower()
+    if re.search(r"\.(?:avif|gif|jpe?g|png|svg|webp)(?:$|[?#])", path):
+        return True
+    return any(
+        token in text
+        for token in (
+            "submit-your-radio-station",
+            "submit your radio station",
+            "radio station directory",
+            "submit an event",
+            "event calendar",
+            "host-an-hour",
+            "host an hour",
+            "award submission",
+            "awards",
+            "made in virginia",
+            "request-a-song",
+            "wake-up-song",
+            "song challenge",
+            "song-challenge",
+            "songchallenge",
+            "/program/",
+            "contest",
+            "sweepstake",
+            "sweepstakes",
+            "vote",
+            "listener",
+            "playlist request",
+        )
+    )
+
+
+def _looks_like_structured_music_submission_surface(url: str, requirements: str = "") -> bool:
+    text = f"{str(url or '').lower()} {str(requirements or '').lower()}"
+    if _looks_like_non_music_submission_surface(url, requirements):
+        return False
+    strong_url = any(
+        token in text
+        for token in (
+            "submit-music",
+            "music-submission",
+            "music-submissions",
+            "submission-guidelines",
+            "send us your music",
+            "digital submissions",
+            "contact/submit",
+        )
+    )
+    strong_requirements = any(
+        token in text
+        for token in (
+            "form_type=music_submission",
+            "submit material",
+            "for consideration",
+            "focus tracks",
+            "airplay consideration",
+            "ready for airplay",
+            "bandcamp",
+            "soundcloud",
+            "youtube",
+            "streaming link",
+            "release date",
+            "artist bio",
+            "music submissions are preferred",
+            "digital submissions are preferred",
+        )
+    )
+    return strong_url or strong_requirements
+
+
+def _best_route_base_score(route_type: str) -> int:
+    return {
+        "direct_music_form": 100,
+        "gated_music_form": 85,
+        "explicit_submission_email": 76,
+        "submission_page_signal": 58,
+        "contact_email_only": 30,
+        "contact_form_only": 30,
+    }.get(str(route_type or ""), 0)
+
+
+def _route_candidate(
+    *,
+    route_type: str,
+    source: str,
+    url: str = "",
+    email: str = "",
+    reason: str = "",
+    confidence: float = 0.0,
+) -> dict[str, Any]:
+    return {
+        "route_type": str(route_type or ""),
+        "source": str(source or ""),
+        "url": str(url or "")[:1024],
+        "email": str(email or "")[:320],
+        "reason": str(reason or "")[:280],
+        "confidence": round(max(0.0, min(1.0, float(confidence or 0.0))), 4),
+        "score": _best_route_base_score(route_type),
+    }
+
+
+def _collect_submission_route_candidates(station: Station) -> list[dict[str, Any]]:
+    candidates: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str]] = set()
+
+    def add(candidate: dict[str, Any]) -> None:
+        key = (
+            str(candidate.get("route_type") or ""),
+            str(candidate.get("url") or ""),
+            str(candidate.get("email") or ""),
+        )
+        if key in seen:
+            return
+        seen.add(key)
+        candidates.append(candidate)
+
+    for form in station.forms:
+        url = str(getattr(form, "url", "") or "")
+        if _looks_like_non_music_submission_surface(url):
+            continue
+        if form.form_type not in {FormType.MUSIC_SUBMISSION, FormType.NEWCOMER, FormType.ARTIST_UPLOAD}:
+            continue
+        if form.status == FormStatus.ACTIVE:
+            add(
+                _route_candidate(
+                    route_type="direct_music_form",
+                    source="form",
+                    url=url,
+                    reason="Active music submission form",
+                    confidence=0.95,
+                )
+            )
+        elif form.status in {FormStatus.LOGIN_REQUIRED, FormStatus.CAPTCHA_PRESENT}:
+            add(
+                _route_candidate(
+                    route_type="gated_music_form",
+                    source="form",
+                    url=url,
+                    reason="Gated music submission form",
+                    confidence=0.82,
+                )
+            )
+
+    for form in station.forms:
+        url = str(getattr(form, "url", "") or "")
+        if _looks_like_non_music_submission_surface(url):
+            continue
+        if form.form_type != FormType.GENERAL_CONTACT or form.status != FormStatus.ACTIVE:
+            continue
+        add(
+            _route_candidate(
+                route_type="contact_form_only",
+                source="form",
+                url=url,
+                reason="General station contact form only",
+                confidence=0.35,
+            )
+        )
+
+    for channel in station.submissions:
+        url = str(getattr(channel, "url", "") or "")
+        email = str(getattr(channel, "email", "") or "")
+        requirements = str(getattr(channel, "requirements", "") or "")
+        if channel.method == SubmissionMethod.FORM:
+            if _is_blocked_submission_route(station, url=url, email=email, requirements=requirements):
+                continue
+            if _looks_like_non_music_submission_surface(url, requirements):
+                continue
+            if url and not _route_matches_station_domain(station, url=url, email=email):
+                continue
+            route_type = "contact_form_only"
+            confidence = 0.35
+            reason = requirements or "Stored contact form channel"
+            if _looks_like_structured_music_submission_surface(url, requirements):
+                route_type = "direct_music_form"
+                confidence = 0.88
+                reason = requirements or "Stored music submission form channel"
+            add(
+                _route_candidate(
+                    route_type=route_type,
+                    source="submission_channel_form",
+                    url=url,
+                    email=email,
+                    reason=reason,
+                    confidence=confidence,
+                )
+            )
+            continue
+
+        if channel.method == SubmissionMethod.UNKNOWN and _looks_like_structured_music_submission_surface(url, requirements):
+            if _is_blocked_submission_route(station, url=url, email=email, requirements=requirements):
+                continue
+            if url and not _route_matches_station_domain(station, url=url, email=email):
+                continue
+            route_type = "explicit_submission_email" if email else "submission_page_signal"
+            add(
+                _route_candidate(
+                    route_type=route_type,
+                    source="submission_channel_unknown",
+                    url=url,
+                    email=email,
+                    reason=requirements or "Structured stored submission route",
+                    confidence=0.84 if email else 0.68,
+                )
+            )
+            continue
+
+        if channel.method == SubmissionMethod.EMAIL and email:
+            email_lower = email.lower()
+            if _is_blocked_submission_route(station, url=url, email=email_lower, requirements=requirements):
+                continue
+            if any(token in email_lower for token in ("music@", "submit", "submission", "newmusic@", "airplay@")):
+                if not _route_matches_station_domain(station, url=url, email=email_lower) and not _has_direct_music_submission_phrase(requirements):
+                    continue
+                add(
+                    _route_candidate(
+                        route_type="explicit_submission_email",
+                        source="submission_channel_email",
+                        url=url,
+                        email=email,
+                        reason=requirements or "Dedicated submission-style email",
+                        confidence=0.78,
+                    )
+                )
+            else:
+                add(
+                    _route_candidate(
+                        route_type="contact_email_only",
+                        source="submission_channel_email",
+                        url=url,
+                        email=email,
+                        reason=requirements or "General contact email only",
+                        confidence=0.42,
+                    )
+                )
+
+    for contact in station.contacts:
+        email = str(getattr(contact, "email", "") or "")
+        contact_url = str(getattr(contact, "contact_url", "") or "")
+        if not email and not contact_url:
+            continue
+        route_type = "contact_email_only" if email else "contact_form_only"
+        reason = str(getattr(contact, "notes", "") or "") or (
+            "Station contact email" if email else "Station contact form"
+        )
+        add(
+            _route_candidate(
+                route_type=route_type,
+                source="contact",
+                url=contact_url,
+                email=email,
+                reason=reason,
+                confidence=0.35,
+            )
+        )
+
+    return sorted(
+        candidates,
+        key=lambda item: (
+            int(item.get("score") or 0),
+            float(item.get("confidence") or 0.0),
+            len(str(item.get("reason") or "")),
+        ),
+        reverse=True,
+    )
+
+
+def _maybe_rank_best_submission_route_with_gemini(candidates: list[dict[str, Any]]) -> dict[str, Any] | None:
+    strong = [c for c in candidates if str(c.get("route_type") or "") in BEST_ROUTE_STRONG_TYPES]
+    if len(strong) < 2 or not settings.gemini_api_key:
+        return None
+    prompt = (
+        "Choose the single best music submission route.\n"
+        "Return strict JSON with keys: best_index (int), reason_short (string), reject_indices (array of ints), needs_manual_review (bool).\n"
+        "Prefer artist/music submission routes over listener requests, contests, wake-up songs, programming requests, or generic contact.\n"
+        f"CANDIDATES:\n{json.dumps(strong[:5], ensure_ascii=False)}"
+    )
+    try:
+        payload = _call_gemini_verifier(prompt)
+    except Exception:
+        return None
+    if not isinstance(payload, dict):
+        return None
+    try:
+        idx = int(payload.get("best_index"))
+    except Exception:
+        return None
+    if idx < 0 or idx >= len(strong[:5]):
+        return None
+    selected = dict(strong[idx])
+    selected["reason"] = str(payload.get("reason_short") or selected.get("reason") or "")[:280]
+    selected["needs_manual_review"] = bool(payload.get("needs_manual_review"))
+    return selected
+
+
+def _select_best_submission_route(station: Station) -> dict[str, Any]:
+    candidates = _collect_submission_route_candidates(station)
+    if not candidates:
+        return {"best": None, "secondary": []}
+    best = dict(candidates[0])
+    gemini_choice = _maybe_rank_best_submission_route_with_gemini(candidates)
+    if gemini_choice is not None:
+        best = gemini_choice
+    secondary = [
+        item
+        for item in candidates
+        if (
+            str(item.get("url") or ""),
+            str(item.get("email") or ""),
+            str(item.get("route_type") or ""),
+        )
+        != (
+            str(best.get("url") or ""),
+            str(best.get("email") or ""),
+            str(best.get("route_type") or ""),
+        )
+    ][:5]
+    return {"best": best, "secondary": secondary}
 
 
 def _is_valid_discovered_email(email: str) -> bool:
@@ -288,6 +852,12 @@ def _is_valid_discovered_email(email: str) -> bool:
     if "/" in value or "\\" in value:
         return False
     if re.fullmatch(r"u[0-9a-f]{3,}", local):
+        return False
+    if local.startswith("x-") or local in {"x-transition", "click"}:
+        return False
+    if local in {"johndoe", "john.doe", "jane.doe", "your-name", "yourname", "name", "exemple"}:
+        return False
+    if domain in {"address.com", "example.com", "example.org", "example.net", "mail.fr"}:
         return False
     tld = domain.rsplit(".", 1)[-1]
     if tld in INVALID_DISCOVERED_EMAIL_TLDS:
@@ -431,8 +1001,10 @@ def _run_deep_pass(station: Station, features: dict[str, Any]) -> dict[str, Any]
         except Exception:
             continue
         pages_checked += 1
+        if len(html) > 500_000:
+            html = html[:500_000]
         lowered = html.lower()
-        if any(h in lowered for h in DEEP_SUBMISSION_HINTS):
+        if any(h in lowered for h in STRONG_SUBMISSION_CONTEXT_HINTS):
             submission_signal = True
             if len(found_submission_urls) < 10:
                 found_submission_urls.append(url)
@@ -448,7 +1020,7 @@ def _run_deep_pass(station: Station, features: dict[str, Any]) -> dict[str, Any]
             sample = f"{ctx['email']} @ {ctx['url']} :: {ctx['snippet'][:260]}"
             if sample not in email_context_samples:
                 email_context_samples.append(sample)
-            if _context_has_submission_signal(ctx["snippet"]):
+            if _is_strong_submission_email_context(ctx["email"], ctx["snippet"]):
                 contextual_submission_emails.add(ctx["email"])
                 submission_signal = True
                 if len(found_submission_urls) < 10:
@@ -524,6 +1096,58 @@ def _normalize_reason_codes(verdict: dict[str, Any]) -> list[str]:
     return out
 
 
+def _submission_path_quality(features: dict[str, Any]) -> str:
+    latest_scan_pages = int(features.get("latest_scan_pages_scanned", 0) or 0)
+    strong_unknown_channels = int(features.get("strong_unknown_submission_channel_count", 0) or 0)
+    strong_unknown_emails = int(features.get("strong_unknown_submission_email_count", 0) or 0)
+    best_route = features.get("best_submission_route") if isinstance(features.get("best_submission_route"), dict) else {}
+    best_route_type = str(best_route.get("route_type") or "")
+    if best_route_type:
+        return best_route_type
+    if latest_scan_pages <= 0:
+        if int(features.get("active_music_form_count", 0) or 0) > 0:
+            return "direct_music_form"
+        if int(features.get("gated_music_form_count", 0) or 0) > 0:
+            return "gated_music_form"
+        if strong_unknown_emails > 0:
+            return "explicit_submission_email"
+        if strong_unknown_channels > 0:
+            return "submission_page_signal"
+    if int(features.get("latest_scan_strict_contextual_email_count", 0) or 0) > 0:
+        return "explicit_submission_email"
+    latest_page_evidence = (
+        features.get("latest_scan_page_evidence")
+        if isinstance(features.get("latest_scan_page_evidence"), list)
+        else []
+    )
+    if int(features.get("latest_scan_forms_saved", 0) or 0) > 0:
+        if any(bool(page.get("music_form_hint")) for page in latest_page_evidence if isinstance(page, dict)):
+            return "direct_music_form"
+        if _has_direct_submission_page_signal(features):
+            return "submission_page_signal"
+    if int(features.get("contextual_submission_email_count", 0) or 0) > 0:
+        return "explicit_submission_email"
+    if latest_scan_pages <= 0:
+        if int(features.get("active_music_form_count", 0) or 0) > 0:
+            return "direct_music_form"
+        if int(features.get("gated_music_form_count", 0) or 0) > 0:
+            return "gated_music_form"
+        if strong_unknown_emails > 0:
+            return "explicit_submission_email"
+        if strong_unknown_channels > 0:
+            return "submission_page_signal"
+    if _has_direct_submission_page_signal(features) and int(features.get("submission_channel_total", 0) or 0) > 0:
+        return "submission_page_signal"
+    if (
+        int(features.get("submission_channel_email_count", 0) or 0) > 0
+        or int(features.get("contact_with_email_count", 0) or 0) > 0
+        or int(features.get("deep_email_count", 0) or 0) > 0
+        or int(features.get("latest_scan_emails_saved", 0) or 0) > 0
+    ):
+        return "contact_email_only"
+    return "none"
+
+
 def _apply_decision_guardrails(station: Station, features: dict[str, Any], verdict: dict[str, Any]) -> dict[str, Any]:
     out = dict(verdict)
     decision = str(out.get("decision") or "review").strip().lower()
@@ -533,9 +1157,14 @@ def _apply_decision_guardrails(station: Station, features: dict[str, Any], verdi
 
     active_music_form = int(features.get("active_music_form_count", 0)) > 0
     gated_music_form = int(features.get("gated_music_form_count", 0)) > 0
-    submission_email = int(features.get("submission_channel_email_count", 0)) > 0
+    submission_path_quality = str(features.get("submission_path_quality") or _submission_path_quality(features))
+    explicit_submission_email = submission_path_quality == "explicit_submission_email"
+    contact_only = submission_path_quality in {"contact_email_only", "contact_form_only"}
     contact_email = int(features.get("contact_with_email_count", 0)) > 0
-    contextual_submission_email = int(features.get("contextual_submission_email_count", 0)) > 0
+    contextual_submission_email = (
+        int(features.get("contextual_submission_email_count", 0)) > 0
+        or int(features.get("latest_scan_strict_contextual_email_count", 0) or 0) > 0
+    )
     newcomer_signal = bool(features.get("newcomer_signal"))
     is_real_station = bool(out.get("is_real_station", False))
     is_aggregator = bool(features.get("is_aggregator_domain"))
@@ -543,14 +1172,52 @@ def _apply_decision_guardrails(station: Station, features: dict[str, Any], verdi
     topical_exclusion_labels = [str(x) for x in (features.get("topical_exclusion_labels") or [])]
     likely_subchannel = bool(features.get("likely_shared_domain_subchannel"))
 
-    strong_outreach_path = (
-        active_music_form
-        or contextual_submission_email
-        or (gated_music_form and (submission_email or contact_email or contextual_submission_email))
-        or (submission_email and contact_email)
-    )
+    strong_outreach_path = active_music_form or gated_music_form or explicit_submission_email
 
-    if topical_exclusion_labels and decision != "reject":
+    if (
+        decision == "reject"
+        and strong_outreach_path
+        and is_real_station
+        and quality_score >= 65
+        and not is_aggregator
+        and not has_blocker
+    ):
+        out["decision"] = "promote"
+        out["accepts_music_submissions"] = True
+        out["accepts_new_artists"] = bool(out.get("accepts_new_artists", True) or newcomer_signal)
+        reason_codes.append("guardrail:strong_submission_path_overrides_format_noise")
+        out["reason_codes"] = _normalize_reason_codes({"reason_codes": reason_codes})
+        decision = "promote"
+
+    if submission_path_quality in {"unknown", "none", ""} and decision == "promote":
+        out["decision"] = "review"
+        out["accepts_music_submissions"] = False
+        reason_codes.append("review_guardrail:no_confirmed_submission_path")
+        out["reason_codes"] = _normalize_reason_codes({"reason_codes": reason_codes})
+        return out
+
+    if is_aggregator and decision == "promote":
+        out["decision"] = "review"
+        out["accepts_music_submissions"] = False
+        reason_codes.append("review_guardrail:aggregator_not_verified")
+        out["reason_codes"] = _normalize_reason_codes({"reason_codes": reason_codes})
+        return out
+
+    if contact_only and decision == "promote":
+        out["decision"] = "review"
+        out["accepts_music_submissions"] = False
+        reason_codes.append("review_guardrail:contact_only_not_submission")
+        out["reason_codes"] = _normalize_reason_codes({"reason_codes": reason_codes})
+        return out
+
+    if submission_path_quality == "submission_page_signal" and decision == "promote":
+        out["decision"] = "review"
+        out["accepts_music_submissions"] = False
+        reason_codes.append("review_guardrail:submission_page_signal_needs_confirmed_channel")
+        out["reason_codes"] = _normalize_reason_codes({"reason_codes": reason_codes})
+        return out
+
+    if topical_exclusion_labels and decision != "reject" and not strong_outreach_path:
         out["decision"] = "reject"
         out["accepts_music_submissions"] = False
         out["accepts_new_artists"] = False
@@ -572,11 +1239,12 @@ def _apply_decision_guardrails(station: Station, features: dict[str, Any], verdi
         and not likely_subchannel
         and is_real_station
         and quality_score >= 70
+        and submission_path_quality in {"direct_music_form", "gated_music_form", "explicit_submission_email"}
         and (
             (active_music_form and confidence >= 0.25)
             or (confidence >= 0.6 and strong_outreach_path)
         )
-        and (active_music_form or strong_outreach_path)
+        and strong_outreach_path
     ):
         out["decision"] = "promote"
         out["accepts_music_submissions"] = bool(out.get("accepts_music_submissions", False) or strong_outreach_path)
@@ -593,12 +1261,14 @@ def _apply_decision_guardrails(station: Station, features: dict[str, Any], verdi
         and is_real_station
         and quality_score >= 60
         and contextual_submission_email
-        and (gated_music_form or newcomer_signal or submission_email)
+        and (gated_music_form or newcomer_signal or explicit_submission_email)
     ):
-        out["decision"] = "promote"
-        out["accepts_music_submissions"] = True
+        # Don't promote on contextual_submission_email alone - requires stronger signal
+        # (actual music form, not just generic contact email on website)
+        out["decision"] = "review"
+        out["accepts_music_submissions"] = bool(gated_music_form or (explicit_submission_email and newcomer_signal))
         out["accepts_new_artists"] = bool(out.get("accepts_new_artists", False) or newcomer_signal)
-        reason_codes.append("promote_guardrail:contextual_submission_email")
+        reason_codes.append("review_guardrail:contextual_email_needs_stronger_signal")
         out["reason_codes"] = reason_codes
         return out
 
@@ -610,7 +1280,7 @@ def _apply_decision_guardrails(station: Station, features: dict[str, Any], verdi
         and quality_score >= 60
         and confidence >= 0.6
         and gated_music_form
-        and (submission_email or contact_email)
+        and (explicit_submission_email or contact_email)
     ):
         out["decision"] = "review"
         out["accepts_music_submissions"] = True
@@ -623,7 +1293,26 @@ def _apply_decision_guardrails(station: Station, features: dict[str, Any], verdi
     return out
 
 
-def _build_station_features(session: Session, station: Station) -> dict[str, Any]:
+UNCONFIRMED_SUBMISSION_CLAIM_PHRASES = (
+    "accepts submissions",
+    "accepts music",
+    "actively seeks submissions",
+    "actively seeks music",
+    "takes submissions",
+    "open to submissions",
+    "welcomes submissions",
+    "direct submission",
+    "confirmed submission",
+    "clear submission",
+)
+
+
+def _mentions_confirmed_submission(summary: str) -> bool:
+    lowered = str(summary or "").lower()
+    return any(phrase in lowered for phrase in UNCONFIRMED_SUBMISSION_CLAIM_PHRASES)
+
+
+def _build_station_features(session: Session, station: Station, include_deep_pass: bool = True) -> dict[str, Any]:
     submissions = list(station.submissions or [])
     forms = list(station.forms or [])
     contacts = list(station.contacts or [])
@@ -640,12 +1329,64 @@ def _build_station_features(session: Session, station: Station) -> dict[str, Any
                 payload = parsed
         except Exception:
             payload = {}
+    latest_scan_run = session.scalar(
+        select(SubmissionAgentRun)
+        .where(SubmissionAgentRun.station_id == station.id)
+        .order_by(SubmissionAgentRun.finished_at.desc().nulls_last(), SubmissionAgentRun.id.desc())
+    )
+    latest_scan_summary: dict[str, Any] = {}
+    if latest_scan_run and latest_scan_run.summary_json:
+        try:
+            parsed_summary = json.loads(latest_scan_run.summary_json)
+            if isinstance(parsed_summary, dict):
+                latest_scan_summary = parsed_summary
+        except Exception:
+            latest_scan_summary = {}
+    page_evidence = latest_scan_summary.get("page_evidence") if isinstance(latest_scan_summary.get("page_evidence"), list) else []
+    compact_page_evidence: list[dict[str, Any]] = []
+    contextual_email_count = 0
+    strict_contextual_email_count = 0
+    strict_contextual_email_samples: list[str] = []
+    for page in page_evidence[:12]:
+        if not isinstance(page, dict):
+            continue
+        email_contexts = page.get("email_contexts") if isinstance(page.get("email_contexts"), list) else []
+        keyword_contexts = (
+            page.get("submission_keyword_contexts")
+            if isinstance(page.get("submission_keyword_contexts"), list)
+            else []
+        )
+        contextual_email_count += sum(1 for ctx in email_contexts if isinstance(ctx, dict) and ctx.get("near_submission_signal"))
+        for ctx in email_contexts:
+            if not isinstance(ctx, dict):
+                continue
+            email = str(ctx.get("email") or "").strip().lower()
+            snippet = str(ctx.get("snippet") or "")
+            if not _is_strong_submission_email_context(email, snippet):
+                continue
+            strict_contextual_email_count += 1
+            sample = f"{email} :: {snippet[:220]}"
+            if sample not in strict_contextual_email_samples:
+                strict_contextual_email_samples.append(sample)
+        compact_page_evidence.append(
+            {
+                "url": str(page.get("url") or "")[:180],
+                "entry_path": page.get("entry_path") if isinstance(page.get("entry_path"), list) else [],
+                "title": str(page.get("page_title") or "")[:120],
+                "form_count": int(page.get("form_count") or 0),
+                "music_form_hint": bool(page.get("music_form_hint")),
+                "email_count": len(page.get("emails") or []) if isinstance(page.get("emails"), list) else 0,
+                "email_contexts": email_contexts[:4],
+                "submission_keyword_contexts": keyword_contexts[:4],
+            }
+        )
 
     active_forms = [f for f in forms if f.status == FormStatus.ACTIVE]
     high_value_forms = [
         f
         for f in active_forms
         if f.form_type in {FormType.MUSIC_SUBMISSION, FormType.NEWCOMER, FormType.ARTIST_UPLOAD}
+        and not _looks_like_non_music_submission_surface(str(getattr(f, "url", "") or ""))
     ]
     gated_music_forms = [
         f
@@ -653,8 +1394,23 @@ def _build_station_features(session: Session, station: Station) -> dict[str, Any
         if f.status in {FormStatus.LOGIN_REQUIRED, FormStatus.CAPTCHA_PRESENT}
         and f.form_type in {FormType.MUSIC_SUBMISSION, FormType.NEWCOMER, FormType.ARTIST_UPLOAD}
     ]
-    form_methods = [s for s in submissions if s.method == SubmissionMethod.FORM]
+    form_methods = [
+        s
+        for s in submissions
+        if s.method == SubmissionMethod.FORM
+        and not _looks_like_non_music_submission_surface(str(getattr(s, "url", "") or ""), str(getattr(s, "requirements", "") or ""))
+    ]
     email_methods = [s for s in submissions if s.method == SubmissionMethod.EMAIL]
+    strong_unknown_channels = [
+        s
+        for s in submissions
+        if s.method == SubmissionMethod.UNKNOWN
+        and _looks_like_structured_music_submission_surface(
+            str(getattr(s, "url", "") or ""),
+            str(getattr(s, "requirements", "") or ""),
+        )
+    ]
+    unknown_email_methods = [s for s in strong_unknown_channels if getattr(s, "email", None)]
     newcomer_signal = any(bool(s.accepts_newcomers) for s in submissions) or bool(high_value_forms) or bool(gated_music_forms)
     discovered_emails = payload.get("emails") if isinstance(payload.get("emails"), list) else []
     interesting_urls = payload.get("interesting_urls") if isinstance(payload.get("interesting_urls"), list) else []
@@ -694,6 +1450,8 @@ def _build_station_features(session: Session, station: Station) -> dict[str, Any
         topical_exclusion_labels.append("news_talk")
     if _has_any_hint(classification_text, RELIGIOUS_FORMAT_HINTS):
         topical_exclusion_labels.append("religious")
+    if _has_any_hint(classification_text, NON_STATION_ENTRYPOINT_HINTS) and not has_frequency_or_location:
+        topical_exclusion_labels.append("submission_entrypoint")
     likely_shared_domain_subchannel = bool(
         domain_count >= 2
         and (
@@ -710,6 +1468,11 @@ def _build_station_features(session: Session, station: Station) -> dict[str, Any
         )
     )
 
+    priority_tier = int(getattr(station, "priority_tier", 0) or 0)
+    route_selection = _select_best_submission_route(station)
+    best_route = route_selection.get("best") if isinstance(route_selection, dict) else None
+    secondary_routes = route_selection.get("secondary") if isinstance(route_selection, dict) else []
+
     features = {
         "station_id": station.id,
         "status": station.status.value if isinstance(station.status, StationStatus) else str(station.status),
@@ -721,15 +1484,17 @@ def _build_station_features(session: Session, station: Station) -> dict[str, Any
         "website_path_depth": website_path_depth,
         "is_aggregator_domain": _is_aggregator_domain(station.website_url),
         "has_stream_url": bool(station.stream_url),
-        "priority_tier": int(station.priority_tier or 0),
+        "priority_tier": priority_tier,
         "station_confidence_score": float(station.confidence_score or 0.0),
         "genre_samples": genres[:10],
         "same_domain_station_count": domain_count,
         "likely_shared_domain_subchannel": likely_shared_domain_subchannel,
         "topical_exclusion_labels": topical_exclusion_labels,
-        "submission_channel_form_count": len(form_methods),
-        "submission_channel_email_count": len(email_methods),
+        "submission_channel_form_count": len(form_methods) + len(strong_unknown_channels),
+        "submission_channel_email_count": len(email_methods) + len(unknown_email_methods),
         "submission_channel_total": len(submissions),
+        "strong_unknown_submission_channel_count": len(strong_unknown_channels),
+        "strong_unknown_submission_email_count": len(unknown_email_methods),
         "contact_total": len(contacts),
         "contact_with_email_count": sum(1 for c in contacts if c.email),
         "forms_total": len(forms),
@@ -741,6 +1506,18 @@ def _build_station_features(session: Session, station: Station) -> dict[str, Any
         "playwright_interesting_url_count": len(interesting_urls),
         "playwright_interesting_url_samples": [str(x)[:180] for x in interesting_urls[:8]],
         "playwright_email_samples": [str(x)[:180] for x in discovered_emails[:8]],
+        "latest_scan_run_id": int(latest_scan_run.id) if latest_scan_run else None,
+        "latest_scan_status": str(latest_scan_run.status) if latest_scan_run else "",
+        "latest_scan_blocked_reason": str(latest_scan_run.blocked_reason or "") if latest_scan_run else "",
+        "latest_scan_pages_scanned": int(latest_scan_summary.get("pages_scanned", 0) or 0),
+        "latest_scan_forms_saved": int(latest_scan_summary.get("forms_saved", 0) or 0),
+        "latest_scan_emails_saved": int(latest_scan_summary.get("emails_saved", 0) or 0),
+        "latest_scan_page_evidence": compact_page_evidence,
+        "latest_scan_contextual_email_count": contextual_email_count,
+        "latest_scan_strict_contextual_email_count": strict_contextual_email_count,
+        "latest_scan_strict_contextual_email_samples": strict_contextual_email_samples[:8],
+        "best_submission_route": best_route if isinstance(best_route, dict) else None,
+        "secondary_submission_routes": secondary_routes if isinstance(secondary_routes, list) else [],
     }
     should_run_deep_pass = bool(station.website_url) and not bool(features["is_aggregator_domain"]) and (
         features["active_music_form_count"] > 0
@@ -748,8 +1525,13 @@ def _build_station_features(session: Session, station: Station) -> dict[str, Any
         or features["submission_channel_email_count"] > 0
         or features["playwright_interesting_url_count"] > 0
     )
-    if should_run_deep_pass:
+    if include_deep_pass and should_run_deep_pass:
         features = _run_deep_pass(station=station, features=features)
+    features["submission_path_quality"] = _submission_path_quality(features)
+    features["submission_path_policy"] = (
+        "direct/gated music forms and contextual submission emails are submission signals; "
+        "generic contact emails are contact-only and must not be described as accepting submissions."
+    )
     return features
 
 
@@ -760,17 +1542,32 @@ def _build_prompt(features: dict[str, Any]) -> str:
         "Return STRICT JSON with keys:\n"
         "is_real_station (bool), quality_score (int 0-100), confidence (float 0-1),\n"
         "decision ('promote'|'review'|'reject'), accepts_music_submissions (bool),\n"
-        "accepts_new_artists (bool), reason_codes (array of strings), rationale_short (string).\n"
+        "accepts_new_artists (bool), reason_codes (array of strings), rationale_short (string),\n"
+        "editorial_summary_short (string), editorial_format (string), style_tags (array of strings),\n"
+        "campaign_fit_tags (array of strings), pitch_angle_hint (string).\n"
         "Rules:\n"
         "- reject obvious aggregators/directories/proxies.\n"
         "- promote if editorially real and useful for submissions.\n"
         "- if only login/captcha-gated music submission exists, prefer review over reject.\n"
-        "- if a valid station email exists but no form, prefer review over reject unless clearly irrelevant.\n"
+        "- submission_path_quality is authoritative for outreach-path wording.\n"
+        "- contact_email_only/contact_form_only means the station has a contact route but NO proven submission channel.\n"
+        "- for contact_email_only/contact_form_only, rationale_short/editorial_summary_short must explicitly say: no confirmed submission route; contact option only.\n"
+        "- do not say 'accepts submissions' or set accepts_music_submissions=true for contact_email_only/contact_form_only.\n"
+        "- contact-only routes can still be useful for manual outreach; prefer review with clear wording and lower confidence.\n"
+        "- explicit_submission_email requires direct music-submission wording near the email, or a dedicated local-part such as music@, submissions@, newmusic@ with submission context.\n"
+        "- info@, contact@, promo@, advertising@, programming@, staff/person emails, and generic department emails are contact-only unless direct music-submission wording is present.\n"
+        "- promote only for direct_music_form, gated_music_form, or strict explicit_submission_email.\n"
+        "- submission_page_signal alone is not verified; keep it review unless a confirmed form/email channel is present.\n"
+        "- for submission_page_signal without a confirmed form/email channel, do not say the station accepts, seeks, welcomes, or has a clear/direct submission route; say potential submission-related page signal only.\n"
         "- if FEATURES indicate sport, news/talk, or religious/christian positioning, reject unless there is overwhelming contrary evidence.\n"
         "- if FEATURES indicate a likely shared-domain theme subchannel rather than a standalone station brand, prefer review over promote.\n"
         "- deep_email_context_samples and deep_submission_context_samples may be in any language; interpret them semantically.\n"
         "- if a snippet explicitly says a specific email handles programming, playlisting, promo, or sent music, treat that as a strong submission signal.\n"
         "- keep rationale_short under 220 chars.\n"
+        "- keep editorial_summary_short under 240 chars.\n"
+        "- editorial_format should be a short label like 'community', 'college', 'mainstream pop', 'regional CHR', 'talk-heavy', 'specialist'.\n"
+        "- style_tags and campaign_fit_tags should each contain 0-5 short lowercase tags.\n"
+        "- pitch_angle_hint should be a short practical hint for outreach tone or framing.\n"
         f"\nFEATURES:\n{json.dumps(features, ensure_ascii=False)}"
     )
 
@@ -790,6 +1587,11 @@ def _call_openai_verifier(prompt: str) -> dict[str, Any]:
             "accepts_new_artists": {"type": "boolean"},
             "reason_codes": {"type": "array", "items": {"type": "string"}},
             "rationale_short": {"type": "string"},
+            "editorial_summary_short": {"type": "string"},
+            "editorial_format": {"type": "string"},
+            "style_tags": {"type": "array", "items": {"type": "string"}},
+            "campaign_fit_tags": {"type": "array", "items": {"type": "string"}},
+            "pitch_angle_hint": {"type": "string"},
         },
         "required": [
             "is_real_station",
@@ -800,6 +1602,11 @@ def _call_openai_verifier(prompt: str) -> dict[str, Any]:
             "accepts_new_artists",
             "reason_codes",
             "rationale_short",
+            "editorial_summary_short",
+            "editorial_format",
+            "style_tags",
+            "campaign_fit_tags",
+            "pitch_angle_hint",
         ],
         "additionalProperties": False,
     }
@@ -826,36 +1633,14 @@ def _call_gemini_verifier(prompt: str) -> dict[str, Any]:
             "responseMimeType": "application/json",
         },
     }
-    data: dict[str, Any] = {}
-    retry_statuses = {429, 500, 502, 503, 504}
-    with httpx.Client(timeout=45.0, follow_redirects=True) as client:
-        last_status: int | None = None
-        last_error: str | None = None
-        for attempt in range(4):
-            try:
-                resp = client.post(url, params=params, json=payload, headers={"Content-Type": "application/json"})
-                last_status = resp.status_code
-                if resp.status_code in retry_statuses and attempt < 3:
-                    time.sleep(2**attempt)
-                    continue
-                resp.raise_for_status()
-                data = resp.json()
-                break
-            except httpx.HTTPStatusError as exc:
-                last_status = exc.response.status_code
-                last_error = exc.response.text[:300]
-                if last_status in retry_statuses and attempt < 3:
-                    time.sleep(2**attempt)
-                    continue
-                raise RuntimeError(f"gemini_http_error status={last_status} body={last_error}") from exc
-            except httpx.HTTPError as exc:
-                last_error = exc.__class__.__name__
-                if attempt < 3:
-                    time.sleep(2**attempt)
-                    continue
-                raise RuntimeError(f"gemini_transport_error error={last_error}") from exc
-        else:
-            raise RuntimeError(f"gemini_retry_exhausted status={last_status} error={last_error}")
+    data = gemini_generate_content_json(
+        url=url,
+        params=params,
+        json_payload=payload,
+        wall_timeout_per_attempt=float(settings.gemini_http_wall_timeout_seconds),
+        connect_timeout=float(settings.gemini_http_connect_timeout_seconds),
+        read_timeout=float(settings.gemini_http_read_timeout_seconds),
+    )
     candidates = data.get("candidates") if isinstance(data, dict) else None
     if not isinstance(candidates, list) or not candidates:
         raise RuntimeError("gemini_no_candidates")
@@ -902,6 +1687,34 @@ def _persist_assessment(
     accepts_new_artists = bool(verdict.get("accepts_new_artists", False))
     reason_codes = verdict.get("reason_codes") if isinstance(verdict.get("reason_codes"), list) else []
     rationale = str(verdict.get("rationale_short") or "").strip()
+    editorial_summary_short = str(verdict.get("editorial_summary_short") or "").strip()
+    editorial_format = str(verdict.get("editorial_format") or "").strip()
+    style_tags = [str(tag).strip().lower() for tag in verdict.get("style_tags", []) if str(tag).strip()] if isinstance(verdict.get("style_tags"), list) else []
+    campaign_fit_tags = [str(tag).strip().lower() for tag in verdict.get("campaign_fit_tags", []) if str(tag).strip()] if isinstance(verdict.get("campaign_fit_tags"), list) else []
+    pitch_angle_hint = str(verdict.get("pitch_angle_hint") or "").strip()
+    submission_path_quality = str(features.get("submission_path_quality") or _submission_path_quality(features))
+    if submission_path_quality in {"contact_email_only", "contact_form_only"}:
+        accepts_music_submissions = False
+        if submission_path_quality not in reason_codes:
+            reason_codes.append(submission_path_quality)
+        contact_only_note = "No confirmed submission route; contact option only."
+        if not editorial_summary_short or _mentions_confirmed_submission(editorial_summary_short):
+            editorial_summary_short = contact_only_note
+        elif "no confirmed submission" not in editorial_summary_short.lower():
+            editorial_summary_short = f"{contact_only_note} {editorial_summary_short}"[:240]
+        if not rationale or "submission" in rationale.lower():
+            rationale = contact_only_note
+    elif submission_path_quality == "submission_page_signal":
+        accepts_music_submissions = False
+        if "submission_page_signal_needs_confirmation" not in reason_codes:
+            reason_codes.append("submission_page_signal_needs_confirmation")
+        unconfirmed_note = "Potential submission-page signal only; no confirmed submission route."
+        if not editorial_summary_short or _mentions_confirmed_submission(editorial_summary_short):
+            editorial_summary_short = unconfirmed_note
+        elif "no confirmed submission" not in editorial_summary_short.lower():
+            editorial_summary_short = f"{unconfirmed_note} {editorial_summary_short}"[:240]
+        if not rationale or _mentions_confirmed_submission(rationale):
+            rationale = unconfirmed_note
 
     has_editorial_surface = bool(
         features.get("has_stream_url")
@@ -916,7 +1729,28 @@ def _persist_assessment(
     row.accepts_new_artists = accepts_new_artists
     row.automation_readiness = round(quality_score / 100.0, 4)
     row.risk_score = round(1.0 - confidence, 4)
-    row.notes = rationale[:500] or f"decision={decision}"
+    path_note = {
+        "direct_music_form": "Direct music submission form found.",
+        "gated_music_form": "Music submission form found, but it appears gated by login or captcha.",
+        "explicit_submission_email": "Explicit submission-context email found.",
+        "submission_page_signal": "Submission-page signal found, but channel needs manual confirmation.",
+        "contact_email_only": "Contact email only; no confirmed music submission channel.",
+        "contact_form_only": "Contact form only; no confirmed music submission channel.",
+        "none": "No usable submission/contact path found.",
+    }.get(submission_path_quality, f"Submission path quality: {submission_path_quality}.")
+    row.notes = f"{path_note} {(editorial_summary_short or rationale)[:430]}".strip()[:500] or f"decision={decision}"
+    best_route = features.get("best_submission_route") if isinstance(features.get("best_submission_route"), dict) else {}
+    secondary_routes = features.get("secondary_submission_routes") if isinstance(features.get("secondary_submission_routes"), list) else []
+    station.best_submission_route_type = str(best_route.get("route_type") or "") or None
+    station.best_submission_route_url = str(best_route.get("url") or "") or None
+    station.best_submission_route_email = str(best_route.get("email") or "") or None
+    station.best_submission_route_confidence = (
+        round(float(best_route.get("confidence") or 0.0), 4) if best_route else None
+    )
+    station.best_submission_route_reason = str(best_route.get("reason") or "")[:500] or None
+    station.best_submission_route_updated_at = datetime.utcnow() if best_route else None
+    station.secondary_submission_routes_json = json.dumps(secondary_routes[:5], ensure_ascii=False)
+    session.add(station)
     row.evidence_json = json.dumps(
         {
             "provider": provider,
@@ -927,6 +1761,15 @@ def _persist_assessment(
             "quality_score": quality_score,
             "confidence": confidence,
             "reason_codes": reason_codes,
+            "editorial_summary_short": editorial_summary_short[:240],
+            "editorial_format": editorial_format[:80],
+            "style_tags": style_tags[:5],
+            "campaign_fit_tags": campaign_fit_tags[:5],
+            "pitch_angle_hint": pitch_angle_hint[:180],
+            "submission_path_quality": submission_path_quality,
+            "submission_path_note": path_note,
+            "best_submission_route": best_route,
+            "secondary_submission_routes": secondary_routes[:5],
             "estimated_usd": round(float(estimated_usd), 6),
             "features": features,
             "verdict": verdict,
@@ -972,7 +1815,13 @@ def run_station_quality_verification(
         )
         q = q.where(Station.id.not_in(assessed_ids))
 
-    stations = session.scalars(q.order_by(Station.priority_tier.desc(), Station.confidence_score.desc()).limit(max(1, limit))).all()
+    priority_tier_column = getattr(Station, "priority_tier", None)
+    if priority_tier_column is not None:
+        q = q.order_by(priority_tier_column.desc(), Station.confidence_score.desc(), Station.id.asc())
+    else:
+        q = q.order_by(Station.confidence_score.desc(), Station.id.asc())
+
+    stations = session.scalars(q.limit(max(1, limit))).all()
     if not stations:
         return {"processed": 0, "saved": 0, "errors": 0, "reason": "no_candidates"}
 
@@ -987,9 +1836,14 @@ def run_station_quality_verification(
         features = _build_station_features(session=session, station=station)
         prompt = _build_prompt(features)
         estimated_usd = max(0.00001, _estimate_call_usd(prompt, provider=chosen_provider))
-        if not budget.try_reserve_call(estimated_usd):
-            skipped_budget += 1
-            continue
+        if hasattr(budget, "try_reserve_call"):
+            if not budget.try_reserve_call(estimated_usd):
+                skipped_budget += 1
+                continue
+        else:
+            if not budget.can_call_llm_today() or not budget.can_spend(estimated_usd):
+                skipped_budget += 1
+                continue
         processed += 1
         try:
             verdict = _call_verifier(provider=chosen_provider, prompt=prompt)
@@ -1010,6 +1864,8 @@ def run_station_quality_verification(
                     estimated_usd=estimated_usd,
                 )
                 session.commit()
+                if not hasattr(budget, "try_reserve_call"):
+                    budget.register_call(estimated_usd)
                 saved += 1
             if len(samples) < 10:
                 samples.append(

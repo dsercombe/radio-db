@@ -84,6 +84,32 @@ DEEP_SUBMISSION_HINTS = (
     "airplay",
     "editorial",
 )
+NON_PAGE_URL_SUFFIXES = (
+    ".pdf",
+    ".zip",
+    ".mp3",
+    ".mp4",
+    ".wav",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".webp",
+)
+STRONG_SUBMISSION_CONTEXT_HINTS = (
+    "submit",
+    "submission",
+    "send us your music",
+    "music submission",
+    "submit music",
+    "new artist",
+    "unsigned",
+    "demo",
+    "airplay",
+    "playlist submission",
+    "music director",
+    "program director",
+)
 DEEP_EXCLUDE_HINTS = (
     "privacy",
     "impressum",
@@ -116,6 +142,17 @@ INVALID_DISCOVERED_EMAIL_TLDS = {
     "wav",
     "pdf",
 }
+INVALID_DISCOVERED_EMAILS = {
+    "button@click.debounce",
+    "email@example.com",
+    "input@input.debounce",
+    "x-ignore@submit.prevent",
+}
+INVALID_DISCOVERED_EMAIL_DOMAINS = {
+    "example.com",
+    "input.debounce",
+    "submit.prevent",
+}
 UNSUPPORTED_DOMAIN_HINTS = (
     "reddit.com",
     "facebook.com",
@@ -145,6 +182,16 @@ UNSUPPORTED_DOMAIN_HINTS = (
     "amazon.",
     "musicgateway.com",
     "groover.co",
+    "omarimc.com",
+    "musconv.com",
+    "radioindiealliance.com",
+    "songstuff.com",
+    "thecraftymusician.com",
+    "kiremico.com",
+    "musicinafrica.net",
+    "blog.delivermytune.com",
+    "sharetopros.com",
+    "now-hear-this.net",
     "talentcast.nl",
     "indiexl.nl",
     "chairsandmore.nl",
@@ -160,6 +207,32 @@ UNSUPPORTED_URL_PATH_HINTS = (
     "/blog/",
     "/how-to-submit",
     "/how-to/",
+    "/how-to-submit-your-music",
+    "/how-to-submit-music",
+    "/submit-your-music-to-radio",
+    "/send-your-music-to-radio",
+    "/radio-stations-that-accept",
+)
+UNSUPPORTED_URL_FILE_EXTENSIONS = (
+    ".aac",
+    ".flac",
+    ".m3u",
+    ".m3u8",
+    ".mp3",
+    ".mp4",
+    ".ogg",
+    ".pls",
+    ".wav",
+)
+UNSUPPORTED_STREAM_URL_HINTS = (
+    "/stream",
+    "stream.",
+    "stream-",
+    "stream?",
+    "icecast",
+    "shoutcast",
+    "zeno.fm/",
+    "netradyom.com:",
 )
 UNSUPPORTED_STATION_NAME_HINTS = (
     "listen to ",
@@ -175,7 +248,16 @@ UNSUPPORTED_STATION_NAME_HINTS = (
 UNSUPPORTED_STATION_NAME_CONTAINS = (
     "how to submit",
     "submit music to",
+    "submit your music to",
+    "send your music to",
+    "how to send your music",
+    "how to get your music played",
     "radio stations that accept",
+    "online radio stations to submit",
+    "best sites to submit music",
+    "step-by-step guide for artists",
+    "a simple guide for artists",
+    "old channel, new opportunities",
     "music curators",
     "music promotion",
     "one submit",
@@ -216,6 +298,12 @@ def is_supported_station_target_url(url: str | None) -> bool:
     lowered = url.lower()
     domain = _domain(url)
     if not domain:
+        return False
+    parsed = urlparse(url)
+    path = (parsed.path or "").lower()
+    if any(path.endswith(ext) for ext in UNSUPPORTED_URL_FILE_EXTENSIONS):
+        return False
+    if any(hint in lowered for hint in UNSUPPORTED_STREAM_URL_HINTS):
         return False
     if any(hint in domain for hint in UNSUPPORTED_DOMAIN_HINTS):
         return False
@@ -401,6 +489,62 @@ def _clean_html_text(value: str) -> str:
     return text.strip()
 
 
+def _compact_html_text(value: str) -> str:
+    return _clean_html_text(value)[:200000]
+
+
+def _snippet_contexts(text: str, needles: tuple[str, ...], radius: int = 180, limit: int = 8) -> list[dict]:
+    hay = _compact_html_text(text)
+    lowered = hay.lower()
+    out: list[dict] = []
+    seen: set[str] = set()
+    for needle in needles:
+        idx = lowered.find(needle)
+        if idx < 0:
+            continue
+        start = max(0, idx - radius)
+        end = min(len(hay), idx + len(needle) + radius)
+        snippet = hay[start:end].strip()
+        key = f"{needle}:{snippet}"
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append({"keyword": needle, "snippet": snippet[:420]})
+        if len(out) >= limit:
+            break
+    return out
+
+
+def _email_contexts(text: str, emails: list[str], radius: int = 180, limit: int = 10) -> list[dict]:
+    hay = _compact_html_text(text)
+    lowered = hay.lower()
+    out: list[dict] = []
+    seen: set[str] = set()
+    for email in emails:
+        email_lower = email.lower()
+        idx = lowered.find(email_lower)
+        if idx < 0:
+            continue
+        start = max(0, idx - radius)
+        end = min(len(hay), idx + len(email_lower) + radius)
+        snippet = hay[start:end].strip()
+        key = f"{email_lower}:{snippet}"
+        if key in seen:
+            continue
+        seen.add(key)
+        snippet_lower = snippet.lower()
+        out.append(
+            {
+                "email": email_lower,
+                "snippet": snippet[:420],
+                "near_submission_signal": any(h in snippet_lower for h in STRONG_SUBMISSION_CONTEXT_HINTS),
+            }
+        )
+        if len(out) >= limit:
+            break
+    return out
+
+
 def _extract_emails(text: str) -> list[str]:
     blocked_prefixes = ("noreply@", "donotreply@", "no-reply@")
     seen: set[str] = set()
@@ -421,10 +565,14 @@ def _extract_emails(text: str) -> list[str]:
 
 def _is_valid_discovered_email(email: str) -> bool:
     value = str(email or "").strip().lower().rstrip(".,;:)]}>")
+    if value in INVALID_DISCOVERED_EMAILS:
+        return False
     if "@" not in value:
         return False
     local, domain = value.split("@", 1)
     if not local or not domain or "." not in domain:
+        return False
+    if domain in INVALID_DISCOVERED_EMAIL_DOMAINS:
         return False
     if "/" in value or "\\" in value:
         return False
@@ -450,13 +598,21 @@ def _extract_links_from_html(html: str, base_url: str, station_domain: str) -> l
         lowered = f"{url} {_clean_html_text(label_html)}".lower()
         score = 0.0
         if any(h in lowered for h in DEEP_SUBMISSION_HINTS):
+            score += 4.0
+        if any(h in lowered for h in ("music", "musik", "musique", "musica", "programming", "playlist")):
             score += 2.0
+        if any(h in lowered for h in ("team", "staff", "host", "presenter", "dj", "music director", "program director")):
+            score += 1.6
         if any(h in lowered for h in DEEP_EXCLUDE_HINTS):
-            score -= 1.5
+            score -= 2.5
         if "/submit" in lowered or "submission" in lowered:
-            score += 1.5
-        if "/contact" in lowered or "/kontakt" in lowered:
-            score += 1.0
+            score += 3.0
+        if any(path in lowered for path in ("/contact", "/kontakt", "/contato", "/contacto", "/team", "/staff")):
+            score += 1.8
+        if any(path in lowered for path in ("/privacy", "/terms", "/advertis", "/shop", "/events", "/podcast")):
+            score -= 2.0
+        depth = len([p for p in urlparse(url).path.split("/") if p])
+        score -= min(2.0, max(0, depth - 4) * 0.35)
         out.append((url, _clean_html_text(label_html), score))
     out.sort(key=lambda item: item[2], reverse=True)
     return out
@@ -523,6 +679,9 @@ def _candidate_urls_for_station(
             return
         if not _is_http_url(u):
             return
+        parsed = urlparse(u)
+        if any(parsed.path.lower().endswith(suffix) for suffix in NON_PAGE_URL_SUFFIXES):
+            return
         if _domain(u) and station.website_url and _domain(u) != _domain(station.website_url):
             # Keep off-domain URLs only if explicitly stored as form channels.
             if path and path[0] != "submission_channel":
@@ -547,16 +706,45 @@ def _candidate_urls_for_station(
         if station_domain:
             try:
                 homepage_html = get_text(station.website_url)
-                for url, label, score in _extract_links_from_html(
+                ranked_links = _extract_links_from_html(
                     homepage_html,
                     base_url=station.website_url,
                     station_domain=station_domain,
-                ):
+                )
+                for url, label, score in ranked_links:
                     if score <= 0:
                         continue
-                    add(url, ["deep_link", label[:120] or "anchor"])
+                    add(url, ["ranked_homepage_link", f"{score:.2f}", label[:120] or "anchor"])
                     if len(candidates) >= max(1, max_urls):
                         break
+                if len(candidates) < max(1, max_urls):
+                    for sitemap_url in (urljoin(station.website_url, "/sitemap.xml"),):
+                        try:
+                            sitemap_text = get_text(sitemap_url)
+                        except Exception:
+                            continue
+                        sitemap_links = [
+                            m.group(1)
+                            for m in re.finditer(r"<loc>\s*([^<\s]+)\s*</loc>", sitemap_text, flags=re.I)
+                        ]
+                        scored_sitemap: list[tuple[float, str]] = []
+                        for sitemap_link in sitemap_links[:1000]:
+                            if _domain(sitemap_link) != station_domain:
+                                continue
+                            hay = sitemap_link.lower()
+                            score = 0.0
+                            if any(h in hay for h in DEEP_SUBMISSION_HINTS):
+                                score += 4.0
+                            if any(h in hay for h in ("contact", "team", "staff", "music", "playlist", "program")):
+                                score += 2.0
+                            if any(h in hay for h in DEEP_EXCLUDE_HINTS):
+                                score -= 2.0
+                            if score > 0:
+                                scored_sitemap.append((score, sitemap_link))
+                        for score, sitemap_link in sorted(scored_sitemap, reverse=True):
+                            add(sitemap_link, ["sitemap", f"{score:.2f}"])
+                            if len(candidates) >= max(1, max_urls):
+                                break
             except Exception:
                 pass
 
@@ -581,7 +769,7 @@ def _persist_email_channels(session: Session, station: Station, source_url: str,
                 station_id=station.id,
                 method=SubmissionMethod.EMAIL,
                 email=email,
-                url=source_url,
+                url=None,
                 requirements="auto_discovered_from_page",
                 accepts_newcomers=False,
             )
@@ -591,17 +779,40 @@ def _persist_email_channels(session: Session, station: Station, source_url: str,
 
 
 def _classify_form_type(url: str, title: str, fields: list[dict]) -> FormType:
-    hay = f"{url} {title} " + " ".join((f.get("label") or "") + " " + (f.get("name") or "") for f in fields)
-    lowered = hay.lower()
-    if any(k in lowered for k in ("newcomer", "unsigned", "emerging artist")):
+    field_text = " ".join(
+        " ".join(
+            str(f.get(key) or "")
+            for key in ("label", "name", "placeholder", "key_seed", "accept_types")
+        )
+        for f in fields
+    )
+    page_text = f"{title} {field_text}".lower()
+    url_lower = (url or "").lower()
+    combined = f"{url_lower} {page_text}"
+    strong_music_page = any(
+        hint in combined
+        for hint in (
+            "submit music",
+            "music submission",
+            "music-submission",
+            "music-submissions",
+            "submit-music",
+            "demo submission",
+            "playlist submission",
+            "new artist",
+            "unsigned",
+            "airplay",
+        )
+    )
+    if any(k in combined for k in ("newcomer", "unsigned", "emerging artist")):
         return FormType.NEWCOMER
-    if any(k in lowered for k in ("show pitch", "program pitch", "host pitch")):
+    if any(k in combined for k in ("show pitch", "program pitch", "host pitch")):
         return FormType.SHOW_PITCH
-    if any(k in lowered for k in ("upload", "mp3", "wav", "track file")):
+    if strong_music_page and any(k in combined for k in ("upload", "mp3", "wav", "track file", "audio file")):
         return FormType.ARTIST_UPLOAD
-    if any(k in lowered for k in FORM_KEYWORDS):
+    if strong_music_page:
         return FormType.MUSIC_SUBMISSION
-    if any(k in lowered for k in ("contact", "message")):
+    if any(k in page_text for k in ("contact", "message", "your name", "email")):
         return FormType.GENERAL_CONTACT
     return FormType.UNKNOWN
 
@@ -722,6 +933,7 @@ def _extract_forms_playwright(url: str) -> dict:
         page.screenshot(path=str(shot_path), full_page=True)
         html = page.content()
         html_path.write_text(html, encoding="utf-8")
+        final_url = page.url or url
         title = page.title() or ""
         lang = page.eval_on_selector("html", "el => el.lang || ''") or ""
         has_login = bool(page.locator('input[type="password"]').count())
@@ -775,28 +987,27 @@ def _extract_forms_playwright(url: str) -> dict:
             }
             """
         )
-        links = page.evaluate(
-            """
-            () => {
-              return Array.from(document.querySelectorAll("a[href]")).slice(0, 300).map((a) => ({
-                href: a.href || "",
-                text: (a.innerText || a.textContent || "").trim().slice(0, 160)
-              }));
-            }
-            """
-        )
+        ranked_links = _extract_links_from_html(html, base_url=url, station_domain=_domain(url))
         emails = _extract_emails(html)
+        submission_contexts = _snippet_contexts(html, DEEP_SUBMISSION_HINTS)
+        email_context_samples = _email_contexts(html, emails)
 
         browser.close()
         return {
-            "url": url,
+            "url": final_url,
+            "requested_url": url,
             "title": title,
             "language": lang,
             "requires_login": has_login,
             "has_captcha": has_captcha,
             "forms": forms,
-            "links": links,
+            "links": [
+                {"href": href, "text": text, "score": round(float(score), 3)}
+                for href, text, score in ranked_links[:300]
+            ],
             "emails": emails,
+            "email_contexts": email_context_samples,
+            "submission_keyword_contexts": submission_contexts,
             "snapshot_path": str(shot_path),
             "dom_snapshot_path": str(html_path),
         }
@@ -829,6 +1040,7 @@ def _extract_forms_fallback(url: str) -> dict:
             }
         )
     links = _extract_links_from_html(html, base_url=url, station_domain=_domain(url))
+    emails = _extract_emails(html)
     forms_payload: list[dict] = []
     if form_count > 0 and fields:
         forms_payload = [{"index": i, "action": "", "method": "post", "fields": fields} for i in range(form_count)]
@@ -839,8 +1051,13 @@ def _extract_forms_fallback(url: str) -> dict:
         "requires_login": ("type=\"password\"" in lowered) or ("name=\"password\"" in lowered),
         "has_captcha": ("captcha" in lowered),
         "forms": forms_payload,
-        "links": [{"href": href, "text": text} for href, text, _ in links[:300]],
-        "emails": _extract_emails(html),
+        "links": [
+            {"href": href, "text": text, "score": round(float(score), 3)}
+            for href, text, score in links[:300]
+        ],
+        "emails": emails,
+        "email_contexts": _email_contexts(html, emails),
+        "submission_keyword_contexts": _snippet_contexts(html, DEEP_SUBMISSION_HINTS),
         "snapshot_path": "",
         "dom_snapshot_path": "",
     }

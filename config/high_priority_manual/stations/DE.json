@@ -1,0 +1,806 @@
+{
+  "country_code": "DE",
+  "manual_status": "in_progress",
+  "stations": [
+    {
+      "key": "de_deutschlandfunk",
+      "name": "Deutschlandfunk",
+      "country_code": "DE",
+      "website": "https://www.deutschlandfunk.de/",
+      "must_visit_paths": [
+        "/",
+        "/kontakt/",
+        "/programm/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": false,
+      "station_class": "public_service"
+    },
+    {
+      "key": "de_deutschlandfunk_kultur",
+      "name": "Deutschlandfunk Kultur",
+      "country_code": "DE",
+      "website": "https://www.deutschlandfunkkultur.de/",
+      "must_visit_paths": [
+        "/",
+        "/kontakt/",
+        "/programm/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": false,
+      "station_class": "public_service"
+    },
+    {
+      "key": "de_deutschlandfunk_nova",
+      "name": "Deutschlandfunk Nova",
+      "country_code": "DE",
+      "website": "https://www.deutschlandfunknova.de/",
+      "must_visit_paths": [
+        "/",
+        "/kontakt/",
+        "/programm/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 92,
+      "newcomer_signal": true,
+      "station_class": "public_service_music"
+    },
+    {
+      "key": "de_bayern3",
+      "name": "BAYERN 3",
+      "country_code": "DE",
+      "website": "https://www.bayern3.de/",
+      "must_visit_paths": [
+        "/",
+        "/team",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 84,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_br_puls",
+      "name": "PULS",
+      "country_code": "DE",
+      "website": "https://www.br.de/puls/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker"
+    },
+    {
+      "key": "de_br_klassik",
+      "name": "BR-KLASSIK",
+      "country_code": "DE",
+      "website": "https://www.br-klassik.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 70,
+      "newcomer_signal": false,
+      "station_class": "public_classical"
+    },
+    {
+      "key": "de_1live",
+      "name": "1LIVE",
+      "country_code": "DE",
+      "website": "https://www.1live.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 92,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker"
+    },
+    {
+      "key": "de_wdr2",
+      "name": "WDR 2",
+      "country_code": "DE",
+      "website": "https://www.wdr.de/radio/wdr2/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 82,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_wdr5",
+      "name": "WDR 5",
+      "country_code": "DE",
+      "website": "https://www.wdr.de/radio/wdr5/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 70,
+      "newcomer_signal": false,
+      "station_class": "public_service"
+    },
+    {
+      "key": "de_cosmo",
+      "name": "COSMO",
+      "country_code": "DE",
+      "website": "https://www.cosmoradio.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker"
+    },
+    {
+      "key": "de_ndr2",
+      "name": "NDR 2",
+      "country_code": "DE",
+      "website": "https://www.ndr.de/ndr2/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 82,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_njoy",
+      "name": "N-JOY",
+      "country_code": "DE",
+      "website": "https://www.n-joy.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker"
+    },
+    {
+      "key": "de_ndr903",
+      "name": "NDR 90,3",
+      "country_code": "DE",
+      "website": "https://www.ndr.de/ndr903/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_ndr_blue",
+      "name": "NDR Blue",
+      "country_code": "DE",
+      "website": "https://www.ndr.de/ndrblue/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_jumpradio_de",
+      "name": "MDR Jump",
+      "country_code": "DE",
+      "website": "http://www.jumpradio.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_sputnik_de",
+      "name": "MDR Sputnik",
+      "country_code": "DE",
+      "website": "http://sputnik.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker"
+    },
+    {
+      "key": "de_hr3",
+      "name": "hr3",
+      "country_code": "DE",
+      "website": "https://www.hr3.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_youfm",
+      "name": "YOU FM",
+      "country_code": "DE",
+      "website": "https://www.you-fm.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker"
+    },
+    {
+      "key": "de_swr3",
+      "name": "SWR3",
+      "country_code": "DE",
+      "website": "https://www.swr3.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 84,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_swr1_bw",
+      "name": "SWR1 Baden-Württemberg",
+      "country_code": "DE",
+      "website": "https://www.swr.de/swr1/bw/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_swr1_rp",
+      "name": "SWR1 Rheinland-Pfalz",
+      "country_code": "DE",
+      "website": "https://www.swr.de/swr1/rp/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_swr2",
+      "name": "SWR2",
+      "country_code": "DE",
+      "website": "https://www.swr.de/swr2/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 70,
+      "newcomer_signal": false,
+      "station_class": "public_service"
+    },
+    {
+      "key": "de_radioeins",
+      "name": "radioeins",
+      "country_code": "DE",
+      "website": "https://www.radioeins.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker"
+    },
+    {
+      "key": "de_fritz",
+      "name": "Fritz",
+      "country_code": "DE",
+      "website": "https://www.fritz.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker"
+    },
+    {
+      "key": "de_rbb_888",
+      "name": "rbb 88.8",
+      "country_code": "DE",
+      "website": "https://www.rbb888.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_antenne_brandenburg",
+      "name": "Antenne Brandenburg",
+      "country_code": "DE",
+      "website": "https://www.antennebrandenburg.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_bremen_vier",
+      "name": "Bremen Vier",
+      "country_code": "DE",
+      "website": "https://www.bremenvier.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_bremen_eins",
+      "name": "Bremen Eins",
+      "country_code": "DE",
+      "website": "https://www.bremeneins.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 70,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_bremen_next",
+      "name": "Bremen NEXT",
+      "country_code": "DE",
+      "website": "https://www.bremennext.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_sr1",
+      "name": "SR 1",
+      "country_code": "DE",
+      "website": "https://www.sr1.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 70,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_sr3",
+      "name": "SR 3",
+      "country_code": "DE",
+      "website": "https://www.sr.de/sr/sr3/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 66,
+      "newcomer_signal": false,
+      "station_class": "public_music"
+    },
+    {
+      "key": "de_sr2",
+      "name": "SR 2 KulturRadio",
+      "country_code": "DE",
+      "website": "https://www.sr.de/sr/sr2/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 64,
+      "newcomer_signal": false,
+      "station_class": "public_service"
+    },
+    {
+      "key": "de_antenne_bayern",
+      "name": "ANTENNE BAYERN",
+      "country_code": "DE",
+      "website": "https://www.antenne.de/",
+      "must_visit_paths": [
+        "/",
+        "/aktionen",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 82,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_rock_antenne",
+      "name": "ROCK ANTENNE",
+      "country_code": "DE",
+      "website": "https://www.rockantenne.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_radiobob",
+      "name": "Radio BOB!",
+      "country_code": "DE",
+      "website": "https://www.radiobob.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_bigfm",
+      "name": "bigFM",
+      "country_code": "DE",
+      "website": "https://www.bigfm.de/",
+      "must_visit_paths": [
+        "/",
+        "/playlist",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_890rtl",
+      "name": "89.0 RTL",
+      "country_code": "DE",
+      "website": "https://www.89.0rtl.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_1046rtl",
+      "name": "104.6 RTL",
+      "country_code": "DE",
+      "website": "https://www.104.6rtl.com/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_energy",
+      "name": "ENERGY Deutschland",
+      "country_code": "DE",
+      "website": "https://www.energy.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_kissfm",
+      "name": "KISS FM",
+      "country_code": "DE",
+      "website": "https://www.kissfm.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_radio_hamburg",
+      "name": "Radio Hamburg",
+      "country_code": "DE",
+      "website": "https://www.radiohamburg.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 68,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_ffn",
+      "name": "radio ffn",
+      "country_code": "DE",
+      "website": "https://www.ffn.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 66,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_rsh",
+      "name": "R.SH",
+      "country_code": "DE",
+      "website": "https://www.rsh.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 66,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_antenne1",
+      "name": "Hitradio Antenne 1",
+      "country_code": "DE",
+      "website": "https://www.antenne1.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 66,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_regenbogen",
+      "name": "Radio Regenbogen",
+      "country_code": "DE",
+      "website": "https://www.regenbogen.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 66,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_klassik_radio",
+      "name": "Klassik Radio",
+      "country_code": "DE",
+      "website": "https://www.klassikradio.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "de_fluxfm",
+      "name": "FluxFM",
+      "country_code": "DE",
+      "website": "https://www.fluxfm.de/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "indie_music"
+    },
+    {
+      "key": "de_bytefm",
+      "name": "ByteFM",
+      "country_code": "DE",
+      "website": "https://www.byte.fm/",
+      "must_visit_paths": [
+        "/",
+        "/sendungen",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "indie_music"
+    },
+    {
+      "key": "de_detektor_fm",
+      "name": "detektor.fm",
+      "country_code": "DE",
+      "website": "https://detektor.fm/",
+      "must_visit_paths": [
+        "/",
+        "/musik",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": true,
+      "station_class": "indie_music"
+    },
+    {
+      "key": "de_egofm",
+      "name": "egoFM",
+      "country_code": "DE",
+      "website": "https://www.egofm.de/",
+      "must_visit_paths": [
+        "/",
+        "/programm",
+        "/kontakt"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": true,
+      "station_class": "indie_music"
+    }
+  ]
+}

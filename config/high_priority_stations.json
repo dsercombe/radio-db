@@ -1,0 +1,7912 @@
+[
+  {
+    "key": "at_fm4",
+    "name": "FM4",
+    "country_code": "AT",
+    "website": "https://fm4.orf.at/",
+    "must_visit_paths": [
+      "/radio",
+      "/shows",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "at_oe3",
+    "name": "Hitradio Ö3",
+    "country_code": "AT",
+    "website": "https://oe3.orf.at/",
+    "must_visit_paths": [
+      "/programm",
+      "/musik",
+      "/service"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 45,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "programs",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "at_kronehit",
+    "name": "KRONEHIT",
+    "country_code": "AT",
+    "website": "https://www.kronehit.at/",
+    "must_visit_paths": [
+      "/musik",
+      "/shows",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "at_superfly",
+    "name": "Radio Superfly",
+    "country_code": "AT",
+    "website": "https://superfly.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/program",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "at_radio_wien",
+    "name": "Radio Wien",
+    "country_code": "AT",
+    "website": "https://wien.orf.at/radiowien/",
+    "must_visit_paths": [
+      "/programm",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "at_oe1",
+    "name": "Ö1",
+    "country_code": "AT",
+    "website": "https://oe1.orf.at/",
+    "must_visit_paths": [
+      "/programm",
+      "/sendungen",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "au_2rrr_org_au",
+    "name": "2RRR - Ryde - 88.5 FM (AAC)",
+    "country_code": "AU",
+    "website": "https://www.2rrr.org.au/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 65,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "au_2ser",
+    "name": "2SER",
+    "country_code": "AU",
+    "website": "https://2ser.com/",
+    "must_visit_paths": [
+      "/shows/",
+      "/music/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "au_3rrr",
+    "name": "3RRR",
+    "country_code": "AU",
+    "website": "https://www.rrr.org.au/",
+    "must_visit_paths": [
+      "/explore/programs",
+      "/on-demand",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "au_abc_double_j",
+    "name": "Double J",
+    "country_code": "AU",
+    "website": "https://www.abc.net.au/doublej/",
+    "must_visit_paths": [
+      "/music-reads/",
+      "/programs/",
+      "/contact-us/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "au_triple_j",
+    "name": "triple j",
+    "country_code": "AU",
+    "website": "https://www.abc.net.au/triplej/",
+    "must_visit_paths": [
+      "/unearthed/",
+      "/contact-us/",
+      "/programs/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "au_triple_j_unearthed",
+    "name": "triple j Unearthed",
+    "country_code": "AU",
+    "website": "https://www.abc.net.au/triplej/unearthed/",
+    "must_visit_paths": [
+      "/upload/",
+      "/artists/",
+      "/contact-us/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "be_radio_contact",
+    "name": "Radio Contact",
+    "country_code": "BE",
+    "website": "https://www.radiocontact.be/",
+    "must_visit_paths": [
+      "/emissions",
+      "/musique",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "be_studio_brussel",
+    "name": "Studio Brussel",
+    "country_code": "BE",
+    "website": "https://stubru.be/",
+    "must_visit_paths": [
+      "/luister",
+      "/programmas",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "br_89fm",
+    "name": "89 FM A Radio Rock",
+    "country_code": "BR",
+    "website": "https://www.radiorock.com.br/",
+    "must_visit_paths": [
+      "/programas",
+      "/musica",
+      "/contato"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "br_jovem_pan_fm",
+    "name": "Jovem Pan FM",
+    "country_code": "BR",
+    "website": "https://jovempanfm.com.br/",
+    "must_visit_paths": [
+      "/programacao",
+      "/musica",
+      "/contato"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "ca_the_edge",
+    "name": "102.1 the Edge",
+    "country_code": "CA",
+    "website": "https://edge.ca/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_cbc_music",
+    "name": "CBC Music",
+    "country_code": "CA",
+    "website": "https://www.cbc.ca/music",
+    "must_visit_paths": [
+      "/music",
+      "/radio",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_cbc_radio1",
+    "name": "CBC Radio One",
+    "country_code": "CA",
+    "website": "https://www.cbc.ca/listen/live-radio",
+    "must_visit_paths": [
+      "/listen/live-radio",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_cfuv_uvic_ca",
+    "name": "CFUV 101.9 University of Victoria, BC",
+    "country_code": "CA",
+    "website": "http://cfuv.uvic.ca/cms/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 62,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_chez106",
+    "name": "CHEZ 106",
+    "country_code": "CA",
+    "website": "https://www.chez106.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_cism",
+    "name": "CISM 89.3",
+    "country_code": "CA",
+    "website": "https://www.cism893.ca/",
+    "must_visit_paths": [
+      "/emissions",
+      "/nouveautes",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_cjlo_com",
+    "name": "CJLO 1690AM",
+    "country_code": "CA",
+    "website": "http://www.cjlo.com/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_ckua",
+    "name": "CKUA Radio",
+    "country_code": "CA",
+    "website": "https://ckua.com/",
+    "must_visit_paths": [
+      "/programs",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_indie88",
+    "name": "Indie88",
+    "country_code": "CA",
+    "website": "https://indie88.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ca_chly_ca",
+    "name": "Submit your Music - CHLY 101.7FM",
+    "country_code": "CA",
+    "website": "https://www.chly.ca/submissions",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "ca_cfox",
+    "name": "The FOX 99.3",
+    "country_code": "CA",
+    "website": "https://www.cfox.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ch_rts_couleur3",
+    "name": "Couleur 3",
+    "country_code": "CH",
+    "website": "https://www.rts.ch/audio-podcast/live/couleur3/",
+    "must_visit_paths": [
+      "/",
+      "https://www.rts.ch/audio-podcast/",
+      "https://www.rts.ch/contact/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ch_energy_zurich",
+    "name": "Energy Zurich",
+    "country_code": "CH",
+    "website": "https://www.energy.ch/zuerich",
+    "must_visit_paths": [
+      "/zuerich/shows",
+      "/zuerich/music",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ch_radio_24",
+    "name": "Radio 24",
+    "country_code": "CH",
+    "website": "https://www.radio24.ch/",
+    "must_visit_paths": [
+      "/radio/",
+      "/musik/",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ch_rts_la_premiere",
+    "name": "RTS La Premiere",
+    "country_code": "CH",
+    "website": "https://www.rts.ch/audio-podcast/live/la-1ere/",
+    "must_visit_paths": [
+      "/",
+      "https://www.rts.ch/audio-podcast/",
+      "https://www.rts.ch/contact/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ch_srf3",
+    "name": "SRF 3",
+    "country_code": "CH",
+    "website": "https://www.srf.ch/radio-srf-3",
+    "must_visit_paths": [
+      "/programm",
+      "/sendungen",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "ch_virgin_radio_switzerland",
+    "name": "Virgin Radio Switzerland",
+    "country_code": "CH",
+    "website": "https://www.virginradio.ch/",
+    "must_visit_paths": [
+      "/shows",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_103_7_unserding",
+    "name": "103.7 UnserDing",
+    "country_code": "DE",
+    "website": "https://www.unserding.de/",
+    "must_visit_paths": [
+      "/musik/",
+      "/sendungen/",
+      "/kontakt/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_1046rtl",
+    "name": "104.6 RTL",
+    "country_code": "DE",
+    "website": "https://www.104.6rtl.com/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_1live",
+    "name": "1LIVE",
+    "country_code": "DE",
+    "website": "https://www.1live.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 92,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_674fm",
+    "name": "674FM",
+    "country_code": "DE",
+    "website": "https://674.fm/",
+    "must_visit_paths": [
+      "/impressum/",
+      "/sendung/",
+      "/sendeplan/",
+      "/konzerte/"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "station_impressum_verified",
+      "music_program_signal_verified"
+    ]
+  },
+  {
+    "key": "de_80s80s",
+    "name": "80s80s",
+    "country_code": "DE",
+    "website": "https://www.80s80s.de/",
+    "must_visit_paths": [
+      "/musik",
+      "/musik/news",
+      "/musik/songinfos",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 65,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "station_impressum_verified"
+    ]
+  },
+  {
+    "key": "de_890rtl",
+    "name": "89.0 RTL",
+    "country_code": "DE",
+    "website": "https://www.89.0rtl.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_89_0_rtl",
+    "name": "89.0 RTL",
+    "country_code": "DE",
+    "website": "https://www.89rtl.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 58,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_rs2_94_3",
+    "name": "94,3 RS2",
+    "country_code": "DE",
+    "website": "https://www.rs2.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm/titelsuche",
+      "/programm"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_editorial_contact_verified"
+    ]
+  },
+  {
+    "key": "de_charivari_95_5",
+    "name": "95.5 Charivari",
+    "country_code": "DE",
+    "website": "https://www.charivari.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 64,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_absolut_radio",
+    "name": "Absolut Radio",
+    "country_code": "DE",
+    "website": "https://www.absolutradio.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 63,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_alex_berlin",
+    "name": "ALEX Berlin Radio",
+    "country_code": "DE",
+    "website": "https://www.alex-berlin.de/radio",
+    "must_visit_paths": [
+      "/radio",
+      "https://about.alex-berlin.de/impressum",
+      "https://about.alex-berlin.de/audio/radio-programm",
+      "https://about.alex-berlin.de/mitmachen"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "music_program_signal_verified"
+    ]
+  },
+  {
+    "key": "de_antenne_1",
+    "name": "Antenne 1",
+    "country_code": "DE",
+    "website": "https://www.antenne1.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/musik",
+      "/programm"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "station_impressum_verified"
+    ]
+  },
+  {
+    "key": "de_antenne_bayern",
+    "name": "ANTENNE BAYERN",
+    "country_code": "DE",
+    "website": "https://www.antenne.de/",
+    "must_visit_paths": [
+      "/",
+      "/aktionen",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "contact_verified",
+      "manual_country_curation",
+      "manual_de_add"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_antenne_brandenburg",
+    "name": "Antenne Brandenburg",
+    "country_code": "DE",
+    "website": "https://www.antennebrandenburg.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_antenne_niedersachsen",
+    "name": "Antenne Niedersachsen",
+    "country_code": "DE",
+    "website": "https://www.antenne.com/",
+    "must_visit_paths": [
+      "/meine_antenne/kontakt/Euer-Kontakt-zu-Antenne-Niedersachsen-id313951.html",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 64,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_antenne_thueringen",
+    "name": "ANTENNE THÜRINGEN",
+    "country_code": "DE",
+    "website": "https://www.antennethueringen.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/sendungen",
+      "/team"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_editorial_contact_verified"
+    ]
+  },
+  {
+    "key": "de_bayern3",
+    "name": "BAYERN 3",
+    "country_code": "DE",
+    "website": "https://www.bayern3.de/",
+    "must_visit_paths": [
+      "/",
+      "/team",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_bayern_3",
+    "name": "Bayern 3",
+    "country_code": "DE",
+    "website": "https://www.br.de/radio/bayern3/",
+    "must_visit_paths": [
+      "/radio/bayern3/",
+      "/radio/bayern3/programm/",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 62,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_bermudafunk",
+    "name": "bermudafunk",
+    "country_code": "DE",
+    "website": "https://bermudafunk.org/",
+    "must_visit_paths": [
+      "/ueber-uns/kontakt",
+      "/hoeren/sendungen",
+      "/senden/redaktionen",
+      "/senden/sende-selbst"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "open_submission_signal_verified"
+    ]
+  },
+  {
+    "key": "de_bigfm",
+    "name": "bigFM",
+    "country_code": "DE",
+    "website": "https://www.bigfm.de/",
+    "must_visit_paths": [
+      "/",
+      "/playlist",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "contact_verified",
+      "manual_country_curation",
+      "manual_de_add"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_br_klassik",
+    "name": "BR-KLASSIK",
+    "country_code": "DE",
+    "website": "https://www.br-klassik.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_bremen_eins",
+    "name": "Bremen Eins",
+    "country_code": "DE",
+    "website": "https://www.bremeneins.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_bremen_next",
+    "name": "Bremen NEXT",
+    "country_code": "DE",
+    "website": "https://www.bremennext.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_bremen_vier",
+    "name": "Bremen Vier",
+    "country_code": "DE",
+    "website": "https://www.bremenvier.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_radio_bremen_vier",
+    "name": "Bremen Vier",
+    "country_code": "DE",
+    "website": "https://www.radiobremen.de/bremenvier/",
+    "must_visit_paths": [
+      "/musik/",
+      "/sendungen/",
+      "/kontakt/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_bytefm",
+    "name": "ByteFM",
+    "country_code": "DE",
+    "website": "https://www.byte.fm/",
+    "must_visit_paths": [
+      "/",
+      "/sendungen",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "music_program_signal_verified",
+      "station_impressum_verified"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_campusradio_jena",
+    "name": "Campusradio Jena",
+    "country_code": "DE",
+    "website": "https://www.campusradio-jena.de/",
+    "must_visit_paths": [
+      "/musikredaktion/",
+      "/redaktion/",
+      "/sendungen/",
+      "/impressum/"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_editorial_contact_verified",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_coloradio",
+    "name": "coloRadio",
+    "country_code": "DE",
+    "website": "https://coloradio.org/",
+    "must_visit_paths": [
+      "/?page_id=575",
+      "/?page_id=80",
+      "https://programm.coloradio.org",
+      "/"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "new_sender_meeting_verified"
+    ]
+  },
+  {
+    "key": "de_cosmo",
+    "name": "COSMO",
+    "country_code": "DE",
+    "website": "https://www.cosmoradio.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 88,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "contact_form_verified",
+      "manual_country_curation",
+      "manual_de_add",
+      "music_program_signal_verified"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_dasding",
+    "name": "DASDING",
+    "country_code": "DE",
+    "website": "https://www.dasding.de/",
+    "must_visit_paths": [
+      "/kontakt/index.html",
+      "/musik/",
+      "/events/"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_editorial_contact_verified"
+    ]
+  },
+  {
+    "key": "de_delta_radio",
+    "name": "delta radio",
+    "country_code": "DE",
+    "website": "https://www.deltaradio.de/",
+    "must_visit_paths": [
+      "/musik",
+      "/musik/top-40-countdown",
+      "/musik/titelsuche",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified"
+    ]
+  },
+  {
+    "key": "de_detektor_fm",
+    "name": "detektor.fm",
+    "country_code": "DE",
+    "website": "https://detektor.fm/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 88,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "contact_verified",
+      "manual_country_curation",
+      "manual_de_add",
+      "music_program_signal_verified"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_deutschlandfunk",
+    "name": "Deutschlandfunk",
+    "country_code": "DE",
+    "website": "https://www.deutschlandfunk.de/",
+    "must_visit_paths": [
+      "/",
+      "/kontakt/",
+      "/programm/"
+    ],
+    "enabled": true,
+    "priority_score": 88,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_deutschlandfunk_kultur",
+    "name": "Deutschlandfunk Kultur",
+    "country_code": "DE",
+    "website": "https://www.deutschlandfunkkultur.de/",
+    "must_visit_paths": [
+      "/",
+      "/kontakt/",
+      "/programm/"
+    ],
+    "enabled": true,
+    "priority_score": 86,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_dlf_nova",
+    "name": "Deutschlandfunk Nova",
+    "country_code": "DE",
+    "website": "https://www.deutschlandfunknova.de/",
+    "must_visit_paths": [
+      "/sendungen",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_ego_fm",
+    "name": "egoFM",
+    "country_code": "DE",
+    "website": "https://egofm.de/",
+    "must_visit_paths": [
+      "/musik/",
+      "/programm/",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_energy",
+    "name": "ENERGY Deutschland",
+    "country_code": "DE",
+    "website": "https://www.energy.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_fluxfm",
+    "name": "FluxFM",
+    "country_code": "DE",
+    "website": "https://www.fluxfm.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_freies_radio_stuttgart",
+    "name": "Freies Radio für Stuttgart",
+    "country_code": "DE",
+    "website": "https://www.freies-radio.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm/tagesansicht",
+      "/sendereihen",
+      "/auf-sendung-gehen"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "open_submission_signal_verified"
+    ]
+  },
+  {
+    "key": "de_freies_radio_kassel",
+    "name": "Freies Radio Kassel",
+    "country_code": "DE",
+    "website": "https://www.freies-radio-kassel.de/",
+    "must_visit_paths": [
+      "/kontakt.html",
+      "/wochenprogramm.html",
+      "/programminfo.html"
+    ],
+    "enabled": true,
+    "priority_score": 65,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "station_impressum_verified",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_fritz",
+    "name": "Fritz",
+    "country_code": "DE",
+    "website": "https://www.fritz.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 88,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_fsk_hamburg",
+    "name": "FSK Hamburg",
+    "country_code": "DE",
+    "website": "https://www.fsk-hh.org/",
+    "must_visit_paths": [
+      "/contact",
+      "/programm",
+      "/impressum",
+      "/"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "redactions_verified"
+    ]
+  },
+  {
+    "key": "de_hit_radio_ffh",
+    "name": "HIT RADIO FFH",
+    "country_code": "DE",
+    "website": "https://www.ffh.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 61,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_hitradio_ohr",
+    "name": "Hitradio OHR",
+    "country_code": "DE",
+    "website": "https://www.hitradio-ohr.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/musik",
+      "/programm"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified"
+    ]
+  },
+  {
+    "key": "de_hitradio_rtl",
+    "name": "HITRADIO RTL",
+    "country_code": "DE",
+    "website": "https://www.hitradio-rtl.de/",
+    "must_visit_paths": [
+      "/kontakt/",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 58,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_hochschulradio_aachen",
+    "name": "Hochschulradio Aachen",
+    "country_code": "DE",
+    "website": "https://hochschulradio-aachen.de/",
+    "must_visit_paths": [
+      "/contact",
+      "/unser-team",
+      "/playlist",
+      "/"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "music_program_signal_verified"
+    ]
+  },
+  {
+    "key": "de_hr1",
+    "name": "hr1",
+    "country_code": "DE",
+    "website": "https://www.hr1.de/",
+    "must_visit_paths": [
+      "/kontakt/index.html",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_hr2",
+    "name": "hr2",
+    "country_code": "DE",
+    "website": "https://www.hr2.de/",
+    "must_visit_paths": [
+      "/programm/titelliste/index.html",
+      "/programm/index.html"
+    ],
+    "enabled": true,
+    "priority_score": 68,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "station_impressum_verified"
+    ]
+  },
+  {
+    "key": "de_hr3",
+    "name": "hr3",
+    "country_code": "DE",
+    "website": "https://www.hr3.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "contact_verified",
+      "manual_country_curation",
+      "manual_de_add",
+      "station_impressum_verified"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_jam_fm",
+    "name": "JAM FM",
+    "country_code": "DE",
+    "website": "https://www.jam.fm/",
+    "must_visit_paths": [
+      "/rechtliche_seiten/Kontakt-JAM-FM-id225906.html",
+      "/musik",
+      "/"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified"
+    ]
+  },
+  {
+    "key": "de_kielfm",
+    "name": "KielFM",
+    "country_code": "DE",
+    "website": "https://www.oksh.de/ki/",
+    "must_visit_paths": [
+      "/ki/sehen/redaktionundfestesendeplaetze/",
+      "/ki/",
+      "/ki/hoeren/",
+      "/ki/impressum/"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "redactions_verified",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_kiss_fm",
+    "name": "KISS FM",
+    "country_code": "DE",
+    "website": "https://www.kissfm.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 58,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_klassik_radio",
+    "name": "Klassik Radio",
+    "country_code": "DE",
+    "website": "https://www.klassikradio.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_lora_muenchen",
+    "name": "LORA München",
+    "country_code": "DE",
+    "website": "https://lora924.de/",
+    "must_visit_paths": [
+      "/programm-2-2/",
+      "/wochenprogramm/",
+      "/abbout-us/redaktionen-a-z/",
+      "/programm-2-2/programmschema-2/"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_program_signal_verified",
+      "redactions_verified"
+    ]
+  },
+  {
+    "key": "de_jumpradio_de",
+    "name": "MDR Jump",
+    "country_code": "DE",
+    "website": "http://www.jumpradio.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_mdr_jump",
+    "name": "MDR JUMP",
+    "country_code": "DE",
+    "website": "https://www.mdrjump.de/",
+    "must_visit_paths": [
+      "/kontakt/index.html",
+      "/musik/index.html",
+      "/programm/index.html"
+    ],
+    "enabled": true,
+    "priority_score": 63,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_mdr_sputnik",
+    "name": "MDR SPUTNIK",
+    "country_code": "DE",
+    "website": "https://www.mdr.de/sputnik/index.html",
+    "must_visit_paths": [
+      "/sputnik/kontakt/sputnik-kontakt--100.html",
+      "/sputnik/sendungen/musikspecials/sputnik-soundcheck-116.html",
+      "/sputnik/musik/index.html",
+      "/newmusicaward/New-Music-Award-Startseite-Hotlist-100.html"
+    ],
+    "enabled": true,
+    "priority_score": 83,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "newcomer_program_verified"
+    ]
+  },
+  {
+    "key": "de_sputnik_de",
+    "name": "MDR Sputnik",
+    "country_code": "DE",
+    "website": "http://sputnik.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 86,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_mephisto_97_6",
+    "name": "mephisto 97.6",
+    "country_code": "DE",
+    "website": "https://mephisto976.de/",
+    "must_visit_paths": [
+      "/impressum",
+      "/programm",
+      "/sendungen",
+      "/podcasts"
+    ],
+    "enabled": true,
+    "priority_score": 71,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_editorial_contact_verified",
+      "music_program_signal_verified"
+    ]
+  },
+  {
+    "key": "de_n_joy",
+    "name": "N-JOY",
+    "country_code": "DE",
+    "website": "https://www.ndr.de/n-joy/",
+    "must_visit_paths": [
+      "/n-joy/kontakt",
+      "/n-joy/musik",
+      "/n-joy/programm"
+    ],
+    "enabled": true,
+    "priority_score": 62,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_njoy",
+    "name": "N-JOY",
+    "country_code": "DE",
+    "website": "https://www.n-joy.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 88,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_ndr_1_welle_nord",
+    "name": "NDR 1 Welle Nord",
+    "country_code": "DE",
+    "website": "https://www.ndr.de/wellenord/",
+    "must_visit_paths": [
+      "/wellenord/programm",
+      "/wellenord/programm/titelliste-ndr-1-welle-nord,radioplaylist-wellenno"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "station_impressum_verified"
+    ]
+  },
+  {
+    "key": "de_ndr_2",
+    "name": "NDR 2",
+    "country_code": "DE",
+    "website": "https://www.ndr.de/radio/ndr2/",
+    "must_visit_paths": [
+      "/radio/ndr2/programm",
+      "/radio/ndr2/musik",
+      "/der_ndr/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "station_impressum_verified"
+    ]
+  },
+  {
+    "key": "de_ndr_blue",
+    "name": "NDR Blue",
+    "country_code": "DE",
+    "website": "https://www.ndr.de/ndrblue/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "station_impressum_verified"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_pi_radio",
+    "name": "Pi Radio",
+    "country_code": "DE",
+    "website": "https://piradio.de/",
+    "must_visit_paths": [
+      "/agenda/programm.html",
+      "/impressum/",
+      "/redaktionsstatut/",
+      "https://radioca.mp/programm/"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_program_signal_verified",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_planet_radio",
+    "name": "planet radio",
+    "country_code": "DE",
+    "website": "https://www.planetradio.de/",
+    "must_visit_paths": [
+      "/kontakt/whatsapp-social-media.html",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 60,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_br_puls",
+    "name": "PULS",
+    "country_code": "DE",
+    "website": "https://www.br.de/puls/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "submission_page_verified"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_querfunk",
+    "name": "Querfunk",
+    "country_code": "DE",
+    "website": "https://querfunk.de/",
+    "must_visit_paths": [
+      "/sendung",
+      "/sendungen",
+      "/programm",
+      "/mitmachen/gruppenradio/sendebedingungen"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "sendings_conditions_verified",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_rsh",
+    "name": "R.SH",
+    "country_code": "DE",
+    "website": "https://www.rsh.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 66,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "station_impressum_verified"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_radio_21",
+    "name": "radio 21",
+    "country_code": "DE",
+    "website": "https://www.radio21.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 58,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_radio_7",
+    "name": "Radio 7",
+    "country_code": "DE",
+    "website": "https://www.radio7.de/",
+    "must_visit_paths": [
+      "/radio-7/kontakt",
+      "/musik",
+      "/musik/playlist",
+      "/programm"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_radio_blau",
+    "name": "Radio Blau",
+    "country_code": "DE",
+    "website": "https://www.radioblau.de/",
+    "must_visit_paths": [
+      "/impressum/",
+      "/redaktion/",
+      "/sendung/",
+      "/sendeschema/"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "music_redactions_verified"
+    ]
+  },
+  {
+    "key": "de_radio_bob",
+    "name": "RADIO BOB!",
+    "country_code": "DE",
+    "website": "https://www.radiobob.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 61,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_radio_corax",
+    "name": "Radio CORAX",
+    "country_code": "DE",
+    "website": "https://radiocorax.de/",
+    "must_visit_paths": [
+      "/about-corax/team-vorstand-betrieb-beirat-link-zu-sendungsmacher_innen/",
+      "/programm/",
+      "/programm/feedback-formular/",
+      "/impressum"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "music_program_signal_verified"
+    ]
+  },
+  {
+    "key": "de_radio_dreyeckland",
+    "name": "Radio Dreyeckland",
+    "country_code": "DE",
+    "website": "https://rdl.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/thema/musik",
+      "/programm",
+      "/musikred"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "music_editorial_contact_verified"
+    ]
+  },
+  {
+    "key": "de_ffn",
+    "name": "radio ffn",
+    "country_code": "DE",
+    "website": "https://www.ffn.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 66,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_radio_flora",
+    "name": "Radio Flora Hannover",
+    "country_code": "DE",
+    "website": "https://radioflora.de/",
+    "must_visit_paths": [
+      "/kontakt/",
+      "/shows/unser-radioflora-musikmix/"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_radio_gong_96_3",
+    "name": "Radio Gong 96.3",
+    "country_code": "DE",
+    "website": "https://www.radiogong.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 60,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_radio_hamburg",
+    "name": "Radio Hamburg",
+    "country_code": "DE",
+    "website": "https://www.radiohamburg.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 68,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_radio_lotte",
+    "name": "Radio LOTTE Waiblingen",
+    "country_code": "DE",
+    "website": "https://www.radiolotte.de/",
+    "must_visit_paths": [
+      "/kontakt/",
+      "/lotte/programm.php",
+      "/lotte/Jugendmusikredaktion.php"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified",
+      "music_editorial_contact_verified"
+    ]
+  },
+  {
+    "key": "de_radio_psr",
+    "name": "Radio PSR",
+    "country_code": "DE",
+    "website": "https://www.radiopsr.de/",
+    "must_visit_paths": [
+      "/programm/sendungen",
+      "/musik-events",
+      "/programm"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_radio_q",
+    "name": "Radio Q",
+    "country_code": "DE",
+    "website": "https://www.radioq.de/",
+    "must_visit_paths": [
+      "/kontakt/",
+      "/sendungen/",
+      "/playlist/",
+      "/mitmachen/team/"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_editorial_contact_verified",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_radio_regenbogen",
+    "name": "Radio Regenbogen",
+    "country_code": "DE",
+    "website": "https://www.regenbogen.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 60,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_radio_salue",
+    "name": "Radio Salü",
+    "country_code": "DE",
+    "website": "https://www.radiosalue.de/",
+    "must_visit_paths": [
+      "/programm/morgenshow/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 68,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "station_impressum_verified"
+    ]
+  },
+  {
+    "key": "de_radio_x",
+    "name": "radio x",
+    "country_code": "DE",
+    "website": "https://radiox.de/",
+    "must_visit_paths": [
+      "/kontakt/",
+      "/sendungen",
+      "/playlists",
+      "/programm"
+    ],
+    "enabled": true,
+    "priority_score": 81,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified",
+      "submission_routing_verified"
+    ]
+  },
+  {
+    "key": "de_radio_z",
+    "name": "Radio Z",
+    "country_code": "DE",
+    "website": "https://www.radio-z.net/",
+    "must_visit_paths": [
+      "/",
+      "/de/programm.html",
+      "/de/sendungen.html",
+      "/de/impressum.html"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "music_program_signal_verified",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_radioeins",
+    "name": "radioeins",
+    "country_code": "DE",
+    "website": "https://www.radioeins.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "programs",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_rbb_888",
+    "name": "rbb 88.8",
+    "country_code": "DE",
+    "website": "https://www.rbb888.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_rock_antenne",
+    "name": "ROCK ANTENNE",
+    "country_code": "DE",
+    "website": "https://www.rockantenne.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_rpr1",
+    "name": "RPR1",
+    "country_code": "DE",
+    "website": "https://www.rpr1.de/",
+    "must_visit_paths": [
+      "/service/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 64,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_sr1",
+    "name": "SR 1",
+    "country_code": "DE",
+    "website": "https://www.sr1.de/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_sr3",
+    "name": "SR 3",
+    "country_code": "DE",
+    "website": "https://www.sr.de/sr/sr3/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 66,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_star_fm",
+    "name": "STAR FM",
+    "country_code": "DE",
+    "website": "https://www.starfm.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/musik"
+    ],
+    "enabled": true,
+    "priority_score": 59,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_sunshine_live",
+    "name": "sunshine live",
+    "country_code": "DE",
+    "website": "https://www.sunshine-live.de/",
+    "must_visit_paths": [
+      "/info/kontakt",
+      "/channels",
+      "/"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified"
+    ]
+  },
+  {
+    "key": "de_swr_kultur",
+    "name": "SWR Kultur (SWR2)",
+    "country_code": "DE",
+    "website": "https://www.swr.de/swrkultur/",
+    "must_visit_paths": [
+      "/swrkultur/programm/index.html",
+      "/swrkultur/musik",
+      "/swrkultur/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified"
+    ]
+  },
+  {
+    "key": "de_swr1_bw",
+    "name": "SWR1 Baden-Württemberg",
+    "country_code": "DE",
+    "website": "https://www.swr.de/swr1/bw/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation",
+      "manual_de_add",
+      "submission_email_verified"
+    ],
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "added_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_swr3",
+    "name": "SWR3",
+    "country_code": "DE",
+    "website": "https://www.swr3.de/",
+    "must_visit_paths": [
+      "/",
+      "/musik",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 84,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "de_toggo_radio",
+    "name": "TOGGO Radio",
+    "country_code": "DE",
+    "website": "https://www.toggo-radio.de/",
+    "must_visit_paths": [
+      "/kontakt",
+      "/programm",
+      "/"
+    ],
+    "enabled": true,
+    "priority_score": 55,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "unconfirmed_submission_channel"
+    ]
+  },
+  {
+    "key": "de_wdr2",
+    "name": "WDR 2",
+    "country_code": "DE",
+    "website": "https://www.wdr.de/radio/wdr2/",
+    "must_visit_paths": [
+      "/",
+      "/programm",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T22:01:30.972484",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "de_wdr_2",
+    "name": "WDR 2",
+    "country_code": "DE",
+    "website": "https://www1.wdr.de/radio/wdr2/",
+    "must_visit_paths": [
+      "/radio/wdr2/kontakt/index.html",
+      "/radio/wdr2/musik/index.html",
+      "/radio/wdr2/programm/index.html"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_wdr_4",
+    "name": "WDR 4",
+    "country_code": "DE",
+    "website": "https://www1.wdr.de/radio/wdr4/",
+    "must_visit_paths": [
+      "/radio/wdr4/kontakt/index.html",
+      "/radio/wdr4/musik/index.html",
+      "/radio/wdr4/programm/index.html"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_de_add",
+      "contact_verified"
+    ]
+  },
+  {
+    "key": "de_you_fm",
+    "name": "YOU FM",
+    "country_code": "DE",
+    "website": "https://www.you-fm.de/",
+    "must_visit_paths": [
+      "/kontakt/index.html",
+      "/team_shows/index.html",
+      "/playlists/index.html"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_de_add",
+      "submission_email_verified"
+    ]
+  },
+  {
+    "key": "dk_dr_p3",
+    "name": "DR P3",
+    "country_code": "DK",
+    "website": "https://www.dr.dk/lyd/p3",
+    "must_visit_paths": [
+      "/lyd/p3",
+      "/programmer",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "es_cadena_100",
+    "name": "Cadena 100",
+    "country_code": "ES",
+    "website": "https://www.cadena100.es/",
+    "must_visit_paths": [
+      "/programas/",
+      "/musica/",
+      "/contacto"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "es_los40",
+    "name": "LOS40",
+    "country_code": "ES",
+    "website": "https://los40.com/",
+    "must_visit_paths": [
+      "/programas/",
+      "/musica/",
+      "/contacto/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "es_radio3",
+    "name": "Radio 3",
+    "country_code": "ES",
+    "website": "https://www.rtve.es/radio/radio3/",
+    "must_visit_paths": [
+      "/programas/",
+      "/musica/",
+      "/contacto/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "fr_virgin_radio_fr",
+    "name": "Europe 2 (ex Virgin Radio)",
+    "country_code": "FR",
+    "website": "https://www.europe2.fr/",
+    "must_visit_paths": [
+      "/programmes",
+      "/musique",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "fr_fip",
+    "name": "FIP",
+    "country_code": "FR",
+    "website": "https://www.radiofrance.fr/fip",
+    "must_visit_paths": [
+      "/fip",
+      "/podcasts",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "fr_fip_fr",
+    "name": "FIP",
+    "country_code": "FR",
+    "website": "https://www.fip.fr/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "fr_fun_radio",
+    "name": "Fun Radio",
+    "country_code": "FR",
+    "website": "https://www.funradio.fr/",
+    "must_visit_paths": [
+      "/emissions",
+      "/playlists",
+      "/contact"
+    ],
+    "enabled": false,
+    "priority_score": 15,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "filtered_non_station_domain"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "fr_mouv",
+    "name": "Mouv'",
+    "country_code": "FR",
+    "website": "https://www.radiofrance.fr/mouv",
+    "must_visit_paths": [
+      "/mouv",
+      "/emissions",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "fr_mouv_fr",
+    "name": "Mouv'",
+    "country_code": "FR",
+    "website": "https://www.mouv.fr/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "fr_ouifm",
+    "name": "OUI FM",
+    "country_code": "FR",
+    "website": "https://www.ouifm.fr/",
+    "must_visit_paths": [
+      "/emissions",
+      "/playlists",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "fr_radio_nova",
+    "name": "Radio Nova",
+    "country_code": "FR",
+    "website": "https://www.nova.fr/",
+    "must_visit_paths": [
+      "/radio-nova",
+      "/podcasts",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "fr_skyrock",
+    "name": "Skyrock",
+    "country_code": "FR",
+    "website": "https://skyrock.fm/",
+    "must_visit_paths": [
+      "/emissions",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "gb_absolute_radio",
+    "name": "Absolute Radio",
+    "country_code": "GB",
+    "website": "https://planetradio.co.uk/absolute-radio/",
+    "must_visit_paths": [
+      "/",
+      "/on-air",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 86,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "gb_amazing_radio",
+    "name": "Amazing Radio",
+    "country_code": "GB",
+    "website": "https://amazingradio.com/",
+    "must_visit_paths": [
+      "/",
+      "/submit",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "uk_bbc_introducing",
+    "name": "BBC Introducing",
+    "country_code": "GB",
+    "website": "https://www.bbc.co.uk/introducing",
+    "must_visit_paths": [
+      "/introducing",
+      "/upload",
+      "/about"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "uk_bbc_radio1",
+    "name": "BBC Radio 1",
+    "country_code": "GB",
+    "website": "https://www.bbc.co.uk/radio1",
+    "must_visit_paths": [
+      "/radio1",
+      "/programmes",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "uk_bbc_radio1xtra",
+    "name": "BBC Radio 1Xtra",
+    "country_code": "GB",
+    "website": "https://www.bbc.co.uk/1xtra",
+    "must_visit_paths": [
+      "/1xtra",
+      "/programmes",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "uk_bbc_radio2",
+    "name": "BBC Radio 2",
+    "country_code": "GB",
+    "website": "https://www.bbc.co.uk/radio2",
+    "must_visit_paths": [
+      "/radio2",
+      "/programmes",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "uk_bbc_6music",
+    "name": "BBC Radio 6 Music",
+    "country_code": "GB",
+    "website": "https://www.bbc.co.uk/6music",
+    "must_visit_paths": [
+      "/6music",
+      "/programmes",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "gb_capital_dance",
+    "name": "Capital Dance",
+    "country_code": "GB",
+    "website": "https://www.capitaldance.com/",
+    "must_visit_paths": [
+      "/",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "uk_capital",
+    "name": "Capital FM",
+    "country_code": "GB",
+    "website": "https://www.capitalfm.com/",
+    "must_visit_paths": [
+      "/shows/",
+      "/playlist/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "gb_capital_xtra",
+    "name": "Capital XTRA",
+    "country_code": "GB",
+    "website": "https://www.capitalxtra.com/",
+    "must_visit_paths": [
+      "/",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "gb_classic_fm",
+    "name": "Classic FM",
+    "country_code": "GB",
+    "website": "https://www.classicfm.com/",
+    "must_visit_paths": [
+      "/",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "gb_countryline_radio",
+    "name": "CountryLine Radio",
+    "country_code": "GB",
+    "website": "https://www.countryline.radio/player/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "gb_heart",
+    "name": "Heart",
+    "country_code": "GB",
+    "website": "https://www.heart.co.uk/",
+    "must_visit_paths": [
+      "/",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 86,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "uk_kiss",
+    "name": "KISS",
+    "country_code": "GB",
+    "website": "https://www.kissfmuk.com/",
+    "must_visit_paths": [
+      "/shows/",
+      "/music/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "uk_nts",
+    "name": "NTS Radio",
+    "country_code": "GB",
+    "website": "https://www.nts.live/",
+    "must_visit_paths": [
+      "/latest",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 55,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence",
+      "submission_signal"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "uk_radio_x",
+    "name": "Radio X",
+    "country_code": "GB",
+    "website": "https://www.radiox.co.uk/",
+    "must_visit_paths": [
+      "/radio/shows/",
+      "/playlists/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "gb_reprezent",
+    "name": "Reprezent Radio",
+    "country_code": "GB",
+    "website": "https://reprezent.org.uk/",
+    "must_visit_paths": [
+      "/shows",
+      "/contact",
+      "/music"
+    ],
+    "enabled": true,
+    "priority_score": 88,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "gb_resonance_fm",
+    "name": "Resonance FM",
+    "country_code": "GB",
+    "website": "https://www.resonancefm.com/",
+    "must_visit_paths": [
+      "/programmes",
+      "/contact",
+      "/about"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "uk_rinse",
+    "name": "Rinse FM",
+    "country_code": "GB",
+    "website": "https://rinse.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/about",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "gb_smooth",
+    "name": "Smooth",
+    "country_code": "GB",
+    "website": "https://www.smoothradio.com/",
+    "must_visit_paths": [
+      "/",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "gb_soho_radio",
+    "name": "Soho Radio",
+    "country_code": "GB",
+    "website": "https://sohoradiolondon.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/about",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "gb_virgin_radio",
+    "name": "Virgin Radio UK",
+    "country_code": "GB",
+    "website": "https://virginradio.co.uk/",
+    "must_visit_paths": [
+      "/",
+      "/listen",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_1",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "gb_worldwide_fm",
+    "name": "Worldwide FM",
+    "country_code": "GB",
+    "website": "https://worldwidefm.net/",
+    "must_visit_paths": [
+      "/shows",
+      "/contact",
+      "/about"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "ie_rte_2fm",
+    "name": "RTÉ 2FM",
+    "country_code": "IE",
+    "website": "https://2fm.rte.ie/",
+    "must_visit_paths": [
+      "/shows/",
+      "/music/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "ie_today_fm",
+    "name": "Today FM",
+    "country_code": "IE",
+    "website": "https://www.todayfm.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "in_radio_city",
+    "name": "Radio City India",
+    "country_code": "IN",
+    "website": "https://www.radiocity.in/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "in_red_fm",
+    "name": "Red FM India",
+    "country_code": "IN",
+    "website": "https://www.redfmindia.in/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "it_radio_deejay",
+    "name": "Radio Deejay",
+    "country_code": "IT",
+    "website": "https://www.deejay.it/",
+    "must_visit_paths": [
+      "/programmi/",
+      "/radio/",
+      "/contatti/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "it_radio_italia",
+    "name": "Radio Italia",
+    "country_code": "IT",
+    "website": "https://www.radioitalia.it/",
+    "must_visit_paths": [
+      "/radio/",
+      "/programmi/",
+      "/contatti"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "it_radio2_rai_it",
+    "name": "Rai Radio 2",
+    "country_code": "IT",
+    "website": "http://www.radio2.rai.it/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-30T21:53:28.495847",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "it_rai_radio2",
+    "name": "Rai Radio 2",
+    "country_code": "IT",
+    "website": "https://www.raiplaysound.it/radio2",
+    "must_visit_paths": [
+      "/radio2",
+      "/programmi",
+      "/contatti"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "jp_jwave",
+    "name": "J-WAVE",
+    "country_code": "JP",
+    "website": "https://www.j-wave.co.jp/",
+    "must_visit_paths": [
+      "/original/",
+      "/program/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "jp_tokyo_fm",
+    "name": "TOKYO FM",
+    "country_code": "JP",
+    "website": "https://www.tfm.co.jp/",
+    "must_visit_paths": [
+      "/program/",
+      "/music/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "kr_kbs_cool_fm",
+    "name": "KBS Cool FM",
+    "country_code": "KR",
+    "website": "https://program.kbs.co.kr/2fm/radio/",
+    "must_visit_paths": [
+      "/2fm/",
+      "/radio/",
+      "/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "mx_los40_mexico",
+    "name": "LOS40 México",
+    "country_code": "MX",
+    "website": "https://los40.com.mx/",
+    "must_visit_paths": [
+      "/programas/",
+      "/musica/",
+      "/contacto/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "mx_reactor_105",
+    "name": "Reactor 105",
+    "country_code": "MX",
+    "website": "https://reactor.imer.mx/",
+    "must_visit_paths": [
+      "/programacion/",
+      "/musica/",
+      "/contacto/"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "nl_3voor12",
+    "name": "3voor12 Radio",
+    "country_code": "NL",
+    "website": "https://3voor12.vpro.nl/",
+    "must_visit_paths": [
+      "/radio",
+      "/speel~POMS_VPRO_349742~3voor12-radio~.html",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 10,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_indiexl_nl",
+    "name": "Indie XL !",
+    "country_code": "NL",
+    "website": "https://indiexl.nl/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 62,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_kink",
+    "name": "KINK",
+    "country_code": "NL",
+    "website": "https://kink.nl/",
+    "must_visit_paths": [
+      "/programmas",
+      "/djs",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_npo_3fm",
+    "name": "NPO 3FM",
+    "country_code": "NL",
+    "website": "https://www.npo3fm.nl/",
+    "must_visit_paths": [
+      "/programmas",
+      "/dj",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_npo_radio2",
+    "name": "NPO Radio 2",
+    "country_code": "NL",
+    "website": "https://www.nporadio2.nl/",
+    "must_visit_paths": [
+      "/programmas",
+      "/dj",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_npo_soul_jazz",
+    "name": "NPO Soul & Jazz",
+    "country_code": "NL",
+    "website": "https://www.nporadio2.nl/thema/soul-jazz",
+    "must_visit_paths": [
+      "/thema/soul-jazz",
+      "/programmas",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_qmusic",
+    "name": "Qmusic Nederland",
+    "country_code": "NL",
+    "website": "https://qmusic.nl/",
+    "must_visit_paths": [
+      "/dj",
+      "/programmas",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_radio538",
+    "name": "Radio 538",
+    "country_code": "NL",
+    "website": "https://www.538.nl/",
+    "must_visit_paths": [
+      "/programmas",
+      "/dj",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_slam",
+    "name": "SLAM!",
+    "country_code": "NL",
+    "website": "https://www.slam.nl/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "nl_talentcast_nl",
+    "name": "TalentCast",
+    "country_code": "NL",
+    "website": "https://talentcast.nl/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 100,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "no_nrk_p3",
+    "name": "NRK P3",
+    "country_code": "NO",
+    "website": "https://radio.nrk.no/direkte/p3",
+    "must_visit_paths": [
+      "/direkte/p3",
+      "/program",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "nz_bfm",
+    "name": "95bFM",
+    "country_code": "NZ",
+    "website": "https://95bfm.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlists",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "nz_the_rock",
+    "name": "The Rock FM",
+    "country_code": "NZ",
+    "website": "https://www.therock.net.nz/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "se_bandit",
+    "name": "Bandit Rock",
+    "country_code": "SE",
+    "website": "https://www.bandit.se/",
+    "must_visit_paths": [
+      "/program",
+      "/music",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "se_sveriges_radio_p3",
+    "name": "Sveriges Radio P3",
+    "country_code": "SE",
+    "website": "https://sverigesradio.se/p3",
+    "must_visit_paths": [
+      "/kanal/p3",
+      "/program",
+      "/kontakt"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  },
+  {
+    "key": "us_kqac",
+    "name": "All Classical Radio",
+    "country_code": "US",
+    "website": "https://www.allclassical.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_alt_98_7",
+    "name": "ALT 98.7",
+    "country_code": "US",
+    "website": "https://alt987fm.iheart.com/",
+    "must_visit_paths": [
+      "/onair",
+      "/contact",
+      "/playlist"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 65,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_classicrockflorida_com",
+    "name": "Classic Rock Florida",
+    "country_code": "US",
+    "website": "https://classicrockflorida.com/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_king_fm",
+    "name": "Classical KING FM",
+    "country_code": "US",
+    "website": "https://www.king.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_idobi_com",
+    "name": "idobi Anthm",
+    "country_code": "US",
+    "website": "http://idobi.com/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 62,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_wdbm",
+    "name": "Impact 89FM (WDBM)",
+    "country_code": "US",
+    "website": "https://impact89fm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 81,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_insanerealmradio_com",
+    "name": "Insane Realm Radio",
+    "country_code": "US",
+    "website": "https://insanerealmradio.com/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_kalw",
+    "name": "KALW",
+    "country_code": "US",
+    "website": "https://www.kalw.org/",
+    "must_visit_paths": [
+      "/music",
+      "/shows",
+      "/about/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kalx",
+    "name": "KALX",
+    "country_code": "US",
+    "website": "https://www.kalx.berkeley.edu/",
+    "must_visit_paths": [
+      "/music",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kasr",
+    "name": "KASR",
+    "country_code": "US",
+    "website": "https://www.kasr.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kbcs",
+    "name": "KBCS",
+    "country_code": "US",
+    "website": "https://www.kbcs.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kboo",
+    "name": "KBOO",
+    "country_code": "US",
+    "website": "https://kboo.fm/",
+    "must_visit_paths": [
+      "/programs",
+      "/contact",
+      "/playlist"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kcpr",
+    "name": "KCPR",
+    "country_code": "US",
+    "website": "https://kcpr.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/programming",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kcrw",
+    "name": "KCRW",
+    "country_code": "US",
+    "website": "https://www.kcrw.com/",
+    "must_visit_paths": [
+      "/about/submissions",
+      "/pages/contact",
+      "/music"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 94,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence",
+      "submission_signal"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_kcsb",
+    "name": "KCSB",
+    "country_code": "US",
+    "website": "https://www.kcsb.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kcsm",
+    "name": "KCSM",
+    "country_code": "US",
+    "website": "https://www.kcsm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kusc2_kuscclassical",
+    "name": "KDFC",
+    "country_code": "US",
+    "website": "https://www.kdfc.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 66,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kdhx",
+    "name": "KDHX",
+    "country_code": "US",
+    "website": "https://kdhx.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kdnk",
+    "name": "KDNK",
+    "country_code": "US",
+    "website": "https://www.kdnk.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kdnn",
+    "name": "KDNN",
+    "country_code": "US",
+    "website": "https://kdnnradio.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kdvs",
+    "name": "KDVS",
+    "country_code": "US",
+    "website": "https://kdvs.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 83,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kexp",
+    "name": "KEXP",
+    "country_code": "US",
+    "website": "https://www.kexp.org/",
+    "must_visit_paths": [
+      "/about/submission-guidelines/",
+      "/djs/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 98,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "programs",
+      "recent_evidence",
+      "submission_signal"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_kfai",
+    "name": "KFAI",
+    "country_code": "US",
+    "website": "https://www.kfai.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kgnu",
+    "name": "KGNU",
+    "country_code": "US",
+    "website": "https://kgnu.org/",
+    "must_visit_paths": [
+      "/programs/",
+      "/playlists/",
+      "/contact-us/"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kissfm_la",
+    "name": "KIIS FM Los Angeles",
+    "country_code": "US",
+    "website": "https://kiisfm.iheart.com/",
+    "must_visit_paths": [
+      "/featured/",
+      "/onair/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 55,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence",
+      "submission_signal"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_kjazz_kkjz",
+    "name": "KJazz 88.1 (KKJZ)",
+    "country_code": "US",
+    "website": "https://www.kkjz.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kjhk",
+    "name": "KJHK",
+    "country_code": "US",
+    "website": "https://kjhk.org/web/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kjlu",
+    "name": "KJLU",
+    "country_code": "US",
+    "website": "https://www.kjlu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kjzz",
+    "name": "KJZZ",
+    "country_code": "US",
+    "website": "https://www.kjzz.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kkfi",
+    "name": "KKFI",
+    "country_code": "US",
+    "website": "https://kkfi.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kmhd",
+    "name": "KMHD",
+    "country_code": "US",
+    "website": "https://www.kmhd.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 81,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kmnr",
+    "name": "KMNR",
+    "country_code": "US",
+    "website": "https://kmnr.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_knkx",
+    "name": "KNKX",
+    "country_code": "US",
+    "website": "https://www.knkx.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_knon",
+    "name": "KNON",
+    "country_code": "US",
+    "website": "https://www.knon.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_koop",
+    "name": "KOOP Radio",
+    "country_code": "US",
+    "website": "https://koop.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kopn",
+    "name": "KOPN",
+    "country_code": "US",
+    "website": "https://www.kopn.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kosu",
+    "name": "KOSU",
+    "country_code": "US",
+    "website": "https://www.kosu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kpiss",
+    "name": "KPISS",
+    "country_code": "US",
+    "website": "https://kpiss.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_krcl",
+    "name": "KRCL",
+    "country_code": "US",
+    "website": "https://krcl.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kroq",
+    "name": "KROQ",
+    "country_code": "US",
+    "website": "https://www.audacy.com/kroq",
+    "must_visit_paths": [
+      "/playlist",
+      "/hosts",
+      "/contact-us"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 68,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence",
+      "submission_signal"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_krtu",
+    "name": "KRTU",
+    "country_code": "US",
+    "website": "https://trinity.edu/krtu",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_krui",
+    "name": "KRUI",
+    "country_code": "US",
+    "website": "https://krui.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kscu",
+    "name": "KSCU",
+    "country_code": "US",
+    "website": "https://www.kscu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ksdt",
+    "name": "KSDT UC San Diego",
+    "country_code": "US",
+    "website": "https://ksdt.ucsd.edu/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ksfr",
+    "name": "KSFR",
+    "country_code": "US",
+    "website": "https://www.ksfr.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ksjd",
+    "name": "KSJD",
+    "country_code": "US",
+    "website": "https://www.ksjd.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ksjs",
+    "name": "KSJS",
+    "country_code": "US",
+    "website": "https://ksjs.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kspc",
+    "name": "KSPC",
+    "country_code": "US",
+    "website": "https://kspc.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlists",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ksqd",
+    "name": "KSQD",
+    "country_code": "US",
+    "website": "https://ksqd.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ksua",
+    "name": "KSUA",
+    "country_code": "US",
+    "website": "https://ksuaradio.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ksut",
+    "name": "KSUT Public Radio",
+    "country_code": "US",
+    "website": "https://www.ksut.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ksym",
+    "name": "KSYM",
+    "country_code": "US",
+    "website": "https://ksym.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ktru",
+    "name": "KTRU",
+    "country_code": "US",
+    "website": "https://ktru.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ktsu",
+    "name": "KTSU",
+    "country_code": "US",
+    "website": "https://ktsuradio.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ktuh",
+    "name": "KTUH",
+    "country_code": "US",
+    "website": "https://ktuh.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_ktxt",
+    "name": "KTXT FM",
+    "country_code": "US",
+    "website": "https://www.ktxtfm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kuaf",
+    "name": "KUAF",
+    "country_code": "US",
+    "website": "https://www.kuaf.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kuci",
+    "name": "KUCI",
+    "country_code": "US",
+    "website": "https://kuci.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 81,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kugs",
+    "name": "KUGS 89.3 FM",
+    "country_code": "US",
+    "website": "https://www.kugs.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kumd",
+    "name": "KUMD",
+    "country_code": "US",
+    "website": "https://www.kumd.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kunm",
+    "name": "KUNM",
+    "country_code": "US",
+    "website": "https://www.kunm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kunv",
+    "name": "KUNV 91.5 Jazz & More",
+    "country_code": "US",
+    "website": "https://www.unlv.edu/kunv",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kusc",
+    "name": "KUSC",
+    "country_code": "US",
+    "website": "https://www.kusc.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 68,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kut",
+    "name": "KUT",
+    "country_code": "US",
+    "website": "https://www.kut.org/",
+    "must_visit_paths": [
+      "/music",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_kutr",
+    "name": "KUTR",
+    "country_code": "US",
+    "website": "https://www.kutr.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kutx",
+    "name": "KUTX 98.9",
+    "country_code": "US",
+    "website": "https://kutx.org/",
+    "must_visit_paths": [
+      "/submit-your-music/",
+      "/shows/",
+      "/about/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 95,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence",
+      "submission_signal"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_kuvo",
+    "name": "KUVO Jazz",
+    "country_code": "US",
+    "website": "https://www.kuvo.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kvlu",
+    "name": "KVLU",
+    "country_code": "US",
+    "website": "https://www.kvlu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kvrx",
+    "name": "KVRX",
+    "country_code": "US",
+    "website": "https://kvrx.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kvsc",
+    "name": "KVSC 88.1 FM",
+    "country_code": "US",
+    "website": "https://www.kvsc.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kwtf",
+    "name": "KWTF",
+    "country_code": "US",
+    "website": "https://kwtf.net/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kwur",
+    "name": "KWUR",
+    "country_code": "US",
+    "website": "https://kwur.wustl.edu/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kwva",
+    "name": "KWVA",
+    "country_code": "US",
+    "website": "https://kwva.uoregon.edu/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kxci",
+    "name": "KXCI",
+    "country_code": "US",
+    "website": "https://kxci.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kxlu",
+    "name": "KXLU",
+    "country_code": "US",
+    "website": "https://kxlu.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/djs",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 89,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kxt",
+    "name": "KXT 91.7",
+    "country_code": "US",
+    "website": "https://kxt.org/",
+    "must_visit_paths": [
+      "/music",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 87,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kxua",
+    "name": "KXUA",
+    "country_code": "US",
+    "website": "https://kxua.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kzfr",
+    "name": "KZFR",
+    "country_code": "US",
+    "website": "https://kzfr.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kzsc",
+    "name": "KZSC",
+    "country_code": "US",
+    "website": "https://kzsc.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_zsu",
+    "name": "KZSU Stanford",
+    "country_code": "US",
+    "website": "https://kzsu.stanford.edu/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 85,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_npr_music",
+    "name": "NPR Music",
+    "country_code": "US",
+    "website": "https://www.npr.org/music/",
+    "must_visit_paths": [
+      "/music/",
+      "/series/tiny-desk-concerts/",
+      "/about/contact/"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-06T18:42:37.418849",
+    "priority_score": 35,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_progradio_com",
+    "name": "ProgRadio The Wizard's Forest",
+    "country_code": "US",
+    "website": "https://www.progradio.com/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_kuom",
+    "name": "Radio K (KUOM)",
+    "country_code": "US",
+    "website": "https://www.radiok.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wyms_88nine",
+    "name": "Radio Milwaukee (88Nine WYMS)",
+    "country_code": "US",
+    "website": "https://radiomilwaukee.org/",
+    "must_visit_paths": [
+      "/music",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_radioradiox_com",
+    "name": "radio radio X",
+    "country_code": "US",
+    "website": "https://radioradiox.com/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 62,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_sensimedia_net",
+    "name": "senshiphop",
+    "country_code": "US",
+    "website": "https://sensimedia.net/radio/stations/hiphop",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_siriusxm_alt_nation",
+    "name": "SiriusXM Alt Nation",
+    "country_code": "US",
+    "website": "https://www.siriusxm.com/channels/alt-nation",
+    "must_visit_paths": [
+      "/channels/alt-nation",
+      "/contact-us"
+    ],
+    "enabled": true,
+    "priority_score": 10,
+    "priority_tier": "tier_3",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "catalog"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_ktbg",
+    "name": "The Bridge (KTBG)",
+    "country_code": "US",
+    "website": "https://bridge909.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_the_current_kcmp",
+    "name": "The Current (KCMP)",
+    "country_code": "US",
+    "website": "https://www.thecurrent.org/",
+    "must_visit_paths": [
+      "/music",
+      "/contact",
+      "/programs"
+    ],
+    "enabled": true,
+    "priority_score": 89,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_kcsn_socal_sound",
+    "name": "The SoCal Sound (KCSN)",
+    "country_code": "US",
+    "website": "https://www.thesocalsound.org/",
+    "must_visit_paths": [
+      "/request/",
+      "/shows/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "priority_score": 88,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wamu_bluegrass",
+    "name": "WAMU Bluegrass Country",
+    "country_code": "US",
+    "website": "https://bluegrasscountry.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wbgo",
+    "name": "WBGO",
+    "country_code": "US",
+    "website": "https://www.wbgo.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wbjb",
+    "name": "WBJB 90.5 The Night",
+    "country_code": "US",
+    "website": "https://wbjb.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wbru",
+    "name": "WBRU",
+    "country_code": "US",
+    "website": "https://www.wbru.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wbwc",
+    "name": "WBWC",
+    "country_code": "US",
+    "website": "https://www.wbwc.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wcbe",
+    "name": "WCBE 90.5",
+    "country_code": "US",
+    "website": "https://www.wcbe.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wcbn",
+    "name": "WCBN",
+    "country_code": "US",
+    "website": "https://www.wcbn.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 83,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wcdb",
+    "name": "WCDB",
+    "country_code": "US",
+    "website": "https://wcdbfm.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wclk",
+    "name": "WCLK Jazz 91.9",
+    "country_code": "US",
+    "website": "https://www.wclk.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wcwm",
+    "name": "WCWM",
+    "country_code": "US",
+    "website": "https://www.wcwm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wdcb",
+    "name": "WDCB",
+    "country_code": "US",
+    "website": "https://wdcb.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wdet",
+    "name": "WDET",
+    "country_code": "US",
+    "website": "https://wdet.org/",
+    "must_visit_paths": [
+      "/programs/",
+      "/playlist/",
+      "/about/contact/"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wdiy",
+    "name": "WDIY",
+    "country_code": "US",
+    "website": "https://www.wdiy.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wdre",
+    "name": "WDRT Community Radio",
+    "country_code": "US",
+    "website": "https://www.wdrt.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_weqx",
+    "name": "WEQX",
+    "country_code": "US",
+    "website": "https://www.weqx.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wers",
+    "name": "WERS",
+    "country_code": "US",
+    "website": "https://wers.org/",
+    "must_visit_paths": [
+      "/playlist",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 81,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_weru",
+    "name": "WERU",
+    "country_code": "US",
+    "website": "https://weru.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wesu",
+    "name": "WESU",
+    "country_code": "US",
+    "website": "https://www.wesufm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wext",
+    "name": "WEXT",
+    "country_code": "US",
+    "website": "https://www.wext.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wfdu",
+    "name": "WFDU",
+    "country_code": "US",
+    "website": "https://wfdu.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wfhb",
+    "name": "WFHB",
+    "country_code": "US",
+    "website": "https://wfhb.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wfmu",
+    "name": "WFMU",
+    "country_code": "US",
+    "website": "https://wfmu.org/",
+    "must_visit_paths": [
+      "/playlists/",
+      "/table",
+      "/about"
+    ],
+    "enabled": true,
+    "priority_score": 86,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wfnp",
+    "name": "WFNP",
+    "country_code": "US",
+    "website": "https://www.wfnp.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wfpk",
+    "name": "WFPK",
+    "country_code": "US",
+    "website": "https://wfpk.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wfuv",
+    "name": "WFUV",
+    "country_code": "US",
+    "website": "https://wfuv.org/",
+    "must_visit_paths": [
+      "/music",
+      "/programs",
+      "/contact"
+    ],
+    "enabled": true,
+    "last_verified_at": "2026-03-30T22:01:30.972484",
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "db_match",
+      "manual_country_curation",
+      "recent_evidence"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "us_whrb",
+    "name": "WHRB",
+    "country_code": "US",
+    "website": "https://www.whrb.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_whru",
+    "name": "WHRU",
+    "country_code": "US",
+    "website": "https://www.whru.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_whus",
+    "name": "WHUS",
+    "country_code": "US",
+    "website": "https://whus.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wicb",
+    "name": "WICB",
+    "country_code": "US",
+    "website": "https://wicb.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wicn",
+    "name": "WICN Public Radio",
+    "country_code": "US",
+    "website": "https://wicn.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_witt",
+    "name": "WITT",
+    "country_code": "US",
+    "website": "https://www.wittradio.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wjcu",
+    "name": "WJCU",
+    "country_code": "US",
+    "website": "https://wjcu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wjff",
+    "name": "WJFF Radio Catskill",
+    "country_code": "US",
+    "website": "https://wjffradio.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wkdu",
+    "name": "WKDU",
+    "country_code": "US",
+    "website": "https://wkdu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wknc",
+    "name": "WKNC",
+    "country_code": "US",
+    "website": "https://wknc.org/",
+    "must_visit_paths": [
+      "/programs",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wluw",
+    "name": "WLUW",
+    "country_code": "US",
+    "website": "https://www.wluw.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wmbr",
+    "name": "WMBR",
+    "country_code": "US",
+    "website": "https://wmbr.org/",
+    "must_visit_paths": [
+      "/schedule",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 86,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wmfo",
+    "name": "WMFO",
+    "country_code": "US",
+    "website": "https://wmfo.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/programming",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 70,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wmnr",
+    "name": "WMNR Fine Arts Radio",
+    "country_code": "US",
+    "website": "https://www.wmnr.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wmse",
+    "name": "WMSE",
+    "country_code": "US",
+    "website": "https://www.wmse.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wmuc",
+    "name": "WMUC",
+    "country_code": "US",
+    "website": "https://wmuc.umd.edu/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wmuh",
+    "name": "WMUH",
+    "country_code": "US",
+    "website": "https://wmuh.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wnhu",
+    "name": "WNHU",
+    "country_code": "US",
+    "website": "https://wnhu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wnmc",
+    "name": "WNMC",
+    "country_code": "US",
+    "website": "https://www.wnmc.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wnrn",
+    "name": "WNRN",
+    "country_code": "US",
+    "website": "https://www.wnrn.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 83,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wnur",
+    "name": "WNUR",
+    "country_code": "US",
+    "website": "https://wnur.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/about/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wnxp",
+    "name": "WNXP",
+    "country_code": "US",
+    "website": "https://wnxp.org/",
+    "must_visit_paths": [
+      "/shows/",
+      "/music/",
+      "/about/contact/"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wnyu",
+    "name": "WNYU",
+    "country_code": "US",
+    "website": "https://wnyu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlists",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 87,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wort",
+    "name": "WORT",
+    "country_code": "US",
+    "website": "https://www.wortfm.org/",
+    "must_visit_paths": [
+      "/shows/",
+      "/playlists/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_woub",
+    "name": "WOUB",
+    "country_code": "US",
+    "website": "https://woub.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 71,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_woxy",
+    "name": "WOXY",
+    "country_code": "US",
+    "website": "https://www.woxy.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 68,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wpkn",
+    "name": "WPKN",
+    "country_code": "US",
+    "website": "https://www.wpkn.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wprb",
+    "name": "WPRB",
+    "country_code": "US",
+    "website": "https://wprb.com/",
+    "must_visit_paths": [
+      "/schedule",
+      "/playlists",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 88,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wprk",
+    "name": "WPRK",
+    "country_code": "US",
+    "website": "https://wprk.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wpvm",
+    "name": "WPVM Asheville FM",
+    "country_code": "US",
+    "website": "https://www.wpvmfm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 73,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wqfs",
+    "name": "WQFS",
+    "country_code": "US",
+    "website": "https://wqfs.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wras",
+    "name": "WRAS",
+    "country_code": "US",
+    "website": "https://wras.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrbb",
+    "name": "WRBB",
+    "country_code": "US",
+    "website": "https://wrbb.northeastern.edu/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 81,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrct",
+    "name": "WRCT",
+    "country_code": "US",
+    "website": "https://wrct.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrek",
+    "name": "WREK",
+    "country_code": "US",
+    "website": "https://wrek.org/",
+    "must_visit_paths": [
+      "/schedule",
+      "/shows",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrfl",
+    "name": "WRFL",
+    "country_code": "US",
+    "website": "https://wrfl.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrhu",
+    "name": "WRHU",
+    "country_code": "US",
+    "website": "https://www.wrhu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrir_org",
+    "name": "WRIR Richmond",
+    "country_code": "US",
+    "website": "https://www.wrir.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match",
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-10T23:04:54.829604"
+  },
+  {
+    "key": "us_wriu",
+    "name": "WRIU",
+    "country_code": "US",
+    "website": "https://wriu.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrsu",
+    "name": "WRSU",
+    "country_code": "US",
+    "website": "https://radio.rutgers.edu/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrtc",
+    "name": "WRTC",
+    "country_code": "US",
+    "website": "https://www.wrtc.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrti",
+    "name": "WRTI",
+    "country_code": "US",
+    "website": "https://www.wrti.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wrur",
+    "name": "WRUR",
+    "country_code": "US",
+    "website": "https://www.wrur.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wsbf",
+    "name": "WSBF",
+    "country_code": "US",
+    "website": "https://wsbf.net/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wsou",
+    "name": "WSOU",
+    "country_code": "US",
+    "website": "https://www.wsou.net/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wsum",
+    "name": "WSUM",
+    "country_code": "US",
+    "website": "https://wsum.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wtmd",
+    "name": "WTMD",
+    "country_code": "US",
+    "website": "https://www.wtmd.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 81,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wtul",
+    "name": "WTUL",
+    "country_code": "US",
+    "website": "https://www.wtulneworleans.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wucb",
+    "name": "WUCB",
+    "country_code": "US",
+    "website": "https://www.wucb.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 71,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wucf",
+    "name": "WUCF Jazz",
+    "country_code": "US",
+    "website": "https://www.wucf.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wuft",
+    "name": "WUFT",
+    "country_code": "US",
+    "website": "https://www.wuft.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 72,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wuog",
+    "name": "WUOG",
+    "country_code": "US",
+    "website": "https://wuog.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wusb",
+    "name": "WUSB",
+    "country_code": "US",
+    "website": "https://www.wusb.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wusc",
+    "name": "WUSC",
+    "country_code": "US",
+    "website": "https://www.wusc.fm/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wusf",
+    "name": "WUSF Public Media",
+    "country_code": "US",
+    "website": "https://www.wusf.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wutk",
+    "name": "WUTK 90.3 The Rock",
+    "country_code": "US",
+    "website": "https://wutkradio.com/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 77,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T23:04:54.829604",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wvfs",
+    "name": "WVFS",
+    "country_code": "US",
+    "website": "https://wvfs.fsu.edu/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 79,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wvkr",
+    "name": "WVKR 91.3 FM",
+    "country_code": "US",
+    "website": "https://www.wvkr.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wvum",
+    "name": "WVUM",
+    "country_code": "US",
+    "website": "https://wvum.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 78,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wwoz",
+    "name": "WWOZ",
+    "country_code": "US",
+    "website": "https://www.wwoz.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 86,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wwsp",
+    "name": "WWSP 90FM",
+    "country_code": "US",
+    "website": "https://90fm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 76,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wxci",
+    "name": "WXCI",
+    "country_code": "US",
+    "website": "https://wxci.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:46:21.908185",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wxjm",
+    "name": "WXJM",
+    "country_code": "US",
+    "website": "https://wxjm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wxna",
+    "name": "WXNA",
+    "country_code": "US",
+    "website": "https://www.wxnafm.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wxou",
+    "name": "WXOU",
+    "country_code": "US",
+    "website": "https://www.wxou.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 75,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:05:51.162749",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wxpn",
+    "name": "WXPN",
+    "country_code": "US",
+    "website": "https://xpn.org/",
+    "must_visit_paths": [
+      "/submit-music/",
+      "/shows/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "priority_score": 96,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog",
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wxyc",
+    "name": "WXYC",
+    "country_code": "US",
+    "website": "https://wxyc.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 84,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wyce",
+    "name": "WYCE",
+    "country_code": "US",
+    "website": "https://grcmc.org/wyce",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 80,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wyep",
+    "name": "WYEP",
+    "country_code": "US",
+    "website": "https://wyep.org/",
+    "must_visit_paths": [
+      "/music/",
+      "/shows/",
+      "/contact/"
+    ],
+    "enabled": true,
+    "priority_score": 82,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wyso",
+    "name": "WYSO",
+    "country_code": "US",
+    "website": "https://www.wyso.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 74,
+    "priority_tier": "tier_3",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_wzbc",
+    "name": "WZBC",
+    "country_code": "US",
+    "website": "https://www.wzbc.org/",
+    "must_visit_paths": [
+      "/shows",
+      "/playlist",
+      "/contact"
+    ],
+    "enabled": true,
+    "priority_score": 81,
+    "priority_tier": "tier_2",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "manual_country_curation"
+    ],
+    "added_at": "2026-03-10T22:01:23.581373",
+    "last_verified_at": "2026-03-30T22:01:30.972484"
+  },
+  {
+    "key": "us_zeta93_com",
+    "name": "Zeta 93",
+    "country_code": "US",
+    "website": "https://www.zeta93.com/",
+    "must_visit_paths": [
+      "/contact",
+      "/djs",
+      "/shows",
+      "/programs",
+      "/schedule",
+      "/about/submission-guidelines/",
+      "/submit-music",
+      "/music-submission"
+    ],
+    "enabled": true,
+    "priority_score": 90,
+    "priority_tier": "tier_1",
+    "newcomer_signal": true,
+    "verification_sources": [
+      "catalog_expand",
+      "db_match"
+    ],
+    "added_at": "2026-03-06T18:42:37.418849",
+    "last_verified_at": "2026-03-06T18:42:37.418849"
+  },
+  {
+    "key": "za_5fm",
+    "name": "5FM",
+    "country_code": "ZA",
+    "website": "https://www.5fm.co.za/",
+    "must_visit_paths": [
+      "/shows",
+      "/music",
+      "/contact-us"
+    ],
+    "enabled": true,
+    "priority_tier": "tier_2",
+    "priority_score": 70,
+    "newcomer_signal": false,
+    "verification_sources": [
+      "manual_major_add"
+    ]
+  }
+]

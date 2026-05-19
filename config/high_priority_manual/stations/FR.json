@@ -1,0 +1,46 @@
+{
+  "country_code": "FR",
+  "manual_status": "in_progress",
+  "stations": [
+    {
+      "key": "fr_fip_fr",
+      "name": "FIP",
+      "country_code": "FR",
+      "website": "https://www.fip.fr/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 70,
+      "newcomer_signal": false,
+      "station_class": "auto_db_candidate",
+      "submission_hint_urls": [
+        "https://www.fip.fr/"
+      ],
+      "notes": "Auto-filled from DB (status=CANDIDATE, sub=0, people=0, programs=0, evidence=55)."
+    },
+    {
+      "key": "fr_mouv_fr",
+      "name": "Mouv'",
+      "country_code": "FR",
+      "website": "https://www.mouv.fr/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 70,
+      "newcomer_signal": false,
+      "station_class": "auto_db_candidate",
+      "submission_hint_urls": [
+        "https://www.mouv.fr/"
+      ],
+      "notes": "Auto-filled from DB (status=CANDIDATE, sub=0, people=0, programs=0, evidence=13)."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Radio DB OpenAI cost reconciliation daily
+
+[Timer]
+OnCalendar=*-*-* 00:25:00
+RandomizedDelaySec=10m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

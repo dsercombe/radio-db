@@ -6,6 +6,27 @@ cd "$APP_DIR"
 
 source .venv/bin/activate
 
+mkdir -p "$APP_DIR/.radio_db_state"
+LOCK_FILE="${RUN_CYCLE_LOCK_FILE:-$APP_DIR/.radio_db_state/radio-db-run-cycle.lock}"
+GLOBAL_WRITE_LOCK_FILE="${RADIO_DB_HEAVY_WRITE_LOCK_FILE:-$APP_DIR/.radio_db_state/radio-db-heavy-write.lock}"
+
+_LOCK_UMASK="$(umask)"
+umask 000
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+  umask "$_LOCK_UMASK"
+  echo "run-cycle already running, skip"
+  exit 0
+fi
+
+exec 8>"$GLOBAL_WRITE_LOCK_FILE"
+if ! flock -n 8; then
+  umask "$_LOCK_UMASK"
+  echo "heavy radio-db writer already running, skip run-cycle"
+  exit 0
+fi
+umask "$_LOCK_UMASK"
+
 # Phase A: free bulk ingestion (cheap) - optional, disabled by default for daily cycles
 if [[ "${INGEST_LIMIT:-0}" -gt 0 ]]; then
   radio-db ingest-free --limit "${INGEST_LIMIT:-0}"

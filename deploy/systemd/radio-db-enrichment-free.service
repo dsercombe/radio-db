@@ -1,0 +1,19 @@
+[Unit]
+Description=Radio DB free enrichment scan cycle
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/radio-database
+Environment=APP_DIR=/opt/radio-database
+Environment=ENRICHMENT_FREE_SEED_LIMIT=800
+Environment=ENRICHMENT_FREE_MIN_PRIORITY=35
+Environment=ENRICHMENT_FREE_SCAN_LIMIT=120
+Environment=ENRICHMENT_FREE_MAX_URLS_PER_STATION=12
+ExecStart=/opt/radio-database/scripts/run_enrichment_free_cycle.sh
+User=radio
+Group=radio
+
+[Install]
+WantedBy=multi-user.target

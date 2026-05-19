@@ -6,11 +6,14 @@ from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
-from sqlalchemy import Select, exists, func, or_, select
+from sqlalchemy import Float, Select, cast, exists, func, not_, or_, select
 from sqlalchemy.orm import Session
 
-from radio_db.db import SessionLocal
+from radio_db.api.common import require_permission_mode
+from radio_db.db import SessionLocal, engine
 from radio_db.models.entities import (
+    FormStatus,
+    FormType,
     Station,
     StationAlias,
     StationContact,
@@ -18,7 +21,9 @@ from radio_db.models.entities import (
     StationPerson,
     StationProgram,
     StationStatus,
+    StationSubmissionAssessment,
     SubmissionChannel,
+    SubmissionMethod,
     SubmissionForm,
 )
 
@@ -48,6 +53,61 @@ def _parse_json(raw: str | None, fallback: object) -> object:
         return fallback
 
 
+def _quality_evidence_text(key: str):
+    if engine.dialect.name == "postgresql":
+        return func.substring(StationSubmissionAssessment.evidence_json, f'"{key}"\\s*:\\s*"([^"]*)"')
+    return func.json_extract(StationSubmissionAssessment.evidence_json, f"$.{key}")
+
+
+def _quality_evidence_number(key: str):
+    if engine.dialect.name == "postgresql":
+        return func.substring(
+            StationSubmissionAssessment.evidence_json,
+            f'"{key}"\\s*:\\s*(-?[0-9]+(?:\\.[0-9]+)?)',
+        )
+    return func.json_extract(StationSubmissionAssessment.evidence_json, f"$.{key}")
+
+
+VERIFIED_SUBMISSION_ROUTE_TYPES = {
+    "direct_music_form",
+    "gated_music_form",
+    "explicit_submission_email",
+    "music_director_contact",
+}
+CONTACT_ONLY_ROUTE_TYPES = {"contact_email_only", "contact_form_only"}
+VERIFIED_FORM_TYPES = {FormType.MUSIC_SUBMISSION, FormType.ARTIST_UPLOAD, FormType.NEWCOMER}
+
+
+def _has_verified_submission_condition(station_id_column=Station.id):
+    return or_(
+        Station.best_submission_route_type.in_(list(VERIFIED_SUBMISSION_ROUTE_TYPES)),
+        exists(
+            select(SubmissionForm.id).where(
+                SubmissionForm.station_id == station_id_column,
+                SubmissionForm.status == FormStatus.ACTIVE,
+                SubmissionForm.form_type.in_(list(VERIFIED_FORM_TYPES)),
+            )
+        ),
+        exists(
+            select(SubmissionChannel.id).where(
+                SubmissionChannel.station_id == station_id_column,
+                or_(
+                    SubmissionChannel.manual_confirmed.is_(True),
+                    SubmissionChannel.method.in_([SubmissionMethod.FORM, SubmissionMethod.PORTAL]),
+                ),
+            )
+        ),
+    )
+
+
+def _route_bucket(route_type: str | None) -> str:
+    if route_type in VERIFIED_SUBMISSION_ROUTE_TYPES:
+        return "verified_submission"
+    if route_type in CONTACT_ONLY_ROUTE_TYPES:
+        return "contact_only"
+    return ""
+
+
 class StationListItem(BaseModel):
     id: int
     canonical_name: str
@@ -61,6 +121,13 @@ class StationListItem(BaseModel):
     genre_count: int = 0
     people_count: int = 0
     submission_count: int = 0
+    quality_score: float | None = None
+    submission_path_quality: str = ""
+    outreach_bucket: str = ""
+    best_submission_route_type: str = ""
+    best_submission_route_url: str | None = None
+    best_submission_route_email: str | None = None
+    best_submission_route_confidence: float | None = None
 
 
 class StationListResponse(BaseModel):
@@ -164,6 +231,7 @@ def _apply_station_filters(
     has_submission: bool | None,
     has_people: bool | None,
     min_confidence: float,
+    outreach: str,
 ) -> Select[tuple[Station]]:
     if q:
         needle = f"%{q.lower()}%"
@@ -176,24 +244,80 @@ def _apply_station_filters(
         )
     if country:
         stmt = stmt.where(func.upper(Station.country_code) == country.upper())
-    if status:
-        safe_status = status.lower()
-        if safe_status == "candidate":
-            stmt = stmt.where(Station.status == StationStatus.CANDIDATE)
-        elif safe_status == "verified":
-            stmt = stmt.where(Station.status == StationStatus.VERIFIED)
-        elif safe_status == "rejected":
-            stmt = stmt.where(Station.status == StationStatus.REJECTED)
-    if has_submission is True:
-        stmt = stmt.where(exists(select(SubmissionChannel.id).where(SubmissionChannel.station_id == Station.id)))
-    if has_submission is False:
-        stmt = stmt.where(~exists(select(SubmissionChannel.id).where(SubmissionChannel.station_id == Station.id)))
+    safe_status = status.lower()
+    if safe_status == "candidate":
+        stmt = stmt.where(Station.status == StationStatus.CANDIDATE)
+    elif safe_status == "verified":
+        stmt = stmt.where(Station.status == StationStatus.VERIFIED)
+    elif safe_status == "rejected":
+        stmt = stmt.where(Station.status == StationStatus.REJECTED)
+    elif safe_status == "archived":
+        stmt = stmt.where(Station.status == StationStatus.ARCHIVED)
+    elif safe_status in {"all", "raw"}:
+        pass
+    else:
+        stmt = stmt.where(Station.status.in_([StationStatus.CANDIDATE, StationStatus.VERIFIED]))
     if has_people is True:
         stmt = stmt.where(exists(select(StationPerson.id).where(StationPerson.station_id == Station.id)))
     if has_people is False:
         stmt = stmt.where(~exists(select(StationPerson.id).where(StationPerson.station_id == Station.id)))
     if min_confidence > 0:
         stmt = stmt.where(Station.confidence_score >= min_confidence)
+    latest_quality = (
+        select(func.max(StationSubmissionAssessment.id))
+        .where(
+            StationSubmissionAssessment.station_id == Station.id,
+            StationSubmissionAssessment.assessment_kind == "llm_quality_v1",
+        )
+        .correlate(Station)
+        .scalar_subquery()
+    )
+    latest_quality_exists = exists(
+        select(StationSubmissionAssessment.id).where(
+            StationSubmissionAssessment.id == latest_quality,
+        )
+    )
+    path_quality = _quality_evidence_text("submission_path_quality")
+    quality_score = cast(_quality_evidence_number("quality_score"), Float)
+    verified_submission_condition = or_(
+        _has_verified_submission_condition(),
+        exists(
+            select(StationSubmissionAssessment.id).where(
+                StationSubmissionAssessment.id == latest_quality,
+                path_quality.in_(list(VERIFIED_SUBMISSION_ROUTE_TYPES)),
+            )
+        ),
+    )
+    if has_submission is True:
+        stmt = stmt.where(verified_submission_condition)
+    if has_submission is False:
+        stmt = stmt.where(not_(verified_submission_condition))
+    if outreach:
+        stmt = stmt.outerjoin(
+            StationSubmissionAssessment,
+            StationSubmissionAssessment.id == latest_quality,
+        )
+        safe_outreach = outreach.strip().lower()
+        if safe_outreach in {"verified_submission", "submission_confirmed"}:
+            stmt = stmt.where(
+                or_(
+                    path_quality.in_(list(VERIFIED_SUBMISSION_ROUTE_TYPES)),
+                    verified_submission_condition,
+                ),
+            )
+        elif safe_outreach in {"contact_only", "contact_only_quality"}:
+            stmt = stmt.where(
+                not_(verified_submission_condition),
+                or_(
+                    path_quality.in_(list(CONTACT_ONLY_ROUTE_TYPES)),
+                    Station.best_submission_route_type.in_(list(CONTACT_ONLY_ROUTE_TYPES)),
+                ),
+            )
+        elif safe_outreach == "needs_review":
+            stmt = stmt.where(
+                latest_quality_exists,
+                path_quality.in_(["submission_page_signal", "none", "unknown"]),
+            )
     return stmt
 
 
@@ -204,6 +328,14 @@ def list_stations(
     status: str = Query(default=""),
     has_submission: Literal["any", "yes", "no"] = Query(default="any"),
     has_people: Literal["any", "yes", "no"] = Query(default="any"),
+    outreach: Literal[
+        "",
+        "verified_submission",
+        "contact_only",
+        "submission_confirmed",
+        "contact_only_quality",
+        "needs_review",
+    ] = Query(default=""),
     min_confidence: float = Query(default=0.0, ge=0.0, le=1.0),
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=50, ge=1, le=200),
@@ -223,6 +355,7 @@ def list_stations(
         has_submission=has_submission_filter,
         has_people=has_people_filter,
         min_confidence=min_confidence,
+        outreach=outreach.strip(),
     )
 
     total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
@@ -245,6 +378,8 @@ def list_stations(
     genre_counts: dict[int, int] = {}
     people_counts: dict[int, int] = {}
     submission_counts: dict[int, int] = {}
+    verified_submission_flags: dict[int, bool] = {}
+    quality_by_station: dict[int, dict[str, object]] = {}
 
     if station_ids:
         genre_counts = {
@@ -271,6 +406,58 @@ def list_stations(
                 .group_by(SubmissionChannel.station_id)
             ).all()
         }
+        verified_station_ids = set(
+            int(sid)
+            for sid, in db.execute(
+                select(Station.id).where(
+                    Station.id.in_(station_ids),
+                    _has_verified_submission_condition(Station.id),
+                )
+            ).all()
+        )
+        verified_submission_flags = {sid: sid in verified_station_ids for sid in station_ids}
+        quality_rows = db.execute(
+            select(
+                StationSubmissionAssessment.station_id,
+                StationSubmissionAssessment.evidence_json,
+                StationSubmissionAssessment.is_real_station,
+                StationSubmissionAssessment.accepts_music_submissions,
+            )
+            .where(
+                StationSubmissionAssessment.station_id.in_(station_ids),
+                StationSubmissionAssessment.assessment_kind == "llm_quality_v1",
+                StationSubmissionAssessment.id.in_(
+                    select(func.max(StationSubmissionAssessment.id))
+                    .where(
+                        StationSubmissionAssessment.station_id.in_(station_ids),
+                        StationSubmissionAssessment.assessment_kind == "llm_quality_v1",
+                    )
+                    .group_by(StationSubmissionAssessment.station_id)
+                ),
+            )
+        ).all()
+        for sid, evidence_json, is_real_station, accepts_music_submissions in quality_rows:
+            payload = _parse_json(evidence_json, {})
+            if not isinstance(payload, dict):
+                payload = {}
+            path_quality = str(payload.get("submission_path_quality") or "")
+            quality_score_raw = payload.get("quality_score")
+            try:
+                quality_score_value = float(quality_score_raw) if quality_score_raw is not None else None
+            except Exception:
+                quality_score_value = None
+            bucket = _route_bucket(path_quality)
+            if bucket:
+                pass
+            elif is_real_station and path_quality:
+                bucket = "needs_review"
+            else:
+                bucket = ""
+            quality_by_station[int(sid)] = {
+                "submission_path_quality": path_quality,
+                "quality_score": quality_score_value,
+                "outreach_bucket": bucket,
+            }
 
     return StationListResponse(
         total=int(total),
@@ -290,6 +477,26 @@ def list_stations(
                 genre_count=genre_counts.get(row.id, 0),
                 people_count=people_counts.get(row.id, 0),
                 submission_count=submission_counts.get(row.id, 0),
+                quality_score=quality_by_station.get(row.id, {}).get("quality_score"),  # type: ignore[arg-type]
+                submission_path_quality=str(
+                    row.best_submission_route_type
+                    or quality_by_station.get(row.id, {}).get("submission_path_quality")
+                    or ""
+                ),
+                outreach_bucket=str(
+                    ("verified_submission" if verified_submission_flags.get(row.id) else "")
+                    or _route_bucket(row.best_submission_route_type)
+                    or quality_by_station.get(row.id, {}).get("outreach_bucket")
+                    or ""
+                ),
+                best_submission_route_type=str(row.best_submission_route_type or ""),
+                best_submission_route_url=row.best_submission_route_url,
+                best_submission_route_email=row.best_submission_route_email,
+                best_submission_route_confidence=(
+                    float(row.best_submission_route_confidence)
+                    if row.best_submission_route_confidence is not None
+                    else None
+                ),
             )
             for row in stations
         ],
@@ -410,6 +617,7 @@ def update_station(
     station_id: int,
     payload: StationUpdateRequest,
     db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
 ) -> StationDetailResponse:
     station = db.scalar(select(Station).where(Station.id == station_id))
     if station is None:

@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Any
 
 from radio_db.config import settings
+from radio_db.db import SessionLocal
+from radio_db.models.entities import BrowserSessionEvent, BrowserSessionRecord
 
 try:
     from playwright.sync_api import Error as PlaywrightError
@@ -40,18 +42,106 @@ def _readable_error(exc: Exception) -> str:
     return message[-2000:]
 
 
+def _parse_json(raw: str | None, fallback: object) -> object:
+    if not raw:
+        return fallback
+    try:
+        return json.loads(raw)
+    except Exception:
+        return fallback
+
+
+def _persist_session_state(session: "BrowserSession", closed: bool = False) -> None:
+    with SessionLocal() as db:
+        row = db.query(BrowserSessionRecord).filter(BrowserSessionRecord.session_key == session.id).one_or_none()
+        if row is None:
+            row = BrowserSessionRecord(session_key=session.id)
+            db.add(row)
+        row.station_id = session.station_id
+        row.run_id = session.run_id
+        row.url = session.url or "about:blank"
+        row.title = (session.title or "")[:500]
+        row.status = (session.status or "idle")[:64]
+        row.last_error = session.last_error or ""
+        row.screenshot_path = session.screenshot_path
+        row.html_path = session.html_path
+        row.action_count = len(session.actions)
+        row.event_count = len(session.timeline)
+        row.metadata_json = json.dumps(session.metadata or {}, ensure_ascii=False)
+        row.created_at = session.created_at
+        row.updated_at = session.updated_at
+        if closed:
+            row.closed_at = session.updated_at
+        db.commit()
+
+
+def _persist_event(session: "BrowserSession", item: dict[str, Any]) -> None:
+    with SessionLocal() as db:
+        row = db.query(BrowserSessionRecord).filter(BrowserSessionRecord.session_key == session.id).one_or_none()
+        if row is None:
+            row = BrowserSessionRecord(
+                session_key=session.id,
+                station_id=session.station_id,
+                run_id=session.run_id,
+                url=session.url or "about:blank",
+                title=(session.title or "")[:500],
+                status=(session.status or "idle")[:64],
+                last_error=session.last_error or "",
+                metadata_json=json.dumps(session.metadata or {}, ensure_ascii=False),
+                created_at=session.created_at,
+                updated_at=session.updated_at,
+            )
+            db.add(row)
+            db.flush()
+        event_index = int(item.get("id", 0) or 0)
+        exists = (
+            db.query(BrowserSessionEvent)
+            .filter(BrowserSessionEvent.session_id == row.id, BrowserSessionEvent.event_index == event_index)
+            .one_or_none()
+        )
+        if exists is None:
+            created_at_raw = str(item.get("at") or "")
+            try:
+                created_at = datetime.fromisoformat(created_at_raw)
+            except Exception:
+                created_at = _now()
+            db.add(
+                BrowserSessionEvent(
+                    session_id=row.id,
+                    event_index=event_index,
+                    event_type=str(item.get("type") or "event")[:64],
+                    payload_json=json.dumps(item.get("payload") or {}, ensure_ascii=False),
+                    url=str(item.get("url") or session.url or "about:blank")[:2048],
+                    status=str(item.get("status") or session.status or "idle")[:64],
+                    title=str(item.get("title") or session.title or "")[:500],
+                    created_at=created_at,
+                )
+            )
+        row.url = session.url or row.url
+        row.title = (session.title or row.title or "")[:500]
+        row.status = (session.status or row.status or "idle")[:64]
+        row.last_error = session.last_error or row.last_error or ""
+        row.screenshot_path = session.screenshot_path
+        row.html_path = session.html_path
+        row.action_count = len(session.actions)
+        row.event_count = len(session.timeline)
+        row.metadata_json = json.dumps(session.metadata or {}, ensure_ascii=False)
+        row.updated_at = session.updated_at
+        db.commit()
+
+
 def _record_event(session: BrowserSession, event_type: str, payload: dict[str, Any] | None = None) -> None:
-    session.timeline.append(
-        {
-            "id": len(session.timeline) + 1,
-            "type": event_type,
-            "payload": payload or {},
-            "at": _now().isoformat(),
-            "url": session.url,
-            "status": session.status,
-            "title": session.title,
-        }
-    )
+    item = {
+        "id": len(session.timeline) + 1,
+        "type": event_type,
+        "payload": payload or {},
+        "at": _now().isoformat(),
+        "url": session.url,
+        "status": session.status,
+        "title": session.title,
+    }
+    session.timeline.append(item)
+    _persist_event(session, item)
 
 
 @dataclass
@@ -95,6 +185,33 @@ class BrowserSession:
         }
 
 
+def _record_to_dict(row: BrowserSessionRecord) -> dict[str, Any]:
+    metadata = _parse_json(row.metadata_json, {})
+    if not isinstance(metadata, dict):
+        metadata = {}
+    actions = metadata.get("actions", [])
+    if not isinstance(actions, list):
+        actions = []
+    return {
+        "id": row.session_key,
+        "station_id": row.station_id,
+        "run_id": row.run_id,
+        "url": row.url,
+        "title": row.title,
+        "status": row.status,
+        "last_error": row.last_error,
+        "screenshot_path": row.screenshot_path,
+        "html_path": row.html_path,
+        "action_count": row.action_count,
+        "actions": list(actions[-20:]),
+        "timeline": [],
+        "event_count": row.event_count,
+        "metadata": dict(metadata),
+        "created_at": row.created_at.isoformat(),
+        "updated_at": row.updated_at.isoformat(),
+    }
+
+
 def _ensure_playwright() -> None:
     if sync_playwright is None:
         raise RuntimeError("playwright_not_installed")
@@ -134,6 +251,8 @@ def _update_state(session: BrowserSession, page: Any) -> BrowserSession:
         pass
     session.updated_at = _now()
     _persist_snapshot(session, page)
+    session.metadata["actions"] = list(session.actions[-50:])
+    _persist_session_state(session)
     return session
 
 
@@ -165,6 +284,7 @@ def open_browser_session(start_url: str | None = None, station_id: int | None = 
             _context=context,
             _page=page,
         )
+        _persist_session_state(session)
         _persist_snapshot(session, page, label="opened")
         _record_event(session, "opened", {"start_url": start_url, "station_id": station_id, "run_id": run_id})
         with _LOCK:
@@ -174,7 +294,29 @@ def open_browser_session(start_url: str | None = None, station_id: int | None = 
 
 def list_browser_sessions() -> list[dict[str, Any]]:
     with _LOCK:
-        return [session.to_dict() for session in sorted(_SESSIONS.values(), key=lambda item: item.updated_at, reverse=True)]
+        active = {session.id: session.to_dict() for session in _SESSIONS.values()}
+    with SessionLocal() as db:
+        rows = (
+            db.query(BrowserSessionRecord)
+            .order_by(BrowserSessionRecord.updated_at.desc(), BrowserSessionRecord.id.desc())
+            .limit(100)
+            .all()
+        )
+    for row in rows:
+        active.setdefault(row.session_key, _record_to_dict(row))
+    return sorted(active.values(), key=lambda item: item.get("updated_at", ""), reverse=True)
+
+
+def get_browser_session_state(session_id: str) -> dict[str, Any]:
+    with _LOCK:
+        session = _SESSIONS.get(session_id)
+    if session is not None:
+        return session.to_dict()
+    with SessionLocal() as db:
+        row = db.query(BrowserSessionRecord).filter(BrowserSessionRecord.session_key == session_id).one_or_none()
+    if row is None:
+        raise KeyError(session_id)
+    return _record_to_dict(row)
 
 
 def get_browser_session(session_id: str) -> BrowserSession:
@@ -258,8 +400,13 @@ def close_browser_session(session_id: str) -> None:
         session = _SESSIONS.pop(session_id, None)
     if session is None:
         raise KeyError(session_id)
+    session.status = "closed"
+    session.updated_at = _now()
     try:
         _record_event(session, "closing", {})
+    except Exception:
+        pass
+    try:
         session._context.close()
     except Exception:
         pass
@@ -267,3 +414,40 @@ def close_browser_session(session_id: str) -> None:
         session._browser.close()
     except Exception:
         pass
+    session.metadata["actions"] = list(session.actions[-50:])
+    _persist_session_state(session, closed=True)
+
+
+def list_browser_session_events(session_id: str, limit: int = 50) -> tuple[int, list[dict[str, Any]]]:
+    with _LOCK:
+        session = _SESSIONS.get(session_id)
+    if session is not None:
+        items = session.timeline[-max(1, limit) :]
+        return len(session.timeline), list(items)
+
+    with SessionLocal() as db:
+        row = db.query(BrowserSessionRecord).filter(BrowserSessionRecord.session_key == session_id).one_or_none()
+        if row is None:
+            raise KeyError(session_id)
+        items = (
+            db.query(BrowserSessionEvent)
+            .filter(BrowserSessionEvent.session_id == row.id)
+            .order_by(BrowserSessionEvent.event_index.desc())
+            .limit(max(1, limit))
+            .all()
+        )
+        event_count = int(row.event_count or len(items))
+
+    normalized = [
+        {
+            "id": item.event_index,
+            "type": item.event_type,
+            "payload": dict(_parse_json(item.payload_json, {})),
+            "at": item.created_at.isoformat(),
+            "url": item.url,
+            "status": item.status,
+            "title": item.title,
+        }
+        for item in reversed(items)
+    ]
+    return event_count, normalized

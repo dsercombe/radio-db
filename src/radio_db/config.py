@@ -5,7 +5,23 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
+    api_permission_mode: str = Field(default="dry-run", alias="RADIO_DB_PERMISSION_MODE")
     database_url: str = Field(default="sqlite:///radio.db", alias="DATABASE_URL")
+    smtp_host: str = Field(default="", alias="SMTP_HOST")
+    smtp_port: int = Field(default=587, alias="SMTP_PORT")
+    smtp_username: str = Field(default="", alias="SMTP_USERNAME")
+    smtp_password: str = Field(default="", alias="SMTP_PASSWORD")
+    smtp_from_email: str = Field(default="", alias="SMTP_FROM_EMAIL")
+    smtp_from_name: str = Field(default="Radio DB", alias="SMTP_FROM_NAME")
+    smtp_use_starttls: bool = Field(default=True, alias="SMTP_USE_STARTTLS")
+    smtp_use_ssl: bool = Field(default=False, alias="SMTP_USE_SSL")
+    smtp_timeout_seconds: int = Field(default=20, alias="SMTP_TIMEOUT_SECONDS")
+    contact_execute_name: str = Field(default="", alias="CONTACT_EXECUTE_NAME")
+    contact_execute_email: str = Field(default="", alias="CONTACT_EXECUTE_EMAIL")
+    contact_execute_company: str = Field(default="", alias="CONTACT_EXECUTE_COMPANY")
+    contact_execute_website: str = Field(default="", alias="CONTACT_EXECUTE_WEBSITE")
+    contact_execute_phone: str = Field(default="", alias="CONTACT_EXECUTE_PHONE")
+    contact_execute_city: str = Field(default="", alias="CONTACT_EXECUTE_CITY")
     openai_api_key: str | None = Field(default=None, alias="OPENAI_API_KEY")
     openai_base_url: str = Field(default="https://api.openai.com/v1", alias="OPENAI_BASE_URL")
     llm_model: str = Field(default="gpt-4.1-mini", alias="LLM_MODEL")
@@ -27,10 +43,14 @@ class Settings(BaseSettings):
     llm_hybrid_xai_percent: int = Field(default=30, alias="LLM_HYBRID_XAI_PERCENT")
 
     brave_api_key: str | None = Field(default=None, alias="BRAVE_API_KEY")
+    brave_api_keys: str | None = Field(default=None, alias="BRAVE_API_KEYS")
     brave_base_url: str = Field(default="https://api.search.brave.com/res/v1/web/search", alias="BRAVE_BASE_URL")
     max_brave_calls_per_month: int = Field(default=500, alias="MAX_BRAVE_CALLS_PER_MONTH")
     enable_brave_search: bool = Field(default=True, alias="ENABLE_BRAVE_SEARCH")
     brave_answer_api_key: str | None = Field(default=None, alias="BRAVE_ANSWER_API_KEY")
+    brave_answer_api_keys: str | None = Field(default=None, alias="BRAVE_ANSWER_API_KEYS")
+    phase2_brave_answer_api_key: str | None = Field(default=None, alias="PHASE2_BRAVE_ANSWER_API_KEY")
+    phase2_brave_answer_api_keys: str | None = Field(default=None, alias="PHASE2_BRAVE_ANSWER_API_KEYS")
     brave_answer_base_url: str = Field(
         default="https://api.search.brave.com/res/v1/answer/search",
         alias="BRAVE_ANSWER_BASE_URL",
@@ -169,6 +189,22 @@ class Settings(BaseSettings):
         default="https://generativelanguage.googleapis.com/v1beta",
         alias="GEMINI_BASE_URL",
     )
+    gemini_http_wall_timeout_seconds: float = Field(
+        default=120.0,
+        alias="GEMINI_HTTP_WALL_TIMEOUT_SECONDS",
+    )
+    gemini_http_connect_timeout_seconds: float = Field(
+        default=10.0,
+        alias="GEMINI_HTTP_CONNECT_TIMEOUT_SECONDS",
+    )
+    gemini_http_read_timeout_seconds: float = Field(
+        default=45.0,
+        alias="GEMINI_HTTP_READ_TIMEOUT_SECONDS",
+    )
+    gemini_http_trust_env: bool = Field(
+        default=False,
+        alias="GEMINI_HTTP_TRUST_ENV",
+    )
     station_quality_provider: str = Field(default="gemini", alias="STATION_QUALITY_PROVIDER")
     station_quality_assessment_kind: str = Field(default="llm_quality_v1", alias="STATION_QUALITY_ASSESSMENT_KIND")
     station_quality_openai_model: str = Field(default="gpt-5.4-mini", alias="STATION_QUALITY_OPENAI_MODEL")
@@ -191,6 +227,43 @@ class Settings(BaseSettings):
         default=400,
         alias="STATION_QUALITY_GEMINI_MAX_OUTPUT_TOKENS",
     )
+    editorial_enrichment_provider: str = Field(default="gemini", alias="EDITORIAL_ENRICHMENT_PROVIDER")
+    editorial_enrichment_assessment_kind: str = Field(
+        default="editorial_fit_v1",
+        alias="EDITORIAL_ENRICHMENT_ASSESSMENT_KIND",
+    )
+    editorial_enrichment_openai_model: str = Field(
+        default="gpt-5.4-mini",
+        alias="EDITORIAL_ENRICHMENT_OPENAI_MODEL",
+    )
+    editorial_enrichment_gemini_model: str = Field(
+        default="gemini-2.5-flash-lite",
+        alias="EDITORIAL_ENRICHMENT_GEMINI_MODEL",
+    )
+    editorial_enrichment_estimated_output_tokens: int = Field(
+        default=180,
+        alias="EDITORIAL_ENRICHMENT_ESTIMATED_OUTPUT_TOKENS",
+    )
+    editorial_enrichment_gemini_input_price_per_1m: float = Field(
+        default=0.10,
+        alias="EDITORIAL_ENRICHMENT_GEMINI_INPUT_PRICE_PER_1M",
+    )
+    editorial_enrichment_gemini_output_price_per_1m: float = Field(
+        default=0.40,
+        alias="EDITORIAL_ENRICHMENT_GEMINI_OUTPUT_PRICE_PER_1M",
+    )
+    editorial_enrichment_max_calls_per_day: int = Field(
+        default=1200,
+        alias="EDITORIAL_ENRICHMENT_MAX_CALLS_PER_DAY",
+    )
+    editorial_enrichment_max_daily_usd: float = Field(
+        default=5.0,
+        alias="EDITORIAL_ENRICHMENT_MAX_DAILY_USD",
+    )
+    editorial_enrichment_gemini_max_output_tokens: int = Field(
+        default=260,
+        alias="EDITORIAL_ENRICHMENT_GEMINI_MAX_OUTPUT_TOKENS",
+    )
     station_quality_exception_registry_path: str = Field(
         default="config/station_quality_exceptions.json",
         alias="STATION_QUALITY_EXCEPTION_REGISTRY_PATH",
@@ -208,6 +281,24 @@ class Settings(BaseSettings):
     country_discovery_min_confidence: float = Field(default=0.35, alias="COUNTRY_DISCOVERY_MIN_CONFIDENCE")
     country_discovery_include_linkup: bool = Field(default=True, alias="COUNTRY_DISCOVERY_INCLUDE_LINKUP")
     country_discovery_max_results_per_query: int = Field(default=15, alias="COUNTRY_DISCOVERY_MAX_RESULTS_PER_QUERY")
+
+    outreach_llm_gemini_model: str = Field(default="gemini-2.5-flash-lite", alias="OUTREACH_LLM_GEMINI_MODEL")
+    outreach_llm_max_calls_per_day: int = Field(default=400, alias="OUTREACH_LLM_MAX_CALLS_PER_DAY")
+    outreach_llm_max_daily_usd: float = Field(default=3.0, alias="OUTREACH_LLM_MAX_DAILY_USD")
+    outreach_llm_gemini_max_output_tokens: int = Field(default=1024, alias="OUTREACH_LLM_GEMINI_MAX_OUTPUT_TOKENS")
+    outreach_llm_gemini_input_price_per_1m: float = Field(default=0.10, alias="OUTREACH_LLM_GEMINI_INPUT_PRICE_PER_1M")
+    outreach_llm_gemini_output_price_per_1m: float = Field(default=0.40, alias="OUTREACH_LLM_GEMINI_OUTPUT_PRICE_PER_1M")
+    outreach_llm_estimated_output_tokens: int = Field(default=550, alias="OUTREACH_LLM_ESTIMATED_OUTPUT_TOKENS")
+    outreach_tracking_base_url: str = Field(
+        default="http://radio.public-air.net",
+        alias="OUTREACH_TRACKING_BASE_URL",
+    )
+    enrichment_free_rescan_hours: int = Field(default=24, alias="ENRICHMENT_FREE_RESCAN_HOURS")
+    enrichment_free_fetch_timeout_seconds: float = Field(default=6.0, alias="ENRICHMENT_FREE_FETCH_TIMEOUT_SECONDS")
+    enrichment_paid_low_api_calls: int = Field(default=1, alias="ENRICHMENT_PAID_LOW_API_CALLS")
+    enrichment_paid_normal_api_calls: int = Field(default=2, alias="ENRICHMENT_PAID_NORMAL_API_CALLS")
+    enrichment_paid_high_api_calls: int = Field(default=4, alias="ENRICHMENT_PAID_HIGH_API_CALLS")
+    enrichment_paid_results_per_query: int = Field(default=8, alias="ENRICHMENT_PAID_RESULTS_PER_QUERY")
 
 
 settings = Settings()

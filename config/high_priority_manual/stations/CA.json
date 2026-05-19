@@ -1,0 +1,26 @@
+{
+  "country_code": "CA",
+  "manual_status": "in_progress",
+  "stations": [
+    {
+      "key": "ca_chly_ca",
+      "name": "Submit your Music - CHLY 101.7FM",
+      "country_code": "CA",
+      "website": "https://www.chly.ca/submissions",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "auto_db_candidate",
+      "submission_hint_urls": [
+        "https://www.chly.ca/submissions"
+      ],
+      "notes": "Auto-filled from DB (status=VERIFIED, sub=5, people=0, programs=0, evidence=88)."
+    }
+  ]
+}

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from radio_db.config import settings
 from radio_db.connectors.http import post_json
+from radio_db.services.api_call_history import log_api_call
 from radio_db.services.budget import ApiUsageGuard
 from radio_db.services.key_rotation import next_key_index
 
@@ -26,6 +27,14 @@ def _tavily_keys() -> list[str]:
 def search_tavily(query: str, count: int = 10, country: str | None = None) -> list[dict]:
     keys = _tavily_keys()
     if not settings.enable_tavily_search or not keys:
+        log_api_call(
+            provider="tavily",
+            operation="search",
+            query=query,
+            country=country,
+            status="disabled_or_missing_key",
+            meta={"count": count},
+        )
         return []
 
     usage = ApiUsageGuard(
@@ -38,11 +47,28 @@ def search_tavily(query: str, count: int = 10, country: str | None = None) -> li
         max_daily_calls=effective_daily_calls,
         max_monthly_calls=effective_monthly_calls,
     ):
+        log_api_call(
+            provider="tavily",
+            operation="search",
+            query=query,
+            country=country,
+            status="skipped_quota",
+            meta={
+                "count": count,
+                "effective_daily_calls": effective_daily_calls,
+                "effective_monthly_calls": effective_monthly_calls,
+                "day_calls": usage.state.tavily_calls_day,
+                "month_calls": usage.state.tavily_calls_month,
+            },
+        )
         return []
 
     start = next_key_index("tavily", len(keys))
     response = None
+    last_error = ""
+    attempts = 0
     for offset in range(len(keys)):
+        attempts += 1
         key = keys[(start + offset) % len(keys)]
         payload = {
             "api_key": key,
@@ -57,13 +83,32 @@ def search_tavily(query: str, count: int = 10, country: str | None = None) -> li
         try:
             response = post_json(settings.tavily_base_url, payload=payload)
             break
-        except Exception:
+        except Exception as exc:
+            last_error = f"{exc.__class__.__name__}:{str(exc)[:220]}"
             continue
     if response is None:
+        log_api_call(
+            provider="tavily",
+            operation="search",
+            query=query,
+            country=country,
+            status="error",
+            error=last_error,
+            meta={"count": count, "attempts": attempts, "keys": len(keys)},
+        )
         return []
 
     usage.register_tavily_call()
     rows = response.get("results", []) if isinstance(response, dict) else []
+    log_api_call(
+        provider="tavily",
+        operation="search",
+        query=query,
+        country=country,
+        status="success",
+        result_count=len(rows),
+        meta={"count": count, "attempts": attempts, "keys": len(keys)},
+    )
     results: list[dict] = []
     for row in rows:
         results.append(

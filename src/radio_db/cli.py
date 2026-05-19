@@ -7,6 +7,7 @@ from rich import print
 
 from radio_db.db import SessionLocal, init_db
 from radio_db.dashboard import create_app
+from radio_db.services.editorial_enrichment import run_station_editorial_enrichment
 from radio_db.services.people import (
     build_station_people,
     cleanup_people_quality,
@@ -36,7 +37,47 @@ from radio_db.services.forms import (
     run_country_form_cycle,
     scan_submission_forms,
 )
-from radio_db.services.forms_agent import run_main_scan_cycle, run_rejected_scan_cycle, start_manual_scan_run
+from radio_db.services.forms_agent import (
+    backfill_rejected_scan_markers,
+    release_stale_rejected_scan_claims,
+    run_main_scan_cycle,
+    run_rejected_scan_cycle,
+    run_rejected_quality_review,
+    run_rejected_scan_dispatch,
+    run_rejected_scan_discovery,
+    run_rejected_scan_continuous,
+    start_manual_scan_run,
+)
+from radio_db.services.candidate_rescan import (
+    candidate_rescan_stats,
+    list_candidate_rescan_queue,
+    run_candidate_rescan_batch,
+    run_candidate_rescan_continuous,
+    seed_candidate_rescan_queue,
+    seed_enrichment_reassessment_queue,
+)
+from radio_db.services.enrichment import (
+    enrichment_queue_stats,
+    evaluate_enrichment_golden_set,
+    run_free_enrichment_scan,
+    run_paid_enrichment_scan,
+    seed_enrichment_queue,
+)
+from radio_db.services.dynamic_official_discovery import (
+    phase3_dynamic_queue_status,
+    run_dynamic_official_discovery_batch,
+    run_phase3_dynamic_queue,
+    seed_phase3_dynamic_queue,
+)
+from radio_db.services.route_discovery import (
+    route_discovery_candidates,
+    run_route_discovery_batch,
+)
+from radio_db.services.phase2_route_queue import (
+    phase2_route_queue_status,
+    run_phase2_route_worker,
+    seed_phase2_route_queue,
+)
 
 app = typer.Typer(help="Radio Database Agent CLI")
 
@@ -349,6 +390,383 @@ def scan_rejected_cycle_cmd(
     print(json.dumps(result, indent=2))
 
 
+@app.command("scan-rejected-dispatch")
+def scan_rejected_dispatch_cmd(
+    station_limit: int = typer.Option(45, min=1, max=5000),
+    max_pages: int = typer.Option(3, min=1, max=10),
+    workers: int = typer.Option(3, min=1, max=12),
+    use_checkpoint: bool = typer.Option(True, help="Use persistent cursor over rejected stations"),
+    reset_checkpoint: bool = typer.Option(False, help="Reset cursor back to station_id 0"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_rejected_scan_dispatch(
+            session=session,
+            station_limit=station_limit,
+            max_pages=max_pages,
+            workers=workers,
+            use_checkpoint=use_checkpoint,
+            reset_checkpoint=reset_checkpoint,
+        )
+    print("[green]Rejected dispatch scan complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("scan-rejected-discovery")
+def scan_rejected_discovery_cmd(
+    station_limit: int = typer.Option(45, min=1, max=5000),
+    max_pages: int = typer.Option(3, min=1, max=10),
+    workers: int = typer.Option(3, min=1, max=12),
+    use_checkpoint: bool = typer.Option(True, help="Use persistent cursor over rejected stations"),
+    reset_checkpoint: bool = typer.Option(False, help="Reset cursor back to station_id 0"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_rejected_scan_discovery(
+            session=session,
+            station_limit=station_limit,
+            max_pages=max_pages,
+            workers=workers,
+            use_checkpoint=use_checkpoint,
+            reset_checkpoint=reset_checkpoint,
+        )
+    print("[green]Rejected discovery scan complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("scan-rejected-continuous")
+def scan_rejected_continuous_cmd(
+    station_limit: int = typer.Option(45, min=1, max=5000),
+    max_pages: int = typer.Option(3, min=1, max=10),
+    workers: int = typer.Option(4, min=1, max=12),
+    use_checkpoint: bool = typer.Option(True, help="Use persistent cursor over rejected stations"),
+    reset_checkpoint: bool = typer.Option(False, help="Reset cursor back to station_id 0"),
+) -> None:
+    init_db()
+    result = run_rejected_scan_continuous(
+        session_factory=SessionLocal,
+        station_limit=station_limit,
+        max_pages=max_pages,
+        workers=workers,
+        use_checkpoint=use_checkpoint,
+        reset_checkpoint=reset_checkpoint,
+    )
+    print("[green]Rejected continuous scan complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("review-rejected-quality")
+def review_rejected_quality_cmd(
+    limit: int = typer.Option(30, min=1, max=1000),
+    provider: str = typer.Option("", help="Optional quality provider override"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_rejected_quality_review(
+            session=session,
+            limit=limit,
+            provider=provider or None,
+        )
+    print("[green]Rejected quality review complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("reset-rejected-scan-claims")
+def reset_rejected_scan_claims_cmd(
+    older_than_minutes: int = typer.Option(15, min=1, max=1440, help="Release stale claims older than this age"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        released = release_stale_rejected_scan_claims(session=session, older_than_seconds=older_than_minutes * 60)
+    print("[green]Rejected scan claims reset complete[/green]")
+    print(json.dumps({"released": released, "older_than_minutes": older_than_minutes}, indent=2))
+
+
+@app.command("backfill-rejected-scan-markers")
+def backfill_rejected_scan_markers_cmd(
+    limit: int | None = typer.Option(None, min=1, max=1000000, help="Optional cap for backfill rows"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = backfill_rejected_scan_markers(session=session, limit=limit)
+    print("[green]Rejected scan marker backfill complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("seed-candidate-rescan-queue")
+def seed_candidate_rescan_queue_cmd(
+    queue_db_path: str = typer.Option("queue_dbs/radio-rejected-45319.db", help="Rejected queue DB path"),
+    pool: str = typer.Option(
+        "all",
+        help="all|promoted_rejected|needs_review_high_score|needs_review_all|llm_review_all|queue_candidates_unscanned|active_main_rescan",
+    ),
+    min_review_score: float = typer.Option(70.0, min=0.0, max=100.0),
+    reset_existing: bool = typer.Option(False, help="Delete existing rows for this pool before seeding"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = seed_candidate_rescan_queue(
+            session=session,
+            queue_db_path=queue_db_path,
+            pool=pool,
+            min_review_score=min_review_score,
+            reset_existing=reset_existing,
+        )
+    print("[green]Candidate rescan queue seeded[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("candidate-rescan-stats")
+def candidate_rescan_stats_cmd() -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = candidate_rescan_stats(session=session)
+    print(json.dumps(result, indent=2))
+
+
+@app.command("seed-enrichment-reassessment-queue")
+def seed_enrichment_reassessment_queue_cmd(
+    min_new_evidence: int = typer.Option(5, min=1, max=100, help="Minimum new enrichment evidence since last LLM quality assessment"),
+    reset_existing: bool = typer.Option(False, help="Delete existing enrichment_reassessment rows before seeding"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = seed_enrichment_reassessment_queue(
+            session=session,
+            min_new_evidence=min_new_evidence,
+            reset_existing=reset_existing,
+        )
+    print("[green]Enrichment reassessment queue seeded[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("list-candidate-rescan-queue")
+def list_candidate_rescan_queue_cmd(
+    status: str = typer.Option("pending", help="Queue status filter; empty for all"),
+    pool: str = typer.Option("", help="Optional source_pool filter"),
+    limit: int = typer.Option(50, min=1, max=1000),
+    include_archived: bool = typer.Option(False, help="Include ARCHIVED main stations"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = list_candidate_rescan_queue(
+            session=session,
+            status=status,
+            pool=pool,
+            limit=limit,
+            include_archived=include_archived,
+        )
+    print(json.dumps(result, indent=2))
+
+
+@app.command("run-candidate-rescan-batch")
+def run_candidate_rescan_batch_cmd(
+    limit: int = typer.Option(10, min=1, max=500),
+    pool: str = typer.Option("", help="Optional source_pool filter"),
+    max_pages: int = typer.Option(6, min=1, max=20),
+    provider: str = typer.Option("", help="Optional quality provider override"),
+    apply_status: bool = typer.Option(False, help="Apply final status changes after rescan"),
+    promote_contact_only: bool = typer.Option(
+        False,
+        help="Allow contact-email-only rows to become VERIFIED with lower confidence; keep false for CANDIDATE marking",
+    ),
+    dry_run: bool = typer.Option(True, help="Only show the selected rows; do not scan"),
+    include_archived: bool = typer.Option(False, help="Include ARCHIVED main stations"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_candidate_rescan_batch(
+            session=session,
+            limit=limit,
+            pool=pool,
+            max_pages=max_pages,
+            provider=provider or None,
+            apply_status=apply_status,
+            promote_contact_only=promote_contact_only,
+            dry_run=dry_run,
+            include_archived=include_archived,
+        )
+    print("[green]Candidate rescan batch complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("run-candidate-rescan-continuous")
+def run_candidate_rescan_continuous_cmd(
+    limit: int = typer.Option(12, min=1, max=5000),
+    pool: str = typer.Option("", help="Optional source_pool filter"),
+    max_pages: int = typer.Option(6, min=1, max=20),
+    workers: int = typer.Option(3, min=1, max=12),
+    provider: str = typer.Option("", help="Optional quality provider override"),
+    apply_status: bool = typer.Option(False, help="Apply final status changes after rescan"),
+    promote_contact_only: bool = typer.Option(
+        False,
+        help="Allow contact-email-only rows to become VERIFIED with lower confidence; keep false for CANDIDATE marking",
+    ),
+    include_archived: bool = typer.Option(False, help="Include ARCHIVED main stations"),
+) -> None:
+    init_db()
+    result = run_candidate_rescan_continuous(
+        session_factory=SessionLocal,
+        limit=limit,
+        pool=pool,
+        max_pages=max_pages,
+        workers=workers,
+        provider=provider or None,
+        apply_status=apply_status,
+        promote_contact_only=promote_contact_only,
+        include_archived=include_archived,
+    )
+    print("[green]Candidate rescan continuous complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("seed-enrichment-queue")
+def seed_enrichment_queue_cmd(
+    limit: int = typer.Option(500, min=1, max=50000),
+    min_priority: float = typer.Option(35.0, min=0.0, max=500.0),
+    station_id: int | None = typer.Option(None, min=1),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = seed_enrichment_queue(session=session, limit=limit, min_priority=min_priority, station_id=station_id)
+    print("[green]Enrichment queue seeded[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("enrichment-free-scan")
+def enrichment_free_scan_cmd(
+    limit: int = typer.Option(100, min=1, max=5000),
+    max_urls_per_station: int = typer.Option(12, min=1, max=100),
+    station_id: int | None = typer.Option(None, min=1),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_free_enrichment_scan(
+            session=session,
+            limit=limit,
+            max_urls_per_station=max_urls_per_station,
+            station_id=station_id,
+        )
+    print("[green]Free enrichment scan complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("enrichment-paid-scan")
+def enrichment_paid_scan_cmd(
+    limit: int = typer.Option(20, min=1, max=1000),
+    station_id: int | None = typer.Option(None, min=1),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_paid_enrichment_scan(session=session, limit=limit, station_id=station_id)
+    print("[green]Paid enrichment scan complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("enrichment-evaluate-golden-set")
+def enrichment_evaluate_golden_set_cmd(
+    config_path: str = typer.Option("config/enrichment_golden_set.json"),
+    limit: int | None = typer.Option(None, min=1, max=1000),
+    run_paid: bool = typer.Option(False),
+    max_urls_per_station: int = typer.Option(6, min=1, max=100),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = evaluate_enrichment_golden_set(
+            session=session,
+            config_path=config_path,
+            limit=limit,
+            run_paid=run_paid,
+            max_urls_per_station=max_urls_per_station,
+        )
+    print("[green]Enrichment golden set evaluation complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("enrichment-queue-stats")
+def enrichment_queue_stats_cmd() -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = enrichment_queue_stats(session=session)
+    print(json.dumps(result, indent=2))
+
+
+@app.command("phase3-dynamic-official-discovery")
+def phase3_dynamic_official_discovery_cmd(
+    limit: int = typer.Option(5, min=1, max=100),
+    station_id: int | None = typer.Option(None, min=1),
+    max_links: int = typer.Option(120, min=20, max=500),
+    max_deep_pages: int = typer.Option(8, min=1, max=30),
+    max_gemini_calls: int = typer.Option(10, min=0, max=200),
+    min_confidence: float = typer.Option(0.7, min=0.0, max=1.0),
+    fresh_days: int = typer.Option(14, min=1, max=365),
+    apply: bool = typer.Option(False, help="Persist stronger best-route fields and submission channel records"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_dynamic_official_discovery_batch(
+            session=session,
+            limit=limit,
+            station_id=station_id,
+            max_links=max_links,
+            max_deep_pages=max_deep_pages,
+            max_gemini_calls=max_gemini_calls,
+            min_confidence=min_confidence,
+            fresh_days=fresh_days,
+            apply=apply,
+        )
+    print("[green]Phase 3 dynamic official discovery complete[/green]")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@app.command("seed-phase3-dynamic-queue")
+def seed_phase3_dynamic_queue_cmd(
+    limit: int = typer.Option(500, min=1, max=5000),
+    min_confidence: float = typer.Option(0.65, min=0.0, max=1.0),
+    reset_pending: bool = typer.Option(False, help="Delete pending/error Phase-3 dynamic rows before seeding"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = seed_phase3_dynamic_queue(
+            session=session,
+            limit=limit,
+            min_confidence=min_confidence,
+            reset_pending=reset_pending,
+        )
+    print("[green]Phase 3 dynamic queue seeded[/green]")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@app.command("phase3-dynamic-queue-status")
+def phase3_dynamic_queue_status_cmd() -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = phase3_dynamic_queue_status(session)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@app.command("run-phase3-dynamic-queue")
+def run_phase3_dynamic_queue_cmd(
+    limit: int = typer.Option(25, min=1, max=1000),
+    max_gemini_calls: int = typer.Option(50, min=0, max=5000),
+    max_links: int = typer.Option(120, min=20, max=500),
+    max_deep_pages: int = typer.Option(8, min=1, max=30),
+    apply: bool = typer.Option(True, help="Persist stronger best-route fields and route records"),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_phase3_dynamic_queue(
+            session=session,
+            limit=limit,
+            max_gemini_calls=max_gemini_calls,
+            max_links=max_links,
+            max_deep_pages=max_deep_pages,
+            apply=apply,
+        )
+    print("[green]Phase 3 dynamic queue run complete[/green]")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
 @app.command("scan-main-cycle")
 def scan_main_cycle_cmd(
     station_limit: int = typer.Option(100, min=1, max=5000),
@@ -389,6 +807,119 @@ def verify_station_quality_llm_cmd(
             apply=apply,
         )
     print("[green]Station quality LLM verification complete[/green]")
+    print(json.dumps(result, indent=2))
+
+
+@app.command("list-route-discovery-candidates")
+def list_route_discovery_candidates_cmd(
+    limit: int = typer.Option(50, min=1, max=1000),
+    min_confidence: float = typer.Option(0.6, min=0.0, max=1.0),
+    min_quality_score: int = typer.Option(60, min=0, max=100),
+) -> None:
+    with SessionLocal() as session:
+        result = route_discovery_candidates(
+            session=session,
+            limit=limit,
+            min_confidence=min_confidence,
+            min_quality_score=min_quality_score,
+        )
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@app.command("run-route-discovery-batch")
+def run_route_discovery_batch_cmd(
+    limit: int = typer.Option(5, min=1, max=100),
+    station_id: int | None = typer.Option(None, min=1),
+    max_brave_calls: int = typer.Option(2, min=0, max=2),
+    max_pages: int = typer.Option(8, min=1, max=20),
+    apply: bool = typer.Option(False, help="Persist best route fields and route records"),
+    min_confidence: float = typer.Option(0.6, min=0.0, max=1.0),
+    min_quality_score: int = typer.Option(60, min=0, max=100),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_route_discovery_batch(
+            session=session,
+            limit=limit,
+            station_id=station_id,
+            max_brave_calls=max_brave_calls,
+            max_pages=max_pages,
+            apply=apply,
+            min_confidence=min_confidence,
+            min_quality_score=min_quality_score,
+        )
+    print("[green]Route discovery batch complete[/green]")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@app.command("seed-phase2-route-queue")
+def seed_phase2_route_queue_cmd(
+    core: bool = typer.Option(True, help="Seed current core route-discovery candidates"),
+    enrichment: bool = typer.Option(True, help="Seed pending enrichment reassessment candidates"),
+    core_limit: int = typer.Option(494, min=1, max=5000),
+    enrichment_limit: int = typer.Option(474, min=1, max=5000),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = seed_phase2_route_queue(
+            session,
+            include_core=core,
+            include_enrichment=enrichment,
+            core_limit=core_limit,
+            enrichment_limit=enrichment_limit,
+        )
+    print("[green]Phase-2 route queue seeded[/green]")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@app.command("phase2-route-queue-status")
+def phase2_route_queue_status_cmd() -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = phase2_route_queue_status(session)
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@app.command("run-phase2-route-worker")
+def run_phase2_route_worker_cmd(
+    worker_id: str | None = typer.Option(None, help="Stable worker id for logs/claims"),
+    limit: int = typer.Option(100, min=1, max=5000),
+    max_brave_calls: int = typer.Option(2, min=0, max=2),
+    max_pages: int = typer.Option(8, min=1, max=20),
+    stale_after_minutes: int = typer.Option(90, min=5, max=1440),
+) -> None:
+    init_db()
+    with SessionLocal() as session:
+        result = run_phase2_route_worker(
+            session,
+            worker_id=worker_id,
+            limit=limit,
+            max_brave_calls=max_brave_calls,
+            max_pages=max_pages,
+            stale_after_minutes=stale_after_minutes,
+        )
+    print("[green]Phase-2 route worker complete[/green]")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+@app.command("enrich-station-editorial")
+def enrich_station_editorial_cmd(
+    limit: int = typer.Option(25, min=1, max=5000),
+    station_id: int | None = typer.Option(None, min=1),
+    provider: str = typer.Option("gemini", help="gemini|openai"),
+    only_unassessed: bool = typer.Option(True, help="Skip stations already enriched with current assessment kind"),
+    apply: bool = typer.Option(False, help="Persist editorial enrichment to DB"),
+) -> None:
+    with SessionLocal() as session:
+        result = run_station_editorial_enrichment(
+            session=session,
+            limit=limit,
+            station_id=station_id,
+            provider=provider,
+            only_unassessed=only_unassessed,
+            apply=apply,
+        )
+    print("[green]Station editorial enrichment complete[/green]")
     print(json.dumps(result, indent=2))
 
 

@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from radio_db.api.common import require_permission_mode
 from radio_db.db import SessionLocal
 from radio_db.models.entities import (
     FormStatus,
@@ -218,6 +219,7 @@ def upsert_submission_channel(
     station_id: int,
     request: SubmissionChannelUpsertRequest,
     db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
 ) -> StationControlSubmissionDTO:
     station = db.scalar(select(Station).where(Station.id == station_id))
     if station is None:
@@ -233,11 +235,18 @@ def upsert_submission_channel(
         )
     )
     method_value = SubmissionMethod(request.method) if request.method is not None else None
+    # Determine method: explicit method takes precedence, else infer from email/url
+    inferred_method = SubmissionMethod.EMAIL if normalized_email else SubmissionMethod.FORM
+    final_method = method_value or inferred_method
+    
+    # For EMAIL method, url should be None; for FORM/UNKNOWN, url should have the form URL
+    final_url = None if final_method == SubmissionMethod.EMAIL else normalized_url
+    
     if existing is None:
         existing = SubmissionChannel(
             station_id=station_id,
-            method=method_value or (SubmissionMethod.EMAIL if normalized_email else SubmissionMethod.FORM),
-            url=normalized_url,
+            method=final_method,
+            url=final_url,
             email=normalized_email,
             requirements=request.requirements,
             accepts_newcomers=request.accepts_newcomers,
@@ -246,8 +255,10 @@ def upsert_submission_channel(
     else:
         if method_value is not None:
             existing.method = method_value
+            # When method changes, sync url accordingly
+            existing.url = None if method_value == SubmissionMethod.EMAIL else normalized_url
         if request.url is not None:
-            existing.url = normalized_url
+            existing.url = normalized_url if existing.method != SubmissionMethod.EMAIL else None
         if request.email is not None:
             existing.email = normalized_email
         if request.requirements is not None:
@@ -264,6 +275,7 @@ def update_submission_channel(
     submission_id: int,
     request: SubmissionChannelUpdateRequest,
     db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
 ) -> StationControlSubmissionDTO:
     submission = db.scalar(select(SubmissionChannel).where(SubmissionChannel.id == submission_id))
     if submission is None:
@@ -286,7 +298,11 @@ def update_submission_channel(
 
 
 @router.delete("/submissions/{submission_id}")
-def delete_submission_channel(submission_id: int, db: Session = Depends(_get_db)) -> dict:
+def delete_submission_channel(
+    submission_id: int,
+    db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
+) -> dict:
     submission = db.scalar(select(SubmissionChannel).where(SubmissionChannel.id == submission_id))
     if submission is None:
         raise HTTPException(status_code=404, detail="submission_not_found")
@@ -302,6 +318,7 @@ def set_station_manual_confirm(
     station_id: int,
     request: ManualConfirmRequest,
     db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
 ) -> ManualConfirmResponse:
     station = db.scalar(select(Station).where(Station.id == station_id))
     if station is None:
@@ -321,6 +338,7 @@ def set_station_manual_confirm(
 def delete_station(
     station_id: int,
     db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
 ) -> DeleteStationResponse:
     station = db.scalar(select(Station).where(Station.id == station_id))
     if station is None:
@@ -339,6 +357,7 @@ def set_entry_manual_confirm(
     entry_id: int,
     request: ManualConfirmRequest,
     db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
 ) -> dict:
     source_key = (source or "").strip().lower()
     model_map: dict[str, type[StationContact] | type[StationPerson] | type[SubmissionChannel]] = {
@@ -370,6 +389,7 @@ def upsert_station_assessment(
     station_id: int,
     request: AssessmentUpsertRequest,
     db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
 ) -> StationControlAssessmentDTO:
     station = db.scalar(select(Station).where(Station.id == station_id))
     if station is None:
@@ -411,6 +431,7 @@ def update_station_assessment(
     assessment_id: int,
     request: AssessmentUpdateRequest,
     db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
 ) -> StationControlAssessmentDTO:
     assessment = db.scalar(select(StationSubmissionAssessment).where(StationSubmissionAssessment.id == assessment_id))
     if assessment is None:
@@ -446,7 +467,11 @@ def update_station_assessment(
 
 
 @router.delete("/assessments/{assessment_id}")
-def delete_station_assessment(assessment_id: int, db: Session = Depends(_get_db)) -> dict:
+def delete_station_assessment(
+    assessment_id: int,
+    db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
+) -> dict:
     assessment = db.scalar(select(StationSubmissionAssessment).where(StationSubmissionAssessment.id == assessment_id))
     if assessment is None:
         raise HTTPException(status_code=404, detail="assessment_not_found")

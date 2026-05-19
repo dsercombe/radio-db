@@ -284,16 +284,9 @@ def verify_real_stations(
         if verdict == "keep":
             keep += 1
             if apply:
-                # Promote high-confidence keeps to verified so verification progress is reflected in station status.
-                qualifies_verified = (
-                    score >= 0.55
-                    and not _is_non_station_domain(st.website_url)
-                    and not (_is_platform_proxy_domain(st.website_url) and sub_count == 0 and program_count == 0)
-                )
-                if qualifies_verified and st.status != StationStatus.VERIFIED:
-                    st.status = StationStatus.VERIFIED
-                    st.confidence_score = max(float(st.confidence_score or 0.0), min(0.95, float(score)))
-                    applied_verified += 1
+                # Legacy verifier is evidence-only for keep decisions. Promotion now
+                # belongs exclusively to candidate_rescan's Playwright + LLM gate.
+                pass
         elif verdict == "reject":
             reject += 1
             if apply and st.status != StationStatus.REJECTED:

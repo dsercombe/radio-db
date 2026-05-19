@@ -1,0 +1,30 @@
+[
+  {
+    "station_id": 1213,
+    "label": "89 A Radio Rock",
+    "expect_free_min": 1,
+    "expect_policy": "online_specialist",
+    "expect_language": "pt"
+  },
+  {
+    "station_id": 1309,
+    "label": "Los 40 Principales Mexico",
+    "expect_free_min": 1,
+    "expect_policy": "large_network",
+    "expect_language": "es"
+  },
+  {
+    "station_id": 45600,
+    "label": "MIX FM Wellington",
+    "expect_free_min": 1,
+    "expect_policy": "online_specialist",
+    "expect_language": "en"
+  },
+  {
+    "station_id": 19160,
+    "label": "RTE 2FM",
+    "expect_free_min": 0,
+    "expect_policy": "large_network",
+    "expect_language": "en"
+  }
+]

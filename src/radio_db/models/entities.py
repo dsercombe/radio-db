@@ -35,6 +35,7 @@ class StationStatus(str, Enum):
     CANDIDATE = "candidate"
     VERIFIED = "verified"
     REJECTED = "rejected"
+    ARCHIVED = "archived"
 
 
 class SubmissionMethod(str, Enum):
@@ -100,14 +101,29 @@ class Station(Base):
     canonical_name: Mapped[str] = mapped_column(String(255), index=True)
     normalized_name: Mapped[str] = mapped_column(String(255), index=True)
     country_code: Mapped[str] = mapped_column(String(8), default="")
-    language: Mapped[str] = mapped_column(String(64), default="")
-    website_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
-    stream_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    language: Mapped[str] = mapped_column(String(128), default="")
+    website_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
+    stream_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
     city: Mapped[str | None] = mapped_column(String(120), nullable=True)
     status: Mapped[StationStatus] = mapped_column(SQLEnum(StationStatus), default=StationStatus.CANDIDATE)
     confidence_score: Mapped[float] = mapped_column(Float, default=0.0)
     manual_confirmed: Mapped[bool] = mapped_column(Boolean, default=False)
     manual_confirmed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    scan_outcome: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    scan_last_run_status: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    scan_last_scanned_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    scan_claim_token: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    scan_claimed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    scan_attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    scan_last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    priority_tier: Mapped[int] = mapped_column(Integer, default=0)
+    best_submission_route_type: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    best_submission_route_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    best_submission_route_email: Mapped[str | None] = mapped_column(String(320), nullable=True)
+    best_submission_route_confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+    best_submission_route_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    best_submission_route_updated_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    secondary_submission_routes_json: Mapped[str] = mapped_column(Text, default="[]")
     fingerprint: Mapped[str] = mapped_column(String(512), unique=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -129,6 +145,15 @@ class Station(Base):
         back_populates="station", cascade="all, delete-orphan"
     )
     evidence_items: Mapped[list[Evidence]] = relationship(back_populates="station", cascade="all, delete-orphan")
+    contact_drafts: Mapped[list[ContactDraft]] = relationship(
+        back_populates="station", cascade="all, delete-orphan"
+    )
+    contact_sends: Mapped[list[ContactSend]] = relationship(
+        back_populates="station", cascade="all, delete-orphan"
+    )
+    group_memberships: Mapped[list[StationGroupMembership]] = relationship(
+        back_populates="station", cascade="all, delete-orphan"
+    )
 
 
 class StationAlias(Base):
@@ -159,7 +184,7 @@ class StationProgram(Base):
     station_id: Mapped[int] = mapped_column(ForeignKey("stations.id", ondelete="CASCADE"), index=True)
     name: Mapped[str] = mapped_column(String(255))
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    schedule: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    schedule: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
     station: Mapped[Station] = relationship(back_populates="programs")
 
@@ -235,7 +260,7 @@ class Evidence(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     station_id: Mapped[int | None] = mapped_column(ForeignKey("stations.id", ondelete="CASCADE"), nullable=True, index=True)
     source_type: Mapped[SourceType] = mapped_column(SQLEnum(SourceType), index=True)
-    source_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    source_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
     source_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
     raw_title: Mapped[str | None] = mapped_column(String(500), nullable=True)
     raw_snippet: Mapped[str | None] = mapped_column(Text, nullable=True)
@@ -363,6 +388,106 @@ class StationSubmissionAssessment(Base):
     station: Mapped[Station] = relationship(back_populates="submission_assessments")
 
 
+class CandidateRescanQueue(Base):
+    __tablename__ = "candidate_rescan_queue"
+    __table_args__ = (
+        UniqueConstraint("source_pool", "main_station_id", name="uq_candidate_rescan_pool_main_station"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    source_pool: Mapped[str] = mapped_column(String(64), index=True)
+    main_station_id: Mapped[int] = mapped_column(ForeignKey("stations.id", ondelete="CASCADE"), index=True)
+    queue_station_id: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
+    queue_fingerprint: Mapped[str | None] = mapped_column(String(512), nullable=True, index=True)
+    old_queue_status: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    old_main_status: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    old_scan_outcome: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    old_decision: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    old_quality_score: Mapped[float | None] = mapped_column(Float, nullable=True, index=True)
+    old_confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+    priority_score: Mapped[float] = mapped_column(Float, default=0.0, index=True)
+    status: Mapped[str] = mapped_column(String(32), default="pending", index=True)
+    claim_token: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    claimed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    last_run_id: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
+    last_assessment_id: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
+    final_decision: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    path_quality: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    result_status: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    evidence_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class EnrichmentQueue(Base):
+    __tablename__ = "enrichment_queue"
+    __table_args__ = (
+        UniqueConstraint("source_pool", "station_id", name="uq_enrichment_queue_pool_station"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    station_id: Mapped[int] = mapped_column(ForeignKey("stations.id", ondelete="CASCADE"), index=True)
+    source_pool: Mapped[str] = mapped_column(String(64), index=True)
+    priority_score: Mapped[float] = mapped_column(Float, default=0.0, index=True)
+    status: Mapped[str] = mapped_column(String(32), default="pending", index=True)
+    api_budget_class: Mapped[str] = mapped_column(String(16), default="none", index=True)
+    reason_codes_json: Mapped[str] = mapped_column(Text, default="[]")
+    free_findings_json: Mapped[str] = mapped_column(Text, default="{}")
+    paid_plan_json: Mapped[str] = mapped_column(Text, default="{}")
+    last_outcome: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    free_last_run_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    paid_last_run_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    last_run_id: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class EnrichmentRun(Base):
+    __tablename__ = "enrichment_runs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    queue_id: Mapped[int | None] = mapped_column(ForeignKey("enrichment_queue.id", ondelete="SET NULL"), nullable=True, index=True)
+    station_id: Mapped[int | None] = mapped_column(ForeignKey("stations.id", ondelete="SET NULL"), nullable=True, index=True)
+    layer: Mapped[str] = mapped_column(String(16), index=True)
+    source_pool: Mapped[str] = mapped_column(String(64), default="", index=True)
+    status: Mapped[str] = mapped_column(String(32), default="running", index=True)
+    outcome: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    stop_reason: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    reason_codes_json: Mapped[str] = mapped_column(Text, default="[]")
+    urls_checked: Mapped[int] = mapped_column(Integer, default=0)
+    findings_count: Mapped[int] = mapped_column(Integer, default=0)
+    useful_findings_count: Mapped[int] = mapped_column(Integer, default=0)
+    api_calls_json: Mapped[str] = mapped_column(Text, default="{}")
+    cost_estimate_usd: Mapped[float] = mapped_column(Float, default=0.0)
+    metrics_json: Mapped[str] = mapped_column(Text, default="{}")
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    started_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class EnrichmentFinding(Base):
+    __tablename__ = "enrichment_findings"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    run_id: Mapped[int | None] = mapped_column(ForeignKey("enrichment_runs.id", ondelete="SET NULL"), nullable=True, index=True)
+    station_id: Mapped[int] = mapped_column(ForeignKey("stations.id", ondelete="CASCADE"), index=True)
+    layer: Mapped[str] = mapped_column(String(16), index=True)
+    finding_type: Mapped[str] = mapped_column(String(64), index=True)
+    source_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
+    source_name: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    title: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    snippet: Mapped[str | None] = mapped_column(Text, nullable=True)
+    payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    confidence: Mapped[float] = mapped_column(Float, default=0.0)
+    useful: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
+
+
 class SubmissionAgentRun(Base):
     __tablename__ = "submission_agent_runs"
 
@@ -376,7 +501,7 @@ class SubmissionAgentRun(Base):
     confidence: Mapped[float] = mapped_column(Float, default=0.0)
     requires_approval: Mapped[bool] = mapped_column(Boolean, default=True)
     blocked_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
-    target_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    target_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
     summary_json: Mapped[str] = mapped_column(Text, default="{}")
     started_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
@@ -462,7 +587,7 @@ class DistributionNetwork(Base):
     submission_email: Mapped[str | None] = mapped_column(String(320), nullable=True)
     coverage_note: Mapped[str | None] = mapped_column(Text, nullable=True)
     rules_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
-    source_url: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    source_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
     confidence: Mapped[float] = mapped_column(Float, default=0.0)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -495,3 +620,226 @@ class EmailBlacklist(Base):
     email: Mapped[str] = mapped_column(String(320), index=True)
     reason: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class ContactTemplate(Base):
+    __tablename__ = "contact_templates"
+    __table_args__ = (UniqueConstraint("template_key", name="uq_contact_template_key"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    template_key: Mapped[str] = mapped_column(String(120), index=True)
+    name: Mapped[str] = mapped_column(String(255))
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    channel: Mapped[str] = mapped_column(String(32), default="email")
+    variables_json: Mapped[str] = mapped_column(Text, default="[]")
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    locales: Mapped[list[ContactTemplateLocale]] = relationship(
+        back_populates="template", cascade="all, delete-orphan"
+    )
+    drafts: Mapped[list[ContactDraft]] = relationship(
+        back_populates="template", cascade="all, delete-orphan"
+    )
+
+
+class ContactTemplateLocale(Base):
+    __tablename__ = "contact_template_locales"
+    __table_args__ = (UniqueConstraint("template_id", "locale_key", name="uq_contact_template_locale"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    template_id: Mapped[int] = mapped_column(ForeignKey("contact_templates.id", ondelete="CASCADE"), index=True)
+    locale_key: Mapped[str] = mapped_column(String(32), index=True)
+    language_code: Mapped[str] = mapped_column(String(16), default="en")
+    subject_template: Mapped[str] = mapped_column(Text)
+    body_template: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    template: Mapped[ContactTemplate] = relationship(back_populates="locales")
+
+
+class StationGroup(Base):
+    __tablename__ = "station_groups"
+    __table_args__ = (
+        UniqueConstraint("name", name="uq_station_group_name"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), index=True)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    artist_key: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    color_hint: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    memberships: Mapped[list[StationGroupMembership]] = relationship(
+        back_populates="group", cascade="all, delete-orphan"
+    )
+
+
+class StationGroupMembership(Base):
+    __tablename__ = "station_group_memberships"
+    __table_args__ = (
+        UniqueConstraint("group_id", "station_id", name="uq_station_group_membership"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    group_id: Mapped[int] = mapped_column(ForeignKey("station_groups.id", ondelete="CASCADE"), index=True)
+    station_id: Mapped[int] = mapped_column(ForeignKey("stations.id", ondelete="CASCADE"), index=True)
+    note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    group: Mapped[StationGroup] = relationship(back_populates="memberships")
+    station: Mapped[Station] = relationship(back_populates="group_memberships")
+
+
+class OutreachCampaign(Base):
+    """One persisted outreach campaign per song/release for radio pitching."""
+
+    __tablename__ = "outreach_campaigns"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(255), index=True)
+    artist_name: Mapped[str] = mapped_column(String(255))
+    song_title: Mapped[str] = mapped_column(String(255))
+    release_date: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    song_language: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    pitch_text: Mapped[str] = mapped_column(Text, default="")
+    reference_template: Mapped[str] = mapped_column(Text, default="")
+    operator_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    press_release_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
+    tracking_code: Mapped[str | None] = mapped_column(String(120), nullable=True, index=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    drafts: Mapped[list["ContactDraft"]] = relationship(back_populates="campaign")
+
+
+class OutreachLinkClick(Base):
+    """Tracked click on a campaign press release redirect link."""
+
+    __tablename__ = "outreach_link_clicks"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    campaign_id: Mapped[int] = mapped_column(
+        ForeignKey("outreach_campaigns.id", ondelete="CASCADE"), index=True
+    )
+    station_id: Mapped[int | None] = mapped_column(ForeignKey("stations.id", ondelete="SET NULL"), nullable=True, index=True)
+    target_url: Mapped[str] = mapped_column(String(2048))
+    user_agent: Mapped[str | None] = mapped_column(Text, nullable=True)
+    ip_address: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    referer: Mapped[str | None] = mapped_column(String(2048), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, index=True)
+
+
+class ContactDraft(Base):
+    __tablename__ = "contact_drafts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    station_id: Mapped[int] = mapped_column(ForeignKey("stations.id", ondelete="CASCADE"), index=True)
+    template_id: Mapped[int | None] = mapped_column(
+        ForeignKey("contact_templates.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    campaign_id: Mapped[int | None] = mapped_column(
+        ForeignKey("outreach_campaigns.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    locale: Mapped[str] = mapped_column(String(32), default="-- / --")
+    language: Mapped[str] = mapped_column(String(16), default="en")
+    country_code: Mapped[str] = mapped_column(String(8), default="")
+    subject: Mapped[str] = mapped_column(Text)
+    body: Mapped[str] = mapped_column(Text)
+    recommended_channel: Mapped[str] = mapped_column(String(32), default="manual_research")
+    status: Mapped[str] = mapped_column(String(32), default="draft", index=True)
+    available_routes_json: Mapped[str] = mapped_column(Text, default="[]")
+    evidence_summary_json: Mapped[str] = mapped_column(Text, default="[]")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    station: Mapped[Station] = relationship(back_populates="contact_drafts")
+    template: Mapped[ContactTemplate | None] = relationship(back_populates="drafts")
+    campaign: Mapped["OutreachCampaign | None"] = relationship(back_populates="drafts")
+    sends: Mapped[list[ContactSend]] = relationship(back_populates="draft", cascade="all, delete-orphan")
+
+
+class ContactSend(Base):
+    __tablename__ = "contact_sends"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    draft_id: Mapped[int] = mapped_column(ForeignKey("contact_drafts.id", ondelete="CASCADE"), index=True)
+    station_id: Mapped[int] = mapped_column(ForeignKey("stations.id", ondelete="CASCADE"), index=True)
+    channel: Mapped[str] = mapped_column(String(32), default="email")
+    target_value: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    mode: Mapped[str] = mapped_column(String(32), default="dry-run")
+    status: Mapped[str] = mapped_column(String(32), default="created", index=True)
+    payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    draft: Mapped[ContactDraft] = relationship(back_populates="sends")
+    station: Mapped[Station] = relationship(back_populates="contact_sends")
+    outcomes: Mapped[list[ContactOutcome]] = relationship(
+        back_populates="send", cascade="all, delete-orphan"
+    )
+
+
+class ContactOutcome(Base):
+    __tablename__ = "contact_outcomes"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    send_id: Mapped[int] = mapped_column(ForeignKey("contact_sends.id", ondelete="CASCADE"), index=True)
+    outcome_type: Mapped[str] = mapped_column(String(64), default="preview")
+    status: Mapped[str] = mapped_column(String(32), default="created", index=True)
+    details: Mapped[str | None] = mapped_column(Text, nullable=True)
+    payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    send: Mapped[ContactSend] = relationship(back_populates="outcomes")
+
+
+class BrowserSessionRecord(Base):
+    __tablename__ = "browser_sessions"
+    __table_args__ = (UniqueConstraint("session_key", name="uq_browser_session_key"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    session_key: Mapped[str] = mapped_column(String(64), index=True)
+    station_id: Mapped[int | None] = mapped_column(ForeignKey("stations.id", ondelete="SET NULL"), nullable=True, index=True)
+    run_id: Mapped[int | None] = mapped_column(
+        ForeignKey("submission_agent_runs.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    url: Mapped[str] = mapped_column(String(2048), default="about:blank")
+    title: Mapped[str] = mapped_column(String(500), default="")
+    status: Mapped[str] = mapped_column(String(64), default="idle", index=True)
+    last_error: Mapped[str] = mapped_column(Text, default="")
+    screenshot_path: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    html_path: Mapped[str | None] = mapped_column(String(1024), nullable=True)
+    action_count: Mapped[int] = mapped_column(Integer, default=0)
+    event_count: Mapped[int] = mapped_column(Integer, default=0)
+    metadata_json: Mapped[str] = mapped_column(Text, default="{}")
+    closed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    events: Mapped[list[BrowserSessionEvent]] = relationship(
+        back_populates="session", cascade="all, delete-orphan", order_by="BrowserSessionEvent.event_index"
+    )
+
+
+class BrowserSessionEvent(Base):
+    __tablename__ = "browser_session_events"
+    __table_args__ = (UniqueConstraint("session_id", "event_index", name="uq_browser_session_event_index"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    session_id: Mapped[int] = mapped_column(ForeignKey("browser_sessions.id", ondelete="CASCADE"), index=True)
+    event_index: Mapped[int] = mapped_column(Integer)
+    event_type: Mapped[str] = mapped_column(String(64), index=True)
+    payload_json: Mapped[str] = mapped_column(Text, default="{}")
+    url: Mapped[str] = mapped_column(String(2048), default="about:blank")
+    status: Mapped[str] = mapped_column(String(64), default="idle")
+    title: Mapped[str] = mapped_column(String(500), default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    session: Mapped[BrowserSessionRecord] = relationship(back_populates="events")

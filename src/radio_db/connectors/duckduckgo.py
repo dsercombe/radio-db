@@ -29,6 +29,8 @@ def _clean_html(text: str) -> str:
 
 
 def _extract_href(raw_href: str) -> str:
+    if raw_href.startswith("//"):
+        raw_href = "https:" + raw_href
     if raw_href.startswith("http://") or raw_href.startswith("https://"):
         if "duckduckgo.com/l/?" not in raw_href:
             return raw_href

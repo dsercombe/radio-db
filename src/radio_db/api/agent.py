@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import Select, func, select
 from sqlalchemy.orm import Session
 
+from radio_db.api.common import PermissionMode, get_permission_mode, require_permission_mode
 from radio_db.config import settings
 from radio_db.db import SessionLocal
 from radio_db.models.entities import (
@@ -23,7 +24,7 @@ from radio_db.models.entities import (
     SubmissionAgentRun,
     SubmissionAgentStep,
 )
-from radio_db.services.forms_agent import start_manual_scan_run
+from radio_db.services.forms_agent import start_execute_submission_run, start_manual_scan_run
 from radio_db.services.pipeline import load_country_discovery_intelligence
 
 router = APIRouter(prefix="/api/v1/agent", tags=["agent"])
@@ -146,6 +147,14 @@ class ManualScanRequest(BaseModel):
     target_url: str | None = Field(default=None, max_length=1024)
     max_pages: int = Field(default=1, ge=1, le=10)
     force_rescan: bool = False
+
+
+class ExecuteRunRequest(BaseModel):
+    station_id: int = Field(ge=1)
+    form_id: int | None = Field(default=None, ge=1)
+    target_url: str | None = Field(default=None, max_length=1024)
+    mode: Literal["dry-run", "execute"] = "execute"
+    max_retries: int = Field(default=1, ge=0, le=3)
 
 
 class AgentRunUpdateRequest(BaseModel):
@@ -292,7 +301,9 @@ def country_discovery_snapshot(limit: int = Query(default=25, ge=1, le=100)) -> 
 
 
 @router.post("/country-discovery/start", response_model=CountryDiscoveryStartResponse)
-def start_country_discovery() -> CountryDiscoveryStartResponse:
+def start_country_discovery(
+    _mode: str = Depends(require_permission_mode("dry-run")),
+) -> CountryDiscoveryStartResponse:
     started = _start_country_discovery_background()
     return CountryDiscoveryStartResponse(
         started=started,
@@ -466,7 +477,11 @@ def get_run(run_id: int, db: Session = Depends(_get_db)) -> AgentRunDetailRespon
 
 
 @router.post("/runs/manual-scan", response_model=AgentRunDetailResponse)
-def create_manual_scan(request: ManualScanRequest, db: Session = Depends(_get_db)) -> AgentRunDetailResponse:
+def create_manual_scan(
+    request: ManualScanRequest,
+    db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("dry-run")),
+) -> AgentRunDetailResponse:
     _station_name(db, request.station_id)
     run = start_manual_scan_run(
         session=db,
@@ -479,8 +494,41 @@ def create_manual_scan(request: ManualScanRequest, db: Session = Depends(_get_db
     return get_run(run.id, db)
 
 
+@router.post("/runs/execute", response_model=AgentRunDetailResponse)
+def create_execute_run(
+    request: ExecuteRunRequest,
+    db: Session = Depends(_get_db),
+    permission_mode: PermissionMode = Depends(get_permission_mode),
+) -> AgentRunDetailResponse:
+    if request.mode == "execute" and permission_mode != "execute":
+        raise HTTPException(
+            status_code=403,
+            detail="insufficient_permission_mode:execute_required_current_" + permission_mode,
+        )
+    if request.mode == "dry-run" and permission_mode == "read-only":
+        raise HTTPException(
+            status_code=403,
+            detail="insufficient_permission_mode:dry-run_required_current_" + permission_mode,
+        )
+    _station_name(db, request.station_id)
+    run = start_execute_submission_run(
+        session=db,
+        station_id=request.station_id,
+        form_id=request.form_id,
+        target_url=request.target_url,
+        mode=request.mode,
+        max_retries=request.max_retries,
+    )
+    return get_run(run.id, db)
+
+
 @router.patch("/runs/{run_id}", response_model=AgentRunDetailResponse)
-def update_run(run_id: int, request: AgentRunUpdateRequest, db: Session = Depends(_get_db)) -> AgentRunDetailResponse:
+def update_run(
+    run_id: int,
+    request: AgentRunUpdateRequest,
+    db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("dry-run")),
+) -> AgentRunDetailResponse:
     run = db.scalar(select(SubmissionAgentRun).where(SubmissionAgentRun.id == run_id))
     if run is None:
         raise HTTPException(status_code=404, detail="run_not_found")

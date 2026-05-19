@@ -1,0 +1,3526 @@
+{
+  "country_code": "US",
+  "manual_status": "in_progress",
+  "stations": [
+    {
+      "key": "us_kexp",
+      "name": "KEXP",
+      "country_code": "US",
+      "website": "https://www.kexp.org/",
+      "must_visit_paths": [
+        "/about/submission-guidelines/",
+        "/djs/",
+        "/contact/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 98,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker",
+      "submission_hint_urls": [
+        "https://www.kexp.org/about/submission-guidelines/"
+      ],
+      "notes": "Core US tastemaker; explicit submission guideline page."
+    },
+    {
+      "key": "us_wxpn",
+      "name": "WXPN",
+      "country_code": "US",
+      "website": "https://xpn.org/",
+      "must_visit_paths": [
+        "/submit-music/",
+        "/shows/",
+        "/contact/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 96,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker",
+      "submission_hint_urls": [
+        "https://xpn.org/submit-music/"
+      ],
+      "notes": "Strong discovery station with direct submit page."
+    },
+    {
+      "key": "us_kutx",
+      "name": "KUTX 98.9",
+      "country_code": "US",
+      "website": "https://kutx.org/",
+      "must_visit_paths": [
+        "/submit-your-music/",
+        "/shows/",
+        "/about/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 95,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker",
+      "submission_hint_urls": [
+        "https://kutx.org/submit-your-music/"
+      ],
+      "notes": "Direct submission workflow for artists."
+    },
+    {
+      "key": "us_kcrw",
+      "name": "KCRW",
+      "country_code": "US",
+      "website": "https://www.kcrw.com/",
+      "must_visit_paths": [
+        "/about/submissions",
+        "/pages/contact",
+        "/music"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 94,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker",
+      "submission_hint_urls": [
+        "https://www.kcrw.com/pages/contact"
+      ],
+      "notes": "Major tastemaker; verify current submissions flow each crawl."
+    },
+    {
+      "key": "us_wfuv",
+      "name": "WFUV",
+      "country_code": "US",
+      "website": "https://wfuv.org/",
+      "must_visit_paths": [
+        "/music",
+        "/programs",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "public_university_music",
+      "submission_hint_urls": [
+        "https://wfuv.org/"
+      ],
+      "notes": "High-value AAA gatekeeper in NY market."
+    },
+    {
+      "key": "us_the_current_kcmp",
+      "name": "The Current (KCMP)",
+      "country_code": "US",
+      "website": "https://www.thecurrent.org/",
+      "must_visit_paths": [
+        "/music",
+        "/contact",
+        "/programs"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 89,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker",
+      "submission_hint_urls": [
+        "https://www.thecurrent.org/"
+      ],
+      "notes": "Influential US public music station (AAA/alternative discovery)."
+    },
+    {
+      "key": "us_kcsn_socal_sound",
+      "name": "The SoCal Sound (KCSN)",
+      "country_code": "US",
+      "website": "https://www.thesocalsound.org/",
+      "must_visit_paths": [
+        "/request/",
+        "/shows/",
+        "/contact/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": true,
+      "station_class": "public_university_music",
+      "submission_hint_urls": [
+        "https://www.thesocalsound.org/request/"
+      ],
+      "notes": "Important SoCal alternative/public signal; verify music contact path."
+    },
+    {
+      "key": "us_kxt",
+      "name": "KXT 91.7",
+      "country_code": "US",
+      "website": "https://kxt.org/",
+      "must_visit_paths": [
+        "/music",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 87,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker",
+      "submission_hint_urls": [
+        "https://kxt.org/"
+      ],
+      "notes": "North Texas discovery/AAA station with artist relevance."
+    },
+    {
+      "key": "us_wyms_88nine",
+      "name": "Radio Milwaukee (88Nine WYMS)",
+      "country_code": "US",
+      "website": "https://radiomilwaukee.org/",
+      "must_visit_paths": [
+        "/music",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 84,
+      "newcomer_signal": true,
+      "station_class": "community_music",
+      "submission_hint_urls": [
+        "https://radiomilwaukee.org/"
+      ],
+      "notes": "Strong regional discovery station."
+    },
+    {
+      "key": "us_wnxp",
+      "name": "WNXP",
+      "country_code": "US",
+      "website": "https://wnxp.org/",
+      "must_visit_paths": [
+        "/shows/",
+        "/music/",
+        "/about/contact/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 82,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://wnxp.org/"
+      ],
+      "notes": "Nashville alt/public station; useful for emerging artists."
+    },
+    {
+      "key": "us_wyep",
+      "name": "WYEP",
+      "country_code": "US",
+      "website": "https://wyep.org/",
+      "must_visit_paths": [
+        "/music/",
+        "/shows/",
+        "/contact/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 82,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://wyep.org/"
+      ],
+      "notes": "US public AAA station with strong curation value."
+    },
+    {
+      "key": "us_wdet",
+      "name": "WDET",
+      "country_code": "US",
+      "website": "https://wdet.org/",
+      "must_visit_paths": [
+        "/programs/",
+        "/playlist/",
+        "/about/contact/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://wdet.org/"
+      ],
+      "notes": "Detroit public station; useful for format and playlist signals."
+    },
+    {
+      "key": "us_wfmu",
+      "name": "WFMU",
+      "country_code": "US",
+      "website": "https://wfmu.org/",
+      "must_visit_paths": [
+        "/playlists/",
+        "/table",
+        "/about"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 86,
+      "newcomer_signal": true,
+      "station_class": "independent_freeform",
+      "submission_hint_urls": [
+        "https://wfmu.org/"
+      ],
+      "notes": "Legendary freeform station; high discovery value, non-mainstream."
+    },
+    {
+      "key": "us_kboo",
+      "name": "KBOO",
+      "country_code": "US",
+      "website": "https://kboo.fm/",
+      "must_visit_paths": [
+        "/programs",
+        "/contact",
+        "/playlist"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "community_freeform",
+      "submission_hint_urls": [
+        "https://kboo.fm/"
+      ],
+      "notes": "Community station with broad independent programming."
+    },
+    {
+      "key": "us_kgnu",
+      "name": "KGNU",
+      "country_code": "US",
+      "website": "https://kgnu.org/",
+      "must_visit_paths": [
+        "/programs/",
+        "/playlists/",
+        "/contact-us/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "community_public_affiliate",
+      "submission_hint_urls": [
+        "https://kgnu.org/"
+      ],
+      "notes": "Community/public hybrid with strong specialty music blocks."
+    },
+    {
+      "key": "us_wort",
+      "name": "WORT",
+      "country_code": "US",
+      "website": "https://www.wortfm.org/",
+      "must_visit_paths": [
+        "/shows/",
+        "/playlists/",
+        "/contact/"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.wortfm.org/"
+      ],
+      "notes": "Long-running community station with many genre/specialty shows."
+    },
+    {
+      "key": "us_kalw",
+      "name": "KALW",
+      "country_code": "US",
+      "website": "https://www.kalw.org/",
+      "must_visit_paths": [
+        "/music",
+        "/shows",
+        "/about/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "public_community",
+      "submission_hint_urls": [
+        "https://www.kalw.org/"
+      ],
+      "notes": "Bay Area public/community station with curated shows."
+    },
+    {
+      "key": "us_kalx",
+      "name": "KALX",
+      "country_code": "US",
+      "website": "https://www.kalx.berkeley.edu/",
+      "must_visit_paths": [
+        "/music",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.kalx.berkeley.edu/"
+      ],
+      "notes": "Top-tier US college radio for independent discovery."
+    },
+    {
+      "key": "us_kxlu",
+      "name": "KXLU",
+      "country_code": "US",
+      "website": "https://kxlu.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/djs",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 89,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kxlu.com/"
+      ],
+      "notes": "Major LA college/freeform discovery station."
+    },
+    {
+      "key": "us_wprb",
+      "name": "WPRB",
+      "country_code": "US",
+      "website": "https://wprb.com/",
+      "must_visit_paths": [
+        "/schedule",
+        "/playlists",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wprb.com/"
+      ],
+      "notes": "High-signal Princeton college station for niche genres."
+    },
+    {
+      "key": "us_wnyu",
+      "name": "WNYU",
+      "country_code": "US",
+      "website": "https://wnyu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlists",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 87,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wnyu.org/"
+      ],
+      "notes": "Key NYC college station with varied specialty programming."
+    },
+    {
+      "key": "us_wmbr",
+      "name": "WMBR",
+      "country_code": "US",
+      "website": "https://wmbr.org/",
+      "must_visit_paths": [
+        "/schedule",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wmbr.org/"
+      ],
+      "notes": "MIT station, broad specialty shows and strong discovery profile."
+    },
+    {
+      "key": "us_zsu",
+      "name": "KZSU Stanford",
+      "country_code": "US",
+      "website": "https://kzsu.stanford.edu/",
+      "must_visit_paths": [
+        "/shows",
+        "/music",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 85,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kzsu.stanford.edu/"
+      ],
+      "notes": "Historic US college station, strong indie/program diversity."
+    },
+    {
+      "key": "us_wers",
+      "name": "WERS",
+      "country_code": "US",
+      "website": "https://wers.org/",
+      "must_visit_paths": [
+        "/playlist",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 81,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wers.org/"
+      ],
+      "notes": "Emerson College station; known for non-commercial music mix."
+    },
+    {
+      "key": "us_wknc",
+      "name": "WKNC",
+      "country_code": "US",
+      "website": "https://wknc.org/",
+      "must_visit_paths": [
+        "/programs",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wknc.org/"
+      ],
+      "notes": "NC State college station; strong indie/underground coverage."
+    },
+    {
+      "key": "us_wrek",
+      "name": "WREK",
+      "country_code": "US",
+      "website": "https://wrek.org/",
+      "must_visit_paths": [
+        "/schedule",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wrek.org/"
+      ],
+      "notes": "Georgia Tech station, strong specialty format diversity."
+    },
+    {
+      "key": "us_wras",
+      "name": "WRAS",
+      "country_code": "US",
+      "website": "https://wras.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wras.org/"
+      ],
+      "notes": "Atlanta college station with notable independent history."
+    },
+    {
+      "key": "us_kspc",
+      "name": "KSPC",
+      "country_code": "US",
+      "website": "https://kspc.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlists",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kspc.org/"
+      ],
+      "notes": "Important Claremont college station for indie and specialty formats."
+    },
+    {
+      "key": "us_kvrx",
+      "name": "KVRX",
+      "country_code": "US",
+      "website": "https://kvrx.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kvrx.org/"
+      ],
+      "notes": "University of Texas student station with indie relevance."
+    },
+    {
+      "key": "us_kcpr",
+      "name": "KCPR",
+      "country_code": "US",
+      "website": "https://kcpr.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/programming",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kcpr.org/"
+      ],
+      "notes": "Cal Poly college station; useful west-coast college signal."
+    },
+    {
+      "key": "us_wsou",
+      "name": "WSOU",
+      "country_code": "US",
+      "website": "https://www.wsou.net/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wsou.net/"
+      ],
+      "notes": "Seton Hall college station; strong genre-specific curation."
+    },
+    {
+      "key": "us_wnur",
+      "name": "WNUR",
+      "country_code": "US",
+      "website": "https://wnur.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/about/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wnur.org/"
+      ],
+      "notes": "Northwestern college station with broad specialty blocks."
+    },
+    {
+      "key": "us_wmfo",
+      "name": "WMFO",
+      "country_code": "US",
+      "website": "https://wmfo.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/programming",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 70,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wmfo.org/"
+      ],
+      "notes": "Tufts freeform station; good long-tail discovery channel."
+    },
+    {
+      "key": "us_kroq",
+      "name": "KROQ",
+      "country_code": "US",
+      "website": "https://www.audacy.com/kroq",
+      "must_visit_paths": [
+        "/playlist",
+        "/hosts",
+        "/contact-us"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 68,
+      "newcomer_signal": false,
+      "station_class": "major_commercial",
+      "submission_hint_urls": [
+        "https://www.audacy.com/kroq"
+      ],
+      "notes": "Major market relevance; lower direct submission probability."
+    },
+    {
+      "key": "us_alt_98_7",
+      "name": "ALT 98.7",
+      "country_code": "US",
+      "website": "https://alt987fm.iheart.com/",
+      "must_visit_paths": [
+        "/onair",
+        "/contact",
+        "/playlist"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 65,
+      "newcomer_signal": false,
+      "station_class": "major_commercial",
+      "submission_hint_urls": [
+        "https://alt987fm.iheart.com/"
+      ],
+      "notes": "Keep as market benchmark; prioritize other tiers first."
+    },
+    {
+      "key": "us_kdhx",
+      "name": "KDHX",
+      "country_code": "US",
+      "website": "https://kdhx.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 82,
+      "newcomer_signal": true,
+      "station_class": "community_freeform",
+      "submission_hint_urls": [
+        "https://kdhx.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wnrn",
+      "name": "WNRN",
+      "country_code": "US",
+      "website": "https://www.wnrn.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 83,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wnrn.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wyce",
+      "name": "WYCE",
+      "country_code": "US",
+      "website": "https://grcmc.org/wyce",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "community_music",
+      "submission_hint_urls": [
+        "https://grcmc.org/wyce"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_weqx",
+      "name": "WEQX",
+      "country_code": "US",
+      "website": "https://www.weqx.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": false,
+      "station_class": "independent_commercial",
+      "submission_hint_urls": [
+        "https://www.weqx.com/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wrti",
+      "name": "WRTI",
+      "country_code": "US",
+      "website": "https://www.wrti.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wrti.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wbgo",
+      "name": "WBGO",
+      "country_code": "US",
+      "website": "https://www.wbgo.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wbgo.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kjazz_kkjz",
+      "name": "KJazz 88.1 (KKJZ)",
+      "country_code": "US",
+      "website": "https://www.kkjz.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kkjz.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kcsm",
+      "name": "KCSM",
+      "country_code": "US",
+      "website": "https://www.kcsm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kcsm.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kxci",
+      "name": "KXCI",
+      "country_code": "US",
+      "website": "https://kxci.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://kxci.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_krcl",
+      "name": "KRCL",
+      "country_code": "US",
+      "website": "https://krcl.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://krcl.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kunm",
+      "name": "KUNM",
+      "country_code": "US",
+      "website": "https://www.kunm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kunm.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kzsc",
+      "name": "KZSC",
+      "country_code": "US",
+      "website": "https://kzsc.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 82,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kzsc.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kusc",
+      "name": "KUSC",
+      "country_code": "US",
+      "website": "https://www.kusc.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 68,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kusc.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wyso",
+      "name": "WYSO",
+      "country_code": "US",
+      "website": "https://www.wyso.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wyso.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wamu_bluegrass",
+      "name": "WAMU Bluegrass Country",
+      "country_code": "US",
+      "website": "https://bluegrasscountry.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 73,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://bluegrasscountry.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wcdb",
+      "name": "WCDB",
+      "country_code": "US",
+      "website": "https://wcdbfm.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wcdbfm.com/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_whrb",
+      "name": "WHRB",
+      "country_code": "US",
+      "website": "https://www.whrb.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.whrb.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wbru",
+      "name": "WBRU",
+      "country_code": "US",
+      "website": "https://www.wbru.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 72,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wbru.com/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wxyc",
+      "name": "WXYC",
+      "country_code": "US",
+      "website": "https://wxyc.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 84,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wxyc.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wluw",
+      "name": "WLUW",
+      "country_code": "US",
+      "website": "https://www.wluw.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wluw.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wmse",
+      "name": "WMSE",
+      "country_code": "US",
+      "website": "https://www.wmse.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "community_music",
+      "submission_hint_urls": [
+        "https://www.wmse.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kpiss",
+      "name": "KPISS",
+      "country_code": "US",
+      "website": "https://kpiss.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 72,
+      "newcomer_signal": true,
+      "station_class": "independent_online",
+      "submission_hint_urls": [
+        "https://kpiss.fm/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wfpk",
+      "name": "WFPK",
+      "country_code": "US",
+      "website": "https://wfpk.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 82,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://wfpk.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wtmd",
+      "name": "WTMD",
+      "country_code": "US",
+      "website": "https://www.wtmd.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 81,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wtmd.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_ksqd",
+      "name": "KSQD",
+      "country_code": "US",
+      "website": "https://ksqd.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 73,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://ksqd.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wicb",
+      "name": "WICB",
+      "country_code": "US",
+      "website": "https://wicb.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wicb.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_witt",
+      "name": "WITT",
+      "country_code": "US",
+      "website": "https://www.wittradio.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 70,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.wittradio.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wmuh",
+      "name": "WMUH",
+      "country_code": "US",
+      "website": "https://wmuh.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wmuh.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wfdu",
+      "name": "WFDU",
+      "country_code": "US",
+      "website": "https://wfdu.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wfdu.fm/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wmuc",
+      "name": "WMUC",
+      "country_code": "US",
+      "website": "https://wmuc.umd.edu/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wmuc.umd.edu/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wcwm",
+      "name": "WCWM",
+      "country_code": "US",
+      "website": "https://www.wcwm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 73,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wcwm.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_woub",
+      "name": "WOUB",
+      "country_code": "US",
+      "website": "https://woub.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 71,
+      "newcomer_signal": true,
+      "station_class": "public_university_music",
+      "submission_hint_urls": [
+        "https://woub.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kutr",
+      "name": "KUTR",
+      "country_code": "US",
+      "website": "https://www.kutr.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.kutr.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kuom",
+      "name": "Radio K (KUOM)",
+      "country_code": "US",
+      "website": "https://www.radiok.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.radiok.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_ksua",
+      "name": "KSUA",
+      "country_code": "US",
+      "website": "https://ksuaradio.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 72,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://ksuaradio.com/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kuci",
+      "name": "KUCI",
+      "country_code": "US",
+      "website": "https://kuci.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 81,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kuci.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kcsb",
+      "name": "KCSB",
+      "country_code": "US",
+      "website": "https://www.kcsb.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 84,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.kcsb.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kdvs",
+      "name": "KDVS",
+      "country_code": "US",
+      "website": "https://kdvs.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 83,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kdvs.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wfnp",
+      "name": "WFNP",
+      "country_code": "US",
+      "website": "https://www.wfnp.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 70,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wfnp.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_woxy",
+      "name": "WOXY",
+      "country_code": "US",
+      "website": "https://www.woxy.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 68,
+      "newcomer_signal": true,
+      "station_class": "independent_online",
+      "submission_hint_urls": [
+        "https://www.woxy.com/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_ktru",
+      "name": "KTRU",
+      "country_code": "US",
+      "website": "https://ktru.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://ktru.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kusc2_kuscclassical",
+      "name": "KDFC",
+      "country_code": "US",
+      "website": "https://www.kdfc.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 66,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kdfc.com/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kfai",
+      "name": "KFAI",
+      "country_code": "US",
+      "website": "https://www.kfai.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.kfai.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_ksjs",
+      "name": "KSJS",
+      "country_code": "US",
+      "website": "https://ksjs.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://ksjs.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_kbcs",
+      "name": "KBCS",
+      "country_code": "US",
+      "website": "https://www.kbcs.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "community_public",
+      "submission_hint_urls": [
+        "https://www.kbcs.fm/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wfhb",
+      "name": "WFHB",
+      "country_code": "US",
+      "website": "https://wfhb.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://wfhb.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wxna",
+      "name": "WXNA",
+      "country_code": "US",
+      "website": "https://www.wxnafm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.wxnafm.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_weru",
+      "name": "WERU",
+      "country_code": "US",
+      "website": "https://weru.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 72,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://weru.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wvfs",
+      "name": "WVFS",
+      "country_code": "US",
+      "website": "https://wvfs.fsu.edu/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wvfs.fsu.edu/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wrfl",
+      "name": "WRFL",
+      "country_code": "US",
+      "website": "https://wrfl.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wrfl.fm/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wzbc",
+      "name": "WZBC",
+      "country_code": "US",
+      "website": "https://www.wzbc.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 81,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wzbc.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wxjm",
+      "name": "WXJM",
+      "country_code": "US",
+      "website": "https://wxjm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wxjm.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wrur",
+      "name": "WRUR",
+      "country_code": "US",
+      "website": "https://www.wrur.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "public_university_music",
+      "submission_hint_urls": [
+        "https://www.wrur.org/"
+      ],
+      "notes": "US expansion pass (manual curation)."
+    },
+    {
+      "key": "us_wvkr",
+      "name": "WVKR 91.3 FM",
+      "country_code": "US",
+      "website": "https://www.wvkr.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 82,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wvkr.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_kopn",
+      "name": "KOPN",
+      "country_code": "US",
+      "website": "https://www.kopn.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 82,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.kopn.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wwoz",
+      "name": "WWOZ",
+      "country_code": "US",
+      "website": "https://www.wwoz.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": true,
+      "station_class": "community_music",
+      "submission_hint_urls": [
+        "https://www.wwoz.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_knkx",
+      "name": "KNKX",
+      "country_code": "US",
+      "website": "https://www.knkx.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 84,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.knkx.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_kmhd",
+      "name": "KMHD",
+      "country_code": "US",
+      "website": "https://www.kmhd.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 81,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kmhd.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wdcb",
+      "name": "WDCB",
+      "country_code": "US",
+      "website": "https://wdcb.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://wdcb.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_kkfi",
+      "name": "KKFI",
+      "country_code": "US",
+      "website": "https://kkfi.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://kkfi.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_knon",
+      "name": "KNON",
+      "country_code": "US",
+      "website": "https://www.knon.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.knon.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_kjzz",
+      "name": "KJZZ",
+      "country_code": "US",
+      "website": "https://www.kjzz.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kjzz.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_krtu",
+      "name": "KRTU",
+      "country_code": "US",
+      "website": "https://trinity.edu/krtu",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "public_university_music",
+      "submission_hint_urls": [
+        "https://trinity.edu/krtu"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_ktsu",
+      "name": "KTSU",
+      "country_code": "US",
+      "website": "https://ktsuradio.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://ktsuradio.com/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wext",
+      "name": "WEXT",
+      "country_code": "US",
+      "website": "https://www.wext.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wext.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wxou",
+      "name": "WXOU",
+      "country_code": "US",
+      "website": "https://www.wxou.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wxou.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wcbn",
+      "name": "WCBN",
+      "country_code": "US",
+      "website": "https://www.wcbn.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 83,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wcbn.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wusb",
+      "name": "WUSB",
+      "country_code": "US",
+      "website": "https://www.wusb.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wusb.fm/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wesu",
+      "name": "WESU",
+      "country_code": "US",
+      "website": "https://www.wesufm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wesufm.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wbwc",
+      "name": "WBWC",
+      "country_code": "US",
+      "website": "https://www.wbwc.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wbwc.com/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wusc",
+      "name": "WUSC",
+      "country_code": "US",
+      "website": "https://www.wusc.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wusc.fm/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wuog",
+      "name": "WUOG",
+      "country_code": "US",
+      "website": "https://wuog.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wuog.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_kjhk",
+      "name": "KJHK",
+      "country_code": "US",
+      "website": "https://kjhk.org/web/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kjhk.org/web/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_ktuh",
+      "name": "KTUH",
+      "country_code": "US",
+      "website": "https://ktuh.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://ktuh.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_kwva",
+      "name": "KWVA",
+      "country_code": "US",
+      "website": "https://kwva.uoregon.edu/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kwva.uoregon.edu/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wnmc",
+      "name": "WNMC",
+      "country_code": "US",
+      "website": "https://www.wnmc.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wnmc.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_ksym",
+      "name": "KSYM",
+      "country_code": "US",
+      "website": "https://ksym.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://ksym.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_ktxt",
+      "name": "KTXT FM",
+      "country_code": "US",
+      "website": "https://www.ktxtfm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.ktxtfm.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_krui",
+      "name": "KRUI",
+      "country_code": "US",
+      "website": "https://krui.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://krui.fm/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_wrct",
+      "name": "WRCT",
+      "country_code": "US",
+      "website": "https://wrct.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wrct.org/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_kxua",
+      "name": "KXUA",
+      "country_code": "US",
+      "website": "https://kxua.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kxua.com/"
+      ],
+      "notes": "US expansion pass #2 (manual curation)."
+    },
+    {
+      "key": "us_ksdt",
+      "name": "KSDT UC San Diego",
+      "country_code": "US",
+      "website": "https://ksdt.ucsd.edu/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://ksdt.ucsd.edu/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_whru",
+      "name": "WHRU",
+      "country_code": "US",
+      "website": "https://www.whru.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.whru.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wucf",
+      "name": "WUCF Jazz",
+      "country_code": "US",
+      "website": "https://www.wucf.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wucf.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kumd",
+      "name": "KUMD",
+      "country_code": "US",
+      "website": "https://www.kumd.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "public_university_music",
+      "submission_hint_urls": [
+        "https://www.kumd.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wprk",
+      "name": "WPRK",
+      "country_code": "US",
+      "website": "https://wprk.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wprk.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wsum",
+      "name": "WSUM",
+      "country_code": "US",
+      "website": "https://wsum.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wsum.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wvum",
+      "name": "WVUM",
+      "country_code": "US",
+      "website": "https://wvum.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wvum.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wdiy",
+      "name": "WDIY",
+      "country_code": "US",
+      "website": "https://www.wdiy.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "community_public",
+      "submission_hint_urls": [
+        "https://www.wdiy.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wrhu",
+      "name": "WRHU",
+      "country_code": "US",
+      "website": "https://www.wrhu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wrhu.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wkdu",
+      "name": "WKDU",
+      "country_code": "US",
+      "website": "https://wkdu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wkdu.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wucb",
+      "name": "WUCB",
+      "country_code": "US",
+      "website": "https://www.wucb.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 71,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wucb.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kvlu",
+      "name": "KVLU",
+      "country_code": "US",
+      "website": "https://www.kvlu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kvlu.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kscu",
+      "name": "KSCU",
+      "country_code": "US",
+      "website": "https://www.kscu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.kscu.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kuaf",
+      "name": "KUAF",
+      "country_code": "US",
+      "website": "https://www.kuaf.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kuaf.com/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kasr",
+      "name": "KASR",
+      "country_code": "US",
+      "website": "https://www.kasr.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 70,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.kasr.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wsbf",
+      "name": "WSBF",
+      "country_code": "US",
+      "website": "https://wsbf.net/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wsbf.net/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wxci",
+      "name": "WXCI",
+      "country_code": "US",
+      "website": "https://wxci.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wxci.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wwsp",
+      "name": "WWSP 90FM",
+      "country_code": "US",
+      "website": "https://90fm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://90fm.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kmnr",
+      "name": "KMNR",
+      "country_code": "US",
+      "website": "https://kmnr.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kmnr.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wtul",
+      "name": "WTUL",
+      "country_code": "US",
+      "website": "https://www.wtulneworleans.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wtulneworleans.com/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wpkn",
+      "name": "WPKN",
+      "country_code": "US",
+      "website": "https://www.wpkn.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 82,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.wpkn.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kzfr",
+      "name": "KZFR",
+      "country_code": "US",
+      "website": "https://kzfr.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://kzfr.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kdnk",
+      "name": "KDNK",
+      "country_code": "US",
+      "website": "https://www.kdnk.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.kdnk.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kdnn",
+      "name": "KDNN",
+      "country_code": "US",
+      "website": "https://kdnnradio.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 70,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://kdnnradio.com/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kwtf",
+      "name": "KWTF",
+      "country_code": "US",
+      "website": "https://kwtf.net/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 73,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://kwtf.net/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wriu",
+      "name": "WRIU",
+      "country_code": "US",
+      "website": "https://wriu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wriu.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wrbb",
+      "name": "WRBB",
+      "country_code": "US",
+      "website": "https://wrbb.northeastern.edu/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 81,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wrbb.northeastern.edu/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_wrsu",
+      "name": "WRSU",
+      "country_code": "US",
+      "website": "https://radio.rutgers.edu/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://radio.rutgers.edu/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_ksfr",
+      "name": "KSFR",
+      "country_code": "US",
+      "website": "https://www.ksfr.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.ksfr.org/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_kwur",
+      "name": "KWUR",
+      "country_code": "US",
+      "website": "https://kwur.wustl.edu/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://kwur.wustl.edu/"
+      ],
+      "notes": "US expansion pass #3 (manual curation)."
+    },
+    {
+      "key": "us_koop",
+      "name": "KOOP Radio",
+      "country_code": "US",
+      "website": "https://koop.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://koop.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_kugs",
+      "name": "KUGS 89.3 FM",
+      "country_code": "US",
+      "website": "https://www.kugs.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.kugs.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wnhu",
+      "name": "WNHU",
+      "country_code": "US",
+      "website": "https://wnhu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wnhu.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wrtc",
+      "name": "WRTC",
+      "country_code": "US",
+      "website": "https://www.wrtc.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.wrtc.fm/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_whus",
+      "name": "WHUS",
+      "country_code": "US",
+      "website": "https://whus.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://whus.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wicn",
+      "name": "WICN Public Radio",
+      "country_code": "US",
+      "website": "https://wicn.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://wicn.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wclk",
+      "name": "WCLK Jazz 91.9",
+      "country_code": "US",
+      "website": "https://www.wclk.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wclk.com/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wbjb",
+      "name": "WBJB 90.5 The Night",
+      "country_code": "US",
+      "website": "https://wbjb.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://wbjb.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wcbe",
+      "name": "WCBE 90.5",
+      "country_code": "US",
+      "website": "https://www.wcbe.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wcbe.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wusf",
+      "name": "WUSF Public Media",
+      "country_code": "US",
+      "website": "https://www.wusf.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wusf.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wdbm",
+      "name": "Impact 89FM (WDBM)",
+      "country_code": "US",
+      "website": "https://impact89fm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 81,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://impact89fm.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wutk",
+      "name": "WUTK 90.3 The Rock",
+      "country_code": "US",
+      "website": "https://wutkradio.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wutkradio.com/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wjcu",
+      "name": "WJCU",
+      "country_code": "US",
+      "website": "https://wjcu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wjcu.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_kunv",
+      "name": "KUNV 91.5 Jazz & More",
+      "country_code": "US",
+      "website": "https://www.unlv.edu/kunv",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.unlv.edu/kunv"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_kqac",
+      "name": "All Classical Radio",
+      "country_code": "US",
+      "website": "https://www.allclassical.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.allclassical.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_king_fm",
+      "name": "Classical KING FM",
+      "country_code": "US",
+      "website": "https://www.king.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.king.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_kosu",
+      "name": "KOSU",
+      "country_code": "US",
+      "website": "https://www.kosu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kosu.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_kuvo",
+      "name": "KUVO Jazz",
+      "country_code": "US",
+      "website": "https://www.kuvo.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 79,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.kuvo.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_kjlu",
+      "name": "KJLU",
+      "country_code": "US",
+      "website": "https://www.kjlu.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 73,
+      "newcomer_signal": true,
+      "station_class": "public_university_music",
+      "submission_hint_urls": [
+        "https://www.kjlu.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wdre",
+      "name": "WDRT Community Radio",
+      "country_code": "US",
+      "website": "https://www.wdrt.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.wdrt.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wpvm",
+      "name": "WPVM Asheville FM",
+      "country_code": "US",
+      "website": "https://www.wpvmfm.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 73,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.wpvmfm.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wqfs",
+      "name": "WQFS",
+      "country_code": "US",
+      "website": "https://wqfs.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://wqfs.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wrir2",
+      "name": "WRIR Richmond",
+      "country_code": "US",
+      "website": "https://www.wrir.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://www.wrir.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wmnr",
+      "name": "WMNR Fine Arts Radio",
+      "country_code": "US",
+      "website": "https://www.wmnr.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 73,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wmnr.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wjff",
+      "name": "WJFF Radio Catskill",
+      "country_code": "US",
+      "website": "https://wjffradio.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 74,
+      "newcomer_signal": true,
+      "station_class": "community_radio",
+      "submission_hint_urls": [
+        "https://wjffradio.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_kvsc",
+      "name": "KVSC 88.1 FM",
+      "country_code": "US",
+      "website": "https://www.kvsc.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 77,
+      "newcomer_signal": true,
+      "station_class": "college_radio",
+      "submission_hint_urls": [
+        "https://www.kvsc.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_wuft",
+      "name": "WUFT",
+      "country_code": "US",
+      "website": "https://www.wuft.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 72,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.wuft.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_ksut",
+      "name": "KSUT Public Radio",
+      "country_code": "US",
+      "website": "https://www.ksut.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 75,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://www.ksut.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_ksjd",
+      "name": "KSJD",
+      "country_code": "US",
+      "website": "https://www.ksjd.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 73,
+      "newcomer_signal": true,
+      "station_class": "community_public",
+      "submission_hint_urls": [
+        "https://www.ksjd.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    },
+    {
+      "key": "us_ktbg",
+      "name": "The Bridge (KTBG)",
+      "country_code": "US",
+      "website": "https://bridge909.org/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "public_music",
+      "submission_hint_urls": [
+        "https://bridge909.org/"
+      ],
+      "notes": "US expansion pass #4 (manual curation)."
+    }
+  ]
+}

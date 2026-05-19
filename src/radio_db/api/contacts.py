@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from radio_db.api.common import require_permission_mode
 from radio_db.db import SessionLocal
 from radio_db.models.entities import ContactRole, Station, StationContact, StationPerson
 
@@ -158,7 +159,12 @@ def list_station_contacts(station_id: int, db: Session = Depends(_get_db)) -> di
 
 
 @router.patch("/contact/{contact_id}", response_model=ContactDTO)
-def update_contact(contact_id: int, request: ContactUpdateRequest, db: Session = Depends(_get_db)) -> ContactDTO:
+def update_contact(
+    contact_id: int,
+    request: ContactUpdateRequest,
+    db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
+) -> ContactDTO:
     contact = db.scalar(select(StationContact).where(StationContact.id == contact_id))
     if contact is None:
         raise HTTPException(status_code=404, detail="contact_not_found")
@@ -184,7 +190,12 @@ def update_contact(contact_id: int, request: ContactUpdateRequest, db: Session =
 
 
 @router.patch("/person/{person_id}", response_model=PersonDTO)
-def update_person(person_id: int, request: PersonUpdateRequest, db: Session = Depends(_get_db)) -> PersonDTO:
+def update_person(
+    person_id: int,
+    request: PersonUpdateRequest,
+    db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
+) -> PersonDTO:
     person = db.scalar(select(StationPerson).where(StationPerson.id == person_id))
     if person is None:
         raise HTTPException(status_code=404, detail="person_not_found")

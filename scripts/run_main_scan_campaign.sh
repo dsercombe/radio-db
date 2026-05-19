@@ -6,19 +6,31 @@ cd "$APP_DIR"
 source .venv/bin/activate
 
 LOCK_FILE="${MAIN_SCAN_CAMPAIGN_LOCK_FILE:-/tmp/radio-db-main-scan-campaign.lock}"
+GLOBAL_WRITE_LOCK_FILE="${RADIO_DB_HEAVY_WRITE_LOCK_FILE:-$APP_DIR/.radio_db_state/radio-db-heavy-write.lock}"
 STATION_LIMIT="${MAIN_SCAN_STATION_LIMIT:-100}"
 MAX_PAGES="${MAIN_SCAN_MAX_PAGES:-3}"
 MIN_CONFIDENCE="${MAIN_SCAN_MIN_CONFIDENCE:-0.0}"
 LOG_DIR="${MAIN_SCAN_CAMPAIGN_LOG_DIR:-$APP_DIR/.radio_db_state}"
 LOG_FILE="$LOG_DIR/main_scan_campaign_$(date -u +%Y%m%dT%H%M%SZ).log"
 
-mkdir -p "$LOG_DIR"
+mkdir -p "$LOG_DIR" "$APP_DIR/.radio_db_state"
 
+_LOCK_UMASK="$(umask)"
+umask 000
 exec 9>"$LOCK_FILE"
 if ! flock -n 9; then
+  umask "$_LOCK_UMASK"
   echo "main-scan-campaign already running, skip"
   exit 0
 fi
+
+exec 8>"$GLOBAL_WRITE_LOCK_FILE"
+if ! flock -n 8; then
+  umask "$_LOCK_UMASK"
+  echo "heavy radio-db writer already running, skip main-scan-campaign"
+  exit 0
+fi
+umask "$_LOCK_UMASK"
 
 echo "== main scan campaign start $(date -u +%FT%TZ) ==" | tee -a "$LOG_FILE"
 echo "station_limit=$STATION_LIMIT max_pages=$MAX_PAGES min_confidence=$MIN_CONFIDENCE" | tee -a "$LOG_FILE"

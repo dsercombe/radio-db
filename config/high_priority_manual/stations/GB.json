@@ -1,0 +1,585 @@
+{
+  "country_code": "GB",
+  "manual_status": "in_progress",
+  "stations": [
+    {
+      "key": "gb_bbc_radio1",
+      "name": "BBC Radio 1",
+      "country_code": "GB",
+      "website": "https://www.bbc.co.uk/radio1",
+      "must_visit_paths": [
+        "/",
+        "/programmes",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": false,
+      "station_class": "public_service_music",
+      "notes": "National youth/music flagship."
+    },
+    {
+      "key": "gb_bbc_1xtra",
+      "name": "BBC Radio 1Xtra",
+      "country_code": "GB",
+      "website": "https://www.bbc.co.uk/1xtra",
+      "must_visit_paths": [
+        "/",
+        "/programmes",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": false,
+      "station_class": "public_service_music"
+    },
+    {
+      "key": "gb_bbc_radio2",
+      "name": "BBC Radio 2",
+      "country_code": "GB",
+      "website": "https://www.bbc.co.uk/radio2",
+      "must_visit_paths": [
+        "/",
+        "/programmes",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": false,
+      "station_class": "public_service_music"
+    },
+    {
+      "key": "gb_bbc_radio3",
+      "name": "BBC Radio 3",
+      "country_code": "GB",
+      "website": "https://www.bbc.co.uk/radio3",
+      "must_visit_paths": [
+        "/",
+        "/programmes",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 84,
+      "newcomer_signal": false,
+      "station_class": "public_service_music"
+    },
+    {
+      "key": "gb_bbc_6music",
+      "name": "BBC Radio 6 Music",
+      "country_code": "GB",
+      "website": "https://www.bbc.co.uk/6music",
+      "must_visit_paths": [
+        "/",
+        "/programmes",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 95,
+      "newcomer_signal": true,
+      "station_class": "public_music_tastemaker",
+      "notes": "Major discovery channel."
+    },
+    {
+      "key": "gb_bbc_asian_network",
+      "name": "BBC Asian Network",
+      "country_code": "GB",
+      "website": "https://www.bbc.co.uk/asiannetwork",
+      "must_visit_paths": [
+        "/",
+        "/programmes",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 82,
+      "newcomer_signal": false,
+      "station_class": "public_service_music"
+    },
+    {
+      "key": "gb_capital",
+      "name": "Capital",
+      "country_code": "GB",
+      "website": "https://www.capitalfm.com/",
+      "must_visit_paths": [
+        "/",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_capital_xtra",
+      "name": "Capital XTRA",
+      "country_code": "GB",
+      "website": "https://www.capitalxtra.com/",
+      "must_visit_paths": [
+        "/",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 84,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_capital_dance",
+      "name": "Capital Dance",
+      "country_code": "GB",
+      "website": "https://www.capitaldance.com/",
+      "must_visit_paths": [
+        "/",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_heart",
+      "name": "Heart",
+      "country_code": "GB",
+      "website": "https://www.heart.co.uk/",
+      "must_visit_paths": [
+        "/",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_smooth",
+      "name": "Smooth",
+      "country_code": "GB",
+      "website": "https://www.smoothradio.com/",
+      "must_visit_paths": [
+        "/",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 84,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_classic_fm",
+      "name": "Classic FM",
+      "country_code": "GB",
+      "website": "https://www.classicfm.com/",
+      "must_visit_paths": [
+        "/",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 84,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_radio_x",
+      "name": "Radio X",
+      "country_code": "GB",
+      "website": "https://www.radiox.co.uk/",
+      "must_visit_paths": [
+        "/",
+        "/shows",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_absolute_radio",
+      "name": "Absolute Radio",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/absolute-radio/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 86,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_absolute_80s",
+      "name": "Absolute 80s",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/absolute-radio/80s/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_absolute_90s",
+      "name": "Absolute 90s",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/absolute-radio/90s/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_absolute_classic_rock",
+      "name": "Absolute Classic Rock",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/absolute-radio/classic-rock/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_greatest_hits",
+      "name": "Greatest Hits Radio",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/greatest-hits/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 82,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_hits_radio",
+      "name": "Hits Radio",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/hits-radio/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 82,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_kiss",
+      "name": "KISS",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/kiss/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 84,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_kisstory",
+      "name": "KISSTORY",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/kisstory/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 76,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_magic",
+      "name": "Magic Radio",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/magic/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 82,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_kerrang",
+      "name": "Kerrang! Radio",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/kerrang/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 78,
+      "newcomer_signal": true,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_planet_rock",
+      "name": "Planet Rock",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/planet-rock/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_jazz_fm",
+      "name": "Jazz FM",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/jazz-fm/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_scala_radio",
+      "name": "Scala Radio",
+      "country_code": "GB",
+      "website": "https://planetradio.co.uk/scala-radio/",
+      "must_visit_paths": [
+        "/",
+        "/on-air",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 74,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_virgin_radio",
+      "name": "Virgin Radio UK",
+      "country_code": "GB",
+      "website": "https://virginradio.co.uk/",
+      "must_visit_paths": [
+        "/",
+        "/listen",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 84,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_virgin_radio_anthem",
+      "name": "Virgin Radio Anthems",
+      "country_code": "GB",
+      "website": "https://virginradio.co.uk/anthems",
+      "must_visit_paths": [
+        "/",
+        "/listen",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_virgin_radio_chilled",
+      "name": "Virgin Radio Chilled",
+      "country_code": "GB",
+      "website": "https://virginradio.co.uk/chilled",
+      "must_visit_paths": [
+        "/",
+        "/listen",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 72,
+      "newcomer_signal": false,
+      "station_class": "commercial_major"
+    },
+    {
+      "key": "gb_nts",
+      "name": "NTS",
+      "country_code": "GB",
+      "website": "https://www.nts.live/",
+      "must_visit_paths": [
+        "/shows",
+        "/explore",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 92,
+      "newcomer_signal": true,
+      "station_class": "indie_music",
+      "notes": "Globally influential tastemaker."
+    },
+    {
+      "key": "gb_rinse",
+      "name": "Rinse FM",
+      "country_code": "GB",
+      "website": "https://rinse.fm/",
+      "must_visit_paths": [
+        "/shows",
+        "/news",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "indie_music"
+    },
+    {
+      "key": "gb_reprezent",
+      "name": "Reprezent Radio",
+      "country_code": "GB",
+      "website": "https://reprezent.org.uk/",
+      "must_visit_paths": [
+        "/shows",
+        "/contact",
+        "/music"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 88,
+      "newcomer_signal": true,
+      "station_class": "community_music"
+    },
+    {
+      "key": "gb_resonance_fm",
+      "name": "Resonance FM",
+      "country_code": "GB",
+      "website": "https://www.resonancefm.com/",
+      "must_visit_paths": [
+        "/programmes",
+        "/contact",
+        "/about"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 84,
+      "newcomer_signal": true,
+      "station_class": "community_music"
+    },
+    {
+      "key": "gb_soho_radio",
+      "name": "Soho Radio",
+      "country_code": "GB",
+      "website": "https://sohoradiolondon.com/",
+      "must_visit_paths": [
+        "/shows",
+        "/about",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "indie_music"
+    },
+    {
+      "key": "gb_worldwide_fm",
+      "name": "Worldwide FM",
+      "country_code": "GB",
+      "website": "https://worldwidefm.net/",
+      "must_visit_paths": [
+        "/shows",
+        "/contact",
+        "/about"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_2",
+      "priority_score": 80,
+      "newcomer_signal": true,
+      "station_class": "indie_music"
+    },
+    {
+      "key": "gb_amazing_radio",
+      "name": "Amazing Radio",
+      "country_code": "GB",
+      "website": "https://amazingradio.com/",
+      "must_visit_paths": [
+        "/",
+        "/submit",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_1",
+      "priority_score": 90,
+      "newcomer_signal": true,
+      "station_class": "indie_music"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import fcntl
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,6 +19,8 @@ class MonthlyApiUsageState:
     month: str
     date: str
     brave_calls: int = 0
+    brave_answer_calls_month: int = 0
+    brave_answer_calls_day: int = 0
     google_cse_calls_month: int = 0
     google_cse_calls_day: int = 0
     tavily_calls_month: int = 0
@@ -71,7 +74,8 @@ class CostGuard:
 
     def _save_state(self) -> None:
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
-        self.state_path.write_text(
+        tmp_path = self.state_path.with_suffix(self.state_path.suffix + ".tmp")
+        tmp_path.write_text(
             json.dumps(
                 {
                     "date": self.state.date,
@@ -82,6 +86,17 @@ class CostGuard:
             ),
             encoding="utf-8",
         )
+        tmp_path.replace(self.state_path)
+
+    def _locked_register(self, mutator) -> None:
+        self.state_path.parent.mkdir(parents=True, exist_ok=True)
+        lock_path = self.state_path.with_suffix(self.state_path.suffix + ".lock")
+        with lock_path.open("w", encoding="utf-8") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            self.state = self._load_state()
+            mutator()
+            self._save_state()
+            fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
 
     @staticmethod
     def estimate_input_tokens(text: str) -> int:
@@ -127,6 +142,8 @@ class ApiUsageGuard:
                 month=str(payload.get("month", self._current_month())),
                 date=str(payload.get("date", self._today())),
                 brave_calls=int(payload.get("brave_calls", 0)),
+                brave_answer_calls_month=int(payload.get("brave_answer_calls_month", 0)),
+                brave_answer_calls_day=int(payload.get("brave_answer_calls_day", 0)),
                 google_cse_calls_month=int(payload.get("google_cse_calls_month", 0)),
                 google_cse_calls_day=int(payload.get("google_cse_calls_day", 0)),
                 tavily_calls_month=int(payload.get("tavily_calls_month", 0)),
@@ -148,6 +165,8 @@ class ApiUsageGuard:
                 month=self._current_month(),
                 date=self._today(),
                 brave_calls=0,
+                brave_answer_calls_month=0,
+                brave_answer_calls_day=0,
                 google_cse_calls_month=0,
                 google_cse_calls_day=0,
                 tavily_calls_month=0,
@@ -163,6 +182,7 @@ class ApiUsageGuard:
             )
         elif state.date != self._today():
             state.date = self._today()
+            state.brave_answer_calls_day = 0
             state.google_cse_calls_day = 0
             state.tavily_calls_day = 0
             state.grok_calls_day = 0
@@ -173,12 +193,15 @@ class ApiUsageGuard:
 
     def _save_state(self) -> None:
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
-        self.state_path.write_text(
+        tmp_path = self.state_path.with_suffix(self.state_path.suffix + ".tmp")
+        tmp_path.write_text(
             json.dumps(
                 {
                     "month": self.state.month,
                     "date": self.state.date,
                     "brave_calls": self.state.brave_calls,
+                    "brave_answer_calls_month": self.state.brave_answer_calls_month,
+                    "brave_answer_calls_day": self.state.brave_answer_calls_day,
                     "google_cse_calls_month": self.state.google_cse_calls_month,
                     "google_cse_calls_day": self.state.google_cse_calls_day,
                     "tavily_calls_month": self.state.tavily_calls_month,
@@ -196,6 +219,17 @@ class ApiUsageGuard:
             ),
             encoding="utf-8",
         )
+        tmp_path.replace(self.state_path)
+
+    def _locked_register(self, mutator) -> None:
+        self.state_path.parent.mkdir(parents=True, exist_ok=True)
+        lock_path = self.state_path.with_suffix(self.state_path.suffix + ".lock")
+        with lock_path.open("w", encoding="utf-8") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            self.state = self._load_state()
+            mutator()
+            self._save_state()
+            fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
 
     def can_call_brave(self) -> bool:
         if self.max_brave_calls_per_month <= 0:
@@ -203,8 +237,25 @@ class ApiUsageGuard:
         return self.state.brave_calls < self.max_brave_calls_per_month
 
     def register_brave_call(self) -> None:
-        self.state.brave_calls += 1
-        self._save_state()
+        def mutate() -> None:
+            self.state.brave_calls += 1
+
+        self._locked_register(mutate)
+
+    def can_call_brave_answer(self, max_daily_calls: int, max_monthly_calls: int) -> bool:
+        if max_daily_calls <= 0 or max_monthly_calls <= 0:
+            return False
+        return (
+            self.state.brave_answer_calls_day < max_daily_calls
+            and self.state.brave_answer_calls_month < max_monthly_calls
+        )
+
+    def register_brave_answer_call(self) -> None:
+        def mutate() -> None:
+            self.state.brave_answer_calls_day += 1
+            self.state.brave_answer_calls_month += 1
+
+        self._locked_register(mutate)
 
     def can_call_google_cse(self, max_daily_calls: int, max_monthly_calls: int) -> bool:
         if max_daily_calls <= 0 or max_monthly_calls <= 0:
@@ -212,9 +263,11 @@ class ApiUsageGuard:
         return self.state.google_cse_calls_day < max_daily_calls and self.state.google_cse_calls_month < max_monthly_calls
 
     def register_google_cse_call(self) -> None:
-        self.state.google_cse_calls_day += 1
-        self.state.google_cse_calls_month += 1
-        self._save_state()
+        def mutate() -> None:
+            self.state.google_cse_calls_day += 1
+            self.state.google_cse_calls_month += 1
+
+        self._locked_register(mutate)
 
     def can_call_tavily(self, max_daily_calls: int, max_monthly_calls: int) -> bool:
         if max_daily_calls <= 0 or max_monthly_calls <= 0:
@@ -222,9 +275,11 @@ class ApiUsageGuard:
         return self.state.tavily_calls_day < max_daily_calls and self.state.tavily_calls_month < max_monthly_calls
 
     def register_tavily_call(self) -> None:
-        self.state.tavily_calls_day += 1
-        self.state.tavily_calls_month += 1
-        self._save_state()
+        def mutate() -> None:
+            self.state.tavily_calls_day += 1
+            self.state.tavily_calls_month += 1
+
+        self._locked_register(mutate)
 
     def can_call_grok(
         self,
@@ -241,11 +296,13 @@ class ApiUsageGuard:
         return projected <= max_monthly_usd
 
     def register_grok_call(self, usd_spent: float = 0.0) -> None:
-        self.state.grok_calls_day += 1
-        self.state.grok_calls_month += 1
-        self.state.grok_usd_day += max(0.0, usd_spent)
-        self.state.grok_usd_month += max(0.0, usd_spent)
-        self._save_state()
+        def mutate() -> None:
+            self.state.grok_calls_day += 1
+            self.state.grok_calls_month += 1
+            self.state.grok_usd_day += max(0.0, usd_spent)
+            self.state.grok_usd_month += max(0.0, usd_spent)
+
+        self._locked_register(mutate)
 
     def can_call_linkup(self, max_daily_calls: int, max_monthly_calls: int) -> bool:
         if max_daily_calls <= 0 or max_monthly_calls <= 0:
@@ -253,9 +310,11 @@ class ApiUsageGuard:
         return self.state.linkup_calls_day < max_daily_calls and self.state.linkup_calls_month < max_monthly_calls
 
     def register_linkup_call(self) -> None:
-        self.state.linkup_calls_day += 1
-        self.state.linkup_calls_month += 1
-        self._save_state()
+        def mutate() -> None:
+            self.state.linkup_calls_day += 1
+            self.state.linkup_calls_month += 1
+
+        self._locked_register(mutate)
 
     def can_call_duckduckgo(self, max_daily_calls: int, max_monthly_calls: int) -> bool:
         if max_daily_calls <= 0 or max_monthly_calls <= 0:
@@ -266,6 +325,8 @@ class ApiUsageGuard:
         )
 
     def register_duckduckgo_call(self) -> None:
-        self.state.duckduckgo_calls_day += 1
-        self.state.duckduckgo_calls_month += 1
-        self._save_state()
+        def mutate() -> None:
+            self.state.duckduckgo_calls_day += 1
+            self.state.duckduckgo_calls_month += 1
+
+        self._locked_register(mutate)

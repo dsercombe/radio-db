@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import Select, func, select
 from sqlalchemy.orm import Session
 
+from radio_db.api.common import require_permission_mode
 from radio_db.db import SessionLocal
 from radio_db.models.entities import (
     FormRecipe,
@@ -292,7 +293,12 @@ def get_form(form_id: int, db: Session = Depends(_get_db)) -> FormDetailResponse
 
 
 @router.patch("/{form_id}", response_model=FormDetailResponse)
-def update_form(form_id: int, request: FormUpdateRequest, db: Session = Depends(_get_db)) -> FormDetailResponse:
+def update_form(
+    form_id: int,
+    request: FormUpdateRequest,
+    db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("execute")),
+) -> FormDetailResponse:
     form = db.scalar(select(SubmissionForm).where(SubmissionForm.id == form_id))
     if form is None:
         raise HTTPException(status_code=404, detail="form_not_found")
@@ -321,7 +327,11 @@ def update_form(form_id: int, request: FormUpdateRequest, db: Session = Depends(
 
 
 @router.post("/scan")
-def scan_forms(request: FormScanRequest, db: Session = Depends(_get_db)) -> dict:
+def scan_forms(
+    request: FormScanRequest,
+    db: Session = Depends(_get_db),
+    _mode: str = Depends(require_permission_mode("dry-run")),
+) -> dict:
     _station_name(db, request.station_id)
     result = scan_submission_forms(
         session=db,

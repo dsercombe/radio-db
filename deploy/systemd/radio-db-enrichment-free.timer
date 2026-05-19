@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Radio DB free enrichment scan every 30 minutes
+
+[Timer]
+OnCalendar=*:0/30
+RandomizedDelaySec=5m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

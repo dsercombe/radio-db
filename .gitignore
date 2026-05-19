@@ -15,3 +15,10 @@ frontend/.env.local
 frontend/.env.local.*
 frontend/vite.log
 *.egg-info/
+logs/
+queue_dbs/
+tmp/
+backups/
+*.log
+*.pid
+*.lock

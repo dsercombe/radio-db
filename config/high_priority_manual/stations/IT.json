@@ -1,0 +1,26 @@
+{
+  "country_code": "IT",
+  "manual_status": "in_progress",
+  "stations": [
+    {
+      "key": "it_radio2_rai_it",
+      "name": "Rai Radio 2",
+      "country_code": "IT",
+      "website": "http://www.radio2.rai.it/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 70,
+      "newcomer_signal": false,
+      "station_class": "auto_db_candidate",
+      "submission_hint_urls": [
+        "http://www.radio2.rai.it/"
+      ],
+      "notes": "Auto-filled from DB (status=CANDIDATE, sub=0, people=0, programs=0, evidence=22)."
+    }
+  ]
+}

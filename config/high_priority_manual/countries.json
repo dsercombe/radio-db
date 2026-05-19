@@ -1,0 +1,272 @@
+[
+  {
+    "code": "US",
+    "name": "United States",
+    "priority_tier": 1,
+    "region": "North America",
+    "existing_high_priority_count": 187,
+    "manual_status": "in_progress",
+    "target_major_stations": 120
+  },
+  {
+    "code": "GB",
+    "name": "United Kingdom",
+    "priority_tier": 1,
+    "region": "Europe",
+    "existing_high_priority_count": 23,
+    "manual_status": "todo",
+    "target_major_stations": 80
+  },
+  {
+    "code": "DE",
+    "name": "Germany",
+    "priority_tier": 1,
+    "region": "Europe",
+    "existing_high_priority_count": 102,
+    "manual_status": "todo",
+    "target_major_stations": 70
+  },
+  {
+    "code": "CA",
+    "name": "Canada",
+    "priority_tier": 1,
+    "region": "North America",
+    "existing_high_priority_count": 11,
+    "manual_status": "todo",
+    "target_major_stations": 60
+  },
+  {
+    "code": "FR",
+    "name": "France",
+    "priority_tier": 1,
+    "region": "Europe",
+    "existing_high_priority_count": 9,
+    "manual_status": "todo",
+    "target_major_stations": 60
+  },
+  {
+    "code": "NL",
+    "name": "Netherlands",
+    "priority_tier": 1,
+    "region": "Europe",
+    "existing_high_priority_count": 10,
+    "manual_status": "todo",
+    "target_major_stations": 40
+  },
+  {
+    "code": "AU",
+    "name": "Australia",
+    "priority_tier": 1,
+    "region": "Oceania",
+    "existing_high_priority_count": 6,
+    "manual_status": "todo",
+    "target_major_stations": 50
+  },
+  {
+    "code": "AT",
+    "name": "Austria",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 6,
+    "manual_status": "todo",
+    "target_major_stations": 30
+  },
+  {
+    "code": "CH",
+    "name": "Switzerland",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 6,
+    "manual_status": "todo",
+    "target_major_stations": 30
+  },
+  {
+    "code": "IE",
+    "name": "Ireland",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 2,
+    "manual_status": "todo",
+    "target_major_stations": 25
+  },
+  {
+    "code": "BE",
+    "name": "Belgium",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 2,
+    "manual_status": "todo",
+    "target_major_stations": 25
+  },
+  {
+    "code": "SE",
+    "name": "Sweden",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 2,
+    "manual_status": "todo",
+    "target_major_stations": 25
+  },
+  {
+    "code": "NO",
+    "name": "Norway",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 1,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "DK",
+    "name": "Denmark",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 1,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "FI",
+    "name": "Finland",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 0,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "ES",
+    "name": "Spain",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 3,
+    "manual_status": "todo",
+    "target_major_stations": 35
+  },
+  {
+    "code": "IT",
+    "name": "Italy",
+    "priority_tier": 2,
+    "region": "Europe",
+    "existing_high_priority_count": 4,
+    "manual_status": "todo",
+    "target_major_stations": 35
+  },
+  {
+    "code": "NZ",
+    "name": "New Zealand",
+    "priority_tier": 2,
+    "region": "Oceania",
+    "existing_high_priority_count": 2,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "JP",
+    "name": "Japan",
+    "priority_tier": 2,
+    "region": "Asia",
+    "existing_high_priority_count": 2,
+    "manual_status": "todo",
+    "target_major_stations": 30
+  },
+  {
+    "code": "KR",
+    "name": "South Korea",
+    "priority_tier": 2,
+    "region": "Asia",
+    "existing_high_priority_count": 1,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "BR",
+    "name": "Brazil",
+    "priority_tier": 3,
+    "region": "Latin America",
+    "existing_high_priority_count": 2,
+    "manual_status": "todo",
+    "target_major_stations": 35
+  },
+  {
+    "code": "MX",
+    "name": "Mexico",
+    "priority_tier": 3,
+    "region": "Latin America",
+    "existing_high_priority_count": 2,
+    "manual_status": "todo",
+    "target_major_stations": 30
+  },
+  {
+    "code": "AR",
+    "name": "Argentina",
+    "priority_tier": 3,
+    "region": "Latin America",
+    "existing_high_priority_count": 0,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "CL",
+    "name": "Chile",
+    "priority_tier": 3,
+    "region": "Latin America",
+    "existing_high_priority_count": 0,
+    "manual_status": "todo",
+    "target_major_stations": 15
+  },
+  {
+    "code": "CO",
+    "name": "Colombia",
+    "priority_tier": 3,
+    "region": "Latin America",
+    "existing_high_priority_count": 0,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "ZA",
+    "name": "South Africa",
+    "priority_tier": 3,
+    "region": "Africa",
+    "existing_high_priority_count": 1,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "PL",
+    "name": "Poland",
+    "priority_tier": 3,
+    "region": "Europe",
+    "existing_high_priority_count": 0,
+    "manual_status": "todo",
+    "target_major_stations": 20
+  },
+  {
+    "code": "CZ",
+    "name": "Czechia",
+    "priority_tier": 3,
+    "region": "Europe",
+    "existing_high_priority_count": 0,
+    "manual_status": "todo",
+    "target_major_stations": 15
+  },
+  {
+    "code": "PT",
+    "name": "Portugal",
+    "priority_tier": 3,
+    "region": "Europe",
+    "existing_high_priority_count": 0,
+    "manual_status": "todo",
+    "target_major_stations": 15
+  },
+  {
+    "code": "IN",
+    "name": "India",
+    "priority_tier": 3,
+    "region": "Asia",
+    "existing_high_priority_count": 2,
+    "manual_status": "todo",
+    "target_major_stations": 30
+  }
+]

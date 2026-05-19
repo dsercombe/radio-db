@@ -9,11 +9,34 @@ VERIFY_BATCH_LIMIT="${VERIFY_BATCH_LIMIT:-300}"
 VERIFY_ONLY_CANDIDATES="${VERIFY_ONLY_CANDIDATES:-true}"
 VERIFY_FETCH_HOMEPAGES="${VERIFY_FETCH_HOMEPAGES:-true}"
 VERIFY_MAX_PAGE_FETCHES_PER_BATCH="${VERIFY_MAX_PAGE_FETCHES_PER_BATCH:-30}"
-VERIFY_APPLY="${VERIFY_APPLY:-true}"
+VERIFY_APPLY="${VERIFY_APPLY:-false}"
 VERIFY_USE_CHECKPOINT="${VERIFY_USE_CHECKPOINT:-true}"
 VERIFY_RESET_CHECKPOINT="${VERIFY_RESET_CHECKPOINT:-false}"
 VERIFY_BATCH_SLEEP_SEC="${VERIFY_BATCH_SLEEP_SEC:-2}"
 VERIFY_MAX_BATCHES="${VERIFY_MAX_BATCHES:-0}"
+LOCK_FILE="${VERIFY_LOCK_FILE:-$APP_DIR/.radio_db_state/radio-db-verify-cycle.lock}"
+GLOBAL_WRITE_LOCK_FILE="${RADIO_DB_HEAVY_WRITE_LOCK_FILE:-$APP_DIR/.radio_db_state/radio-db-heavy-write.lock}"
+
+mkdir -p "$APP_DIR/.radio_db_state"
+
+_LOCK_UMASK="$(umask)"
+umask 000
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+  umask "$_LOCK_UMASK"
+  echo "verify-cycle already running, skip"
+  exit 0
+fi
+
+if [[ "$VERIFY_APPLY" == "true" ]]; then
+  exec 8>"$GLOBAL_WRITE_LOCK_FILE"
+  if ! flock -n 8; then
+    umask "$_LOCK_UMASK"
+    echo "heavy radio-db writer already running, skip verify-cycle"
+    exit 0
+  fi
+fi
+umask "$_LOCK_UMASK"
 
 APP_DIR="$APP_DIR" \
 VERIFY_BATCH_LIMIT="$VERIFY_BATCH_LIMIT" \

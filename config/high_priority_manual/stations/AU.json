@@ -1,0 +1,26 @@
+{
+  "country_code": "AU",
+  "manual_status": "in_progress",
+  "stations": [
+    {
+      "key": "au_2rrr_org_au",
+      "name": "2RRR - Ryde - 88.5 FM (AAC)",
+      "country_code": "AU",
+      "website": "https://www.2rrr.org.au/",
+      "must_visit_paths": [
+        "/shows",
+        "/playlist",
+        "/contact"
+      ],
+      "enabled": true,
+      "priority_tier": "tier_3",
+      "priority_score": 65,
+      "newcomer_signal": true,
+      "station_class": "auto_db_candidate",
+      "submission_hint_urls": [
+        "https://www.2rrr.org.au/"
+      ],
+      "notes": "Auto-filled from DB (status=VERIFIED, sub=1, people=0, programs=21, evidence=22)."
+    }
+  ]
+}
