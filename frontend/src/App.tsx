@@ -378,18 +378,50 @@ function App() {
             </Panel>
             <Panel title={stationDetail?.canonical_name || "Station Detail"} action={<button onClick={() => void startSupervisedScan()}>Start form review</button>}>
               {stationDetail ? (
-                <div className="rdb-detail">
+                <div className="rdb-detail rdb-station-detail">
+                  <div className="rdb-station-hero">
+                    <div>
+                      <span className="rdb-eyebrow">{stationDetail.country_code || "--"} {stationDetail.city ? `· ${stationDetail.city}` : ""}</span>
+                      <h3>{stationDetail.canonical_name}</h3>
+                      <p>{stationDetail.website_url || "No website saved"}</p>
+                    </div>
+                    <Pill tone={statusTone(stationDetail.status)}>{stationDetail.status}</Pill>
+                  </div>
                   <div className="rdb-metrics">
                     <Metric label="Forms" value={String(stationDetail.forms.length)} />
                     <Metric label="Routes" value={String(stationDetail.submissions.length)} />
                     <Metric label="People" value={String(stationDetail.people.length)} />
                     <Metric label="Confidence" value={`${Math.round(stationDetail.confidence_score * 100)}%`} />
                   </div>
-                  <dl>
-                    <dt>Website</dt><dd>{stationDetail.website_url || "-"}</dd>
-                    <dt>Best route</dt><dd>{stationDetail.submissions[0]?.email || stationDetail.submissions[0]?.url || "-"}</dd>
-                    <dt>Forms</dt><dd>{stationDetail.forms.map((form) => `${form.form_type}/${form.status}`).join(", ") || "-"}</dd>
-                  </dl>
+                  <div className="rdb-detail-sections">
+                    <section>
+                      <h3>Submission routes</h3>
+                      {stationDetail.submissions.length ? stationDetail.submissions.slice(0, 4).map((route) => (
+                        <div key={route.id} className="rdb-compact-row">
+                          <strong>{route.method}</strong>
+                          <span>{route.email || route.url || "-"}</span>
+                        </div>
+                      )) : <div className="rdb-empty rdb-empty--small">No routes saved.</div>}
+                    </section>
+                    <section>
+                      <h3>Known forms</h3>
+                      {stationDetail.forms.length ? stationDetail.forms.slice(0, 4).map((form) => (
+                        <div key={form.id} className="rdb-compact-row">
+                          <strong>{form.form_type}</strong>
+                          <span>{form.status} · {Math.round(form.confidence * 100)}%</span>
+                        </div>
+                      )) : <div className="rdb-empty rdb-empty--small">No forms saved.</div>}
+                    </section>
+                    <section>
+                      <h3>People</h3>
+                      {stationDetail.people.length ? stationDetail.people.slice(0, 4).map((person) => (
+                        <div key={person.id} className="rdb-compact-row">
+                          <strong>{person.name || person.role}</strong>
+                          <span>{person.email || person.show_name || person.role}</span>
+                        </div>
+                      )) : <div className="rdb-empty rdb-empty--small">No people saved.</div>}
+                    </section>
+                  </div>
                 </div>
               ) : <div className="rdb-empty">Select a station.</div>}
             </Panel>
