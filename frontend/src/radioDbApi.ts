@@ -1,4 +1,20 @@
-const API_ROOT = (import.meta.env.VITE_API_ROOT || "/api/v1").replace(/\/$/, "");
+function resolveApiRoot(): string {
+  const configured = import.meta.env.VITE_API_ROOT;
+  if (configured) {
+    return configured.replace(/\/$/, "");
+  }
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    const isLocal = host === "localhost" || host === "127.0.0.1";
+    const isRadioHost = host === "radio.public-air.net";
+    if (!isLocal && !isRadioHost) {
+      return "https://radio.public-air.net/api/v1";
+    }
+  }
+  return "/api/v1";
+}
+
+const API_ROOT = resolveApiRoot();
 
 export type ApiPermissionMode = "read-only" | "dry-run" | "execute";
 
