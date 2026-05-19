@@ -265,7 +265,10 @@ def open_browser_session(start_url: str | None = None, station_id: int | None = 
     session_id = uuid.uuid4().hex
     payload = metadata or {}
     with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=settings.browser_headless)
+        launch_kwargs: dict[str, object] = {"headless": settings.browser_headless}
+        if settings.browser_proxy_url:
+            launch_kwargs["proxy"] = {"server": settings.browser_proxy_url}
+        browser = playwright.chromium.launch(**launch_kwargs)
         context = browser.new_context(viewport={"width": 1440, "height": 1200})
         page = context.new_page()
         if start_url:
