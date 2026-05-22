@@ -11,20 +11,27 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlencode
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from sqlalchemy import Select, and_, exists, func, or_, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from radio_db.logging_config import get_logger, setup_logging
 from radio_db.api.stations import router as stations_api_router
 from radio_db.api.agent import router as agent_api_router
 from radio_db.api.browser import router as browser_api_router
 from radio_db.api.forms import router as forms_api_router
 from radio_db.api.contacts import router as contacts_api_router
 from radio_db.api.control import router as control_api_router
+from radio_db.api.contact_center import router as contact_center_api_router
+from radio_db.api.outreach_campaigns import router as outreach_campaigns_api_router
+from radio_db.api.link_tracking import public_router as link_tracking_public_router, api_router as link_tracking_api_router
+from radio_db.api.data_control import router as data_control_api_router
+from radio_db.api.station_groups import router as station_groups_api_router
 from radio_db.config import settings
-from radio_db.db import SessionLocal
+from radio_db.db import SessionLocal, engine, init_db, is_sqlite_engine
 from radio_db.models.entities import (
     ContactRole,
     CrawlFrontier,
@@ -49,6 +56,8 @@ from radio_db.models.entities import (
     SubmissionForm,
     StationStatus,
     SubmissionChannel,
+    LinkTrackingCode,
+    LinkClickEvent,
 )
 from radio_db.services.dedupe import find_duplicate_station, station_fingerprint
 from radio_db.services.forms_agent import agent_run_snapshot, start_manual_scan_run
@@ -71,9 +80,24 @@ _BOOST_LOCK = threading.Lock()
 _HIGH_PRIORITY_LOCK = threading.Lock()
 _AGENT_LOCK = threading.Lock()
 
+_ARCHIVED_STATUS = getattr(StationStatus, "ARCHIVED", None)
+
 AGENT_MANUAL_STATE_PATH = Path(".radio_db_state/agent_manual_state.json")
 COUNTRY_DISCOVERY_STATE_PATH = Path(".radio_db_state/country_discovery_state.json")
 ENV_PATH = Path(".env")
+
+
+def _non_archived_status_filter():
+    excluded = [StationStatus.REJECTED]
+    if _ARCHIVED_STATUS is not None:
+        excluded.append(_ARCHIVED_STATUS)
+    return Station.status.notin_(excluded)
+
+
+def _archived_status_condition():
+    if _ARCHIVED_STATUS is None:
+        return False
+    return Station.status == _ARCHIVED_STATUS
 
 AGENT_CONFIG_KEYS = [
     "AGENT_MODE",
@@ -254,6 +278,20 @@ def _save_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def _frontend_dist_dir() -> Path:
+    return Path(__file__).resolve().parents[2] / "frontend" / "dist"
+
+
+def _serve_spa_file(relative_path: str = "index.html") -> FileResponse:
+    frontend_dist = _frontend_dist_dir().resolve()
+    target = (frontend_dist / relative_path).resolve()
+    if not frontend_dist.exists() or not target.is_file():
+        raise HTTPException(status_code=503, detail="frontend_build_missing")
+    if frontend_dist not in target.parents and target != frontend_dist:
+        raise HTTPException(status_code=404, detail="frontend_asset_not_found")
+    return FileResponse(target)
+
+
 def _is_valid_email(value: str) -> bool:
     email = (value or "").strip().lower()
     if not email or len(email) > 320:
@@ -312,109 +350,110 @@ def _load_blacklisted_emails(session: Session) -> set[str]:
 
 def _ensure_dashboard_schema() -> None:
     with SessionLocal() as session:
-        columns = {
-            str(row[1])
-            for row in session.execute(text("PRAGMA table_info(stations)")).all()
-        }
-        if "manual_confirmed" not in columns:
-            session.execute(text("ALTER TABLE stations ADD COLUMN manual_confirmed BOOLEAN DEFAULT 0"))
-        if "manual_confirmed_at" not in columns:
-            session.execute(text("ALTER TABLE stations ADD COLUMN manual_confirmed_at DATETIME"))
-        submission_columns = {
-            str(row[1])
-            for row in session.execute(text("PRAGMA table_info(submission_channels)")).all()
-        }
-        if "manual_confirmed" not in submission_columns:
-            session.execute(text("ALTER TABLE submission_channels ADD COLUMN manual_confirmed BOOLEAN DEFAULT 0"))
-        if "manual_confirmed_at" not in submission_columns:
-            session.execute(text("ALTER TABLE submission_channels ADD COLUMN manual_confirmed_at DATETIME"))
-        contact_columns = {
-            str(row[1])
-            for row in session.execute(text("PRAGMA table_info(station_contacts)")).all()
-        }
-        if "manual_confirmed" not in contact_columns:
-            session.execute(text("ALTER TABLE station_contacts ADD COLUMN manual_confirmed BOOLEAN DEFAULT 0"))
-        if "manual_confirmed_at" not in contact_columns:
-            session.execute(text("ALTER TABLE station_contacts ADD COLUMN manual_confirmed_at DATETIME"))
-        people_columns = {
-            str(row[1])
-            for row in session.execute(text("PRAGMA table_info(station_people)")).all()
-        }
-        if "manual_confirmed" not in people_columns:
-            session.execute(text("ALTER TABLE station_people ADD COLUMN manual_confirmed BOOLEAN DEFAULT 0"))
-        if "manual_confirmed_at" not in people_columns:
-            session.execute(text("ALTER TABLE station_people ADD COLUMN manual_confirmed_at DATETIME"))
-        session.execute(
-            text(
-                """
-                CREATE TABLE IF NOT EXISTS market_intelligence (
-                    id INTEGER PRIMARY KEY,
-                    market_code VARCHAR(8) NOT NULL,
-                    market_name VARCHAR(120) NOT NULL,
-                    language_context TEXT,
-                    submission_norms TEXT,
-                    editorial_notes TEXT,
-                    outreach_style TEXT,
-                    key_networks_json TEXT NOT NULL DEFAULT '[]',
-                    confidence FLOAT NOT NULL DEFAULT 0.0,
-                    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                    CONSTRAINT uq_market_intelligence_code UNIQUE (market_code)
+        if is_sqlite_engine(engine):
+            columns = {
+                str(row[1])
+                for row in session.execute(text("PRAGMA table_info(stations)")).all()
+            }
+            if "manual_confirmed" not in columns:
+                session.execute(text("ALTER TABLE stations ADD COLUMN manual_confirmed BOOLEAN DEFAULT 0"))
+            if "manual_confirmed_at" not in columns:
+                session.execute(text("ALTER TABLE stations ADD COLUMN manual_confirmed_at DATETIME"))
+            submission_columns = {
+                str(row[1])
+                for row in session.execute(text("PRAGMA table_info(submission_channels)")).all()
+            }
+            if "manual_confirmed" not in submission_columns:
+                session.execute(text("ALTER TABLE submission_channels ADD COLUMN manual_confirmed BOOLEAN DEFAULT 0"))
+            if "manual_confirmed_at" not in submission_columns:
+                session.execute(text("ALTER TABLE submission_channels ADD COLUMN manual_confirmed_at DATETIME"))
+            contact_columns = {
+                str(row[1])
+                for row in session.execute(text("PRAGMA table_info(station_contacts)")).all()
+            }
+            if "manual_confirmed" not in contact_columns:
+                session.execute(text("ALTER TABLE station_contacts ADD COLUMN manual_confirmed BOOLEAN DEFAULT 0"))
+            if "manual_confirmed_at" not in contact_columns:
+                session.execute(text("ALTER TABLE station_contacts ADD COLUMN manual_confirmed_at DATETIME"))
+            people_columns = {
+                str(row[1])
+                for row in session.execute(text("PRAGMA table_info(station_people)")).all()
+            }
+            if "manual_confirmed" not in people_columns:
+                session.execute(text("ALTER TABLE station_people ADD COLUMN manual_confirmed BOOLEAN DEFAULT 0"))
+            if "manual_confirmed_at" not in people_columns:
+                session.execute(text("ALTER TABLE station_people ADD COLUMN manual_confirmed_at DATETIME"))
+            session.execute(
+                text(
+                    """
+                    CREATE TABLE IF NOT EXISTS market_intelligence (
+                        id INTEGER PRIMARY KEY,
+                        market_code VARCHAR(8) NOT NULL,
+                        market_name VARCHAR(120) NOT NULL,
+                        language_context TEXT,
+                        submission_norms TEXT,
+                        editorial_notes TEXT,
+                        outreach_style TEXT,
+                        key_networks_json TEXT NOT NULL DEFAULT '[]',
+                        confidence FLOAT NOT NULL DEFAULT 0.0,
+                        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        CONSTRAINT uq_market_intelligence_code UNIQUE (market_code)
+                    )
+                    """
                 )
-                """
             )
-        )
-        session.execute(
-            text(
-                """
-                CREATE TABLE IF NOT EXISTS distribution_networks (
-                    id INTEGER PRIMARY KEY,
-                    network_key VARCHAR(120) NOT NULL,
-                    name VARCHAR(255) NOT NULL,
-                    market_code VARCHAR(8) NOT NULL,
-                    network_type VARCHAR(64) NOT NULL DEFAULT 'association',
-                    submission_url VARCHAR(1024),
-                    submission_email VARCHAR(320),
-                    coverage_note TEXT,
-                    rules_summary TEXT,
-                    source_url VARCHAR(1024),
-                    confidence FLOAT NOT NULL DEFAULT 0.0,
-                    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                    CONSTRAINT uq_distribution_network_key UNIQUE (network_key)
+            session.execute(
+                text(
+                    """
+                    CREATE TABLE IF NOT EXISTS distribution_networks (
+                        id INTEGER PRIMARY KEY,
+                        network_key VARCHAR(120) NOT NULL,
+                        name VARCHAR(255) NOT NULL,
+                        market_code VARCHAR(8) NOT NULL,
+                        network_type VARCHAR(64) NOT NULL DEFAULT 'association',
+                        submission_url VARCHAR(1024),
+                        submission_email VARCHAR(320),
+                        coverage_note TEXT,
+                        rules_summary TEXT,
+                        source_url VARCHAR(1024),
+                        confidence FLOAT NOT NULL DEFAULT 0.0,
+                        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        CONSTRAINT uq_distribution_network_key UNIQUE (network_key)
+                    )
+                    """
                 )
-                """
             )
-        )
-        session.execute(
-            text(
-                """
-                CREATE TABLE IF NOT EXISTS station_network_links (
-                    id INTEGER PRIMARY KEY,
-                    station_id INTEGER NOT NULL,
-                    network_id INTEGER NOT NULL,
-                    relationship_type VARCHAR(64) NOT NULL DEFAULT 'member',
-                    confidence FLOAT NOT NULL DEFAULT 0.0,
-                    notes TEXT,
-                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                    CONSTRAINT uq_station_network_link UNIQUE (station_id, network_id, relationship_type),
-                    FOREIGN KEY(station_id) REFERENCES stations(id) ON DELETE CASCADE,
-                    FOREIGN KEY(network_id) REFERENCES distribution_networks(id) ON DELETE CASCADE
+            session.execute(
+                text(
+                    """
+                    CREATE TABLE IF NOT EXISTS station_network_links (
+                        id INTEGER PRIMARY KEY,
+                        station_id INTEGER NOT NULL,
+                        network_id INTEGER NOT NULL,
+                        relationship_type VARCHAR(64) NOT NULL DEFAULT 'member',
+                        confidence FLOAT NOT NULL DEFAULT 0.0,
+                        notes TEXT,
+                        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        CONSTRAINT uq_station_network_link UNIQUE (station_id, network_id, relationship_type),
+                        FOREIGN KEY(station_id) REFERENCES stations(id) ON DELETE CASCADE,
+                        FOREIGN KEY(network_id) REFERENCES distribution_networks(id) ON DELETE CASCADE
+                    )
+                    """
                 )
-                """
             )
-        )
-        session.execute(
-            text(
-                """
-                CREATE TABLE IF NOT EXISTS email_blacklist (
-                    id INTEGER PRIMARY KEY,
-                    email VARCHAR(320) NOT NULL,
-                    reason TEXT,
-                    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                    CONSTRAINT uq_email_blacklist_email UNIQUE (email)
+            session.execute(
+                text(
+                    """
+                    CREATE TABLE IF NOT EXISTS email_blacklist (
+                        id INTEGER PRIMARY KEY,
+                        email VARCHAR(320) NOT NULL,
+                        reason TEXT,
+                        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        CONSTRAINT uq_email_blacklist_email UNIQUE (email)
+                    )
+                    """
                 )
-                """
             )
-        )
         _seed_market_intelligence(session)
         ca_network = session.scalar(
             select(DistributionNetwork).where(DistributionNetwork.network_key == "ca_ncra_earshot")
@@ -522,6 +561,12 @@ def _agent_manual_state() -> dict[str, Any]:
     return out
 
 
+def _read_only_redirect(target: str, msg_key: str = "legacy_msg", msg: str = "read_only") -> RedirectResponse:
+    safe_target = target if target.startswith("/") else "/legacy"
+    joiner = "&" if "?" in safe_target else "?"
+    return RedirectResponse(url=f"{safe_target}{joiner}{msg_key}={msg}", status_code=303)
+
+
 def _save_agent_manual_state(state: dict[str, Any]) -> None:
     _save_json(AGENT_MANUAL_STATE_PATH, state)
 
@@ -616,7 +661,7 @@ def _station_query(
     elif status_value == "rejected":
         stmt = stmt.where(Station.status == StationStatus.REJECTED)
     elif status_value == "archived":
-        stmt = stmt.where(Station.status == StationStatus.ARCHIVED)
+        stmt = stmt.where(_archived_status_condition())
     else:
         stmt = stmt.where(
             Station.status == StationStatus.VERIFIED,
@@ -666,7 +711,7 @@ def _monitor_snapshot(session: Session) -> dict[str, Any]:
     scan_focus_market = str(scan_focus_state.get("market_focus", "international"))
 
     focus_filters = [
-        Station.status.notin_([StationStatus.REJECTED, StationStatus.ARCHIVED]),
+        _non_archived_status_filter(),
         Station.website_url.is_not(None),
         func.length(func.trim(func.coalesce(Station.website_url, ""))) > 0,
         Station.confidence_score >= settings.station_enrich_min_station_confidence,
@@ -692,7 +737,7 @@ def _monitor_snapshot(session: Session) -> dict[str, Any]:
     def _boost_market_progress(market: str) -> tuple[int, int, float]:
         countries = market_focus_countries(market)
         eligible_filters = [
-            Station.status.notin_([StationStatus.REJECTED, StationStatus.ARCHIVED]),
+            _non_archived_status_filter(),
             Station.website_url.is_not(None),
             func.length(func.trim(func.coalesce(Station.website_url, ""))) > 0,
             Station.confidence_score >= settings.brave_boost_min_station_confidence,
@@ -754,7 +799,7 @@ def _monitor_snapshot(session: Session) -> dict[str, Any]:
 
     stations_total = session.scalar(select(func.count(Station.id))) or 0
     stations_rejected = session.scalar(select(func.count(Station.id)).where(Station.status == StationStatus.REJECTED)) or 0
-    stations_archived = session.scalar(select(func.count(Station.id)).where(Station.status == StationStatus.ARCHIVED)) or 0
+    stations_archived = session.scalar(select(func.count(Station.id)).where(_archived_status_condition())) or 0
     stations_active = max(0, stations_total - stations_rejected - stations_archived)
     stations_verified = session.scalar(
         select(func.count(Station.id)).where(Station.status == StationStatus.VERIFIED)
@@ -777,7 +822,7 @@ def _monitor_snapshot(session: Session) -> dict[str, Any]:
         select(func.count(func.distinct(SubmissionChannel.station_id)))
         .select_from(SubmissionChannel)
         .join(Station, Station.id == SubmissionChannel.station_id)
-        .where(Station.status.notin_([StationStatus.REJECTED, StationStatus.ARCHIVED]))
+        .where(_non_archived_status_filter())
     ) or 0
     stations_without_submission = max(0, stations_active - stations_with_submission)
     submission_coverage_active = (stations_with_submission / stations_active) if stations_active else 0.0
@@ -793,7 +838,7 @@ def _monitor_snapshot(session: Session) -> dict[str, Any]:
         .select_from(SubmissionChannel)
         .join(Station, Station.id == SubmissionChannel.station_id)
         .where(
-            Station.status.notin_([StationStatus.REJECTED, StationStatus.ARCHIVED]),
+            _non_archived_status_filter(),
             (SubmissionChannel.accepts_newcomers.is_(True))
             | func.lower(func.coalesce(SubmissionChannel.requirements, "")).like("%new artist%")
             | func.lower(func.coalesce(SubmissionChannel.requirements, "")).like("%unsigned%")
@@ -809,7 +854,7 @@ def _monitor_snapshot(session: Session) -> dict[str, Any]:
     ) or 0
     pitch_ready_stations = session.scalar(
         select(func.count(Station.id)).where(
-            Station.status.notin_([StationStatus.REJECTED, StationStatus.ARCHIVED]),
+            _non_archived_status_filter(),
             Station.confidence_score >= settings.station_enrich_min_station_confidence,
             Station.id.in_(select(SubmissionChannel.station_id)),
             Station.id.in_(
@@ -847,7 +892,7 @@ def _monitor_snapshot(session: Session) -> dict[str, Any]:
     verify_progress_ratio = (tested_candidate_stations / candidate_stations) if candidate_stations else 1.0
     active_without_website = session.scalar(
         select(func.count(Station.id)).where(
-            Station.status.notin_([StationStatus.REJECTED, StationStatus.ARCHIVED]),
+            _non_archived_status_filter(),
             or_(Station.website_url.is_(None), func.length(func.trim(func.coalesce(Station.website_url, ""))) == 0),
         )
     ) or 0
@@ -860,7 +905,7 @@ def _monitor_snapshot(session: Session) -> dict[str, Any]:
     ) or 0
     eligible_active_with_website = session.scalar(
         select(func.count(Station.id)).where(
-            Station.status.notin_([StationStatus.REJECTED, StationStatus.ARCHIVED]),
+            _non_archived_status_filter(),
             Station.website_url.is_not(None),
             Station.confidence_score >= settings.station_enrich_min_station_confidence,
         )
@@ -1204,14 +1249,51 @@ def _read_api_call_history(limit: int, hours: int) -> list[dict[str, Any]]:
 
 
 def create_app() -> FastAPI:
+    setup_logging(debug=os.getenv("DEBUG", "false").lower() == "true")
+    init_db()
     _ensure_dashboard_schema()
-    app = FastAPI(title="Radio DB Dashboard")
+    app = FastAPI(
+        title="Radio DB",
+        description="LLM-driven international radio station discovery, enrichment and outreach platform",
+        version="0.1.0",
+        openapi_url="/api/openapi.json",
+        docs_url="/api/docs",
+        redoc_url="/api/redoc",
+    )
     app.include_router(stations_api_router)
     app.include_router(agent_api_router)
     app.include_router(browser_api_router)
     app.include_router(forms_api_router)
     app.include_router(contacts_api_router)
     app.include_router(control_api_router)
+    app.include_router(contact_center_api_router)
+    app.include_router(outreach_campaigns_api_router)
+    app.include_router(link_tracking_public_router)
+    app.include_router(link_tracking_api_router)
+    app.include_router(data_control_api_router)
+    app.include_router(station_groups_api_router)
+    frontend_assets_dir = _frontend_dist_dir() / "assets"
+    if frontend_assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(frontend_assets_dir)), name="spa-assets")
+
+    # Ensure redirect route for tracked links is registered before SPA catchall.
+    def _redirect_handler(code: str, request: Request):
+        db = SessionLocal()
+        try:
+            rec = db.execute(select(LinkTrackingCode).where(LinkTrackingCode.code == code)).scalars().first()
+            if not rec:
+                raise HTTPException(status_code=404, detail="tracking_code_not_found")
+            ip = request.client.host if request.client else None
+            ua = request.headers.get("user-agent")
+            referer = request.headers.get("referer")
+            click = LinkClickEvent(tracking_code_id=rec.id, ip_address=ip, user_agent=ua, referer=referer)
+            db.add(click)
+            db.commit()
+            return RedirectResponse(url=rec.original_url, status_code=302)
+        finally:
+            db.close()
+
+    app.add_api_route(path="/r/{code}", endpoint=_redirect_handler, methods=["GET"])
 
     @app.get("/agent-artifact")
     def agent_artifact(path: str = Query(...)) -> FileResponse:
@@ -1224,6 +1306,25 @@ def create_app() -> FastAPI:
             raise HTTPException(status_code=404, detail="artifact_not_found")
         return FileResponse(resolved)
 
+    @app.get("/r/{code}")
+    def dashboard_redirect_tracked_link(code: str, request: Request):
+        db = SessionLocal()
+        try:
+            rec = db.execute(select(LinkTrackingCode).where(LinkTrackingCode.code == code)).scalars().first()
+            if not rec:
+                raise HTTPException(status_code=404, detail="tracking_code_not_found")
+
+            ip = request.client.host if request.client else None
+            ua = request.headers.get("user-agent")
+            referer = request.headers.get("referer")
+            click = LinkClickEvent(tracking_code_id=rec.id, ip_address=ip, user_agent=ua, referer=referer)
+            db.add(click)
+            db.commit()
+
+            return RedirectResponse(url=rec.original_url, status_code=302)
+        finally:
+            db.close()
+
     @app.get("/agent-lab/start")
     def agent_lab_start(
         station_id: int = Query(..., ge=1),
@@ -1231,16 +1332,8 @@ def create_app() -> FastAPI:
         max_pages: int = Query(default=1, ge=1, le=5),
         force_rescan: bool = Query(default=False),
     ) -> RedirectResponse:
-        with SessionLocal() as session:
-            run = start_manual_scan_run(
-                session=session,
-                station_id=station_id,
-                target_url=target_url.strip() or None,
-                max_pages=max_pages,
-                force_rescan=force_rescan,
-            )
-        href = "/agent-lab?" + urlencode({"station_id": station_id, "run_id": run.id})
-        return RedirectResponse(url=href, status_code=303)
+        href = "/agent-lab?" + urlencode({"station_id": station_id})
+        return _read_only_redirect(href, msg_key="legacy_msg")
 
     @app.get("/agent-lab", response_class=HTMLResponse)
     def agent_lab(
@@ -1248,6 +1341,7 @@ def create_app() -> FastAPI:
         run_id: int | None = Query(default=None, ge=1),
         q: str = Query(default=""),
         max_station_results: int = Query(default=25, ge=1, le=100),
+        legacy_msg: str = Query(default=""),
     ) -> str:
         q = q.strip()
         with SessionLocal() as session:
@@ -1562,8 +1656,9 @@ def create_app() -> FastAPI:
       <div>
         <div class="title">Agent Lab</div>
         <div class="muted">Manuelles Scan-Cockpit fuer visuelle Formularpruefung. Keine autonomen Submits.</div>
+        {"<div class='muted' style='color:#7a1f2d;margin-top:6px;'>Legacy ist read-only. Starte neue Runs im SPA-Tab Agent Control.</div>" if legacy_msg == "read_only" else ""}
       </div>
-      <div class="muted"><a href="/agent">Zum Agent Dashboard</a> | <a href="/">Zum Dashboard</a></div>
+      <div class="muted"><a href="/agent">Zum Agent Dashboard</a> | <a href="/legacy">Zum Legacy-Dashboard</a></div>
     </div>
     <div class="grid">
       <div>
@@ -1654,64 +1749,17 @@ def create_app() -> FastAPI:
         budget_usd: float = Query(default=settings.brave_boost_default_budget_usd, ge=0.1, le=100.0),
         market_focus: str = Query(default="international"),
     ) -> RedirectResponse:
-        safe_budget = max(0.1, min(100.0, float(budget_usd)))
-        safe_market = (market_focus or "international").strip().lower()
-        if safe_market not in {"international", "dach", "anglo", "eu_core", "top_major"}:
-            safe_market = "international"
-
-        with _BOOST_LOCK:
-            state = load_brave_boost_state()
-            if state.get("is_running"):
-                return RedirectResponse(url="/?boost_msg=already_running", status_code=303)
-            with SessionLocal() as session:
-                state = load_brave_boost_state()
-                if state.get("is_running"):
-                    return RedirectResponse(url="/?boost_msg=already_running", status_code=303)
-
-            def _worker() -> None:
-                with SessionLocal() as worker_session:
-                    run_brave_boost_round(
-                        session=worker_session,
-                        budget_usd=safe_budget,
-                        market_focus=safe_market,
-                    )
-
-            thread = threading.Thread(target=_worker, name="radio-db-boost", daemon=True)
-            thread.start()
-
-        return RedirectResponse(url="/?boost_msg=started", status_code=303)
+        return _read_only_redirect("/legacy", msg_key="boost_msg")
 
     @app.get("/scan-focus/set")
     def scan_focus_set(mode: str = Query(default="off")) -> RedirectResponse:
-        safe_mode = (mode or "off").strip().lower()
-        if safe_mode == "off":
-            save_scan_focus_state(enabled=False, market_focus="international", updated_by="dashboard")
-            return RedirectResponse(url="/?scan_msg=disabled", status_code=303)
-        if safe_mode not in {"international", "dach", "anglo", "eu_core"}:
-            safe_mode = "international"
-        save_scan_focus_state(enabled=True, market_focus=safe_mode, updated_by="dashboard")
-        return RedirectResponse(url=f"/?scan_msg=set_{safe_mode}", status_code=303)
+        return _read_only_redirect("/legacy", msg_key="scan_msg")
 
     @app.get("/high-priority/start")
     def high_priority_start(
         station_limit: int = Query(default=settings.high_priority_deep_dive_station_limit, ge=1, le=50),
     ) -> RedirectResponse:
-        safe_limit = max(1, min(50, int(station_limit)))
-        with _HIGH_PRIORITY_LOCK:
-            state = load_high_priority_state()
-            if state.get("is_running"):
-                return RedirectResponse(url="/?hp_msg=already_running", status_code=303)
-
-            def _worker() -> None:
-                with SessionLocal() as worker_session:
-                    run_high_priority_deep_dive(
-                        session=worker_session,
-                        station_limit=safe_limit,
-                    )
-
-            thread = threading.Thread(target=_worker, name="radio-db-high-priority", daemon=True)
-            thread.start()
-        return RedirectResponse(url="/?hp_msg=started", status_code=303)
+        return _read_only_redirect("/legacy", msg_key="hp_msg")
 
     @app.get("/station/manual-confirm")
     def station_manual_confirm(
@@ -1720,15 +1768,7 @@ def create_app() -> FastAPI:
         next_url: str = Query(default="/"),
     ) -> RedirectResponse:
         target = next_url if next_url.startswith("/") else "/"
-        with SessionLocal() as session:
-            station = session.get(Station, station_id)
-            if station is not None:
-                enabled = (value or "true").strip().lower() in {"1", "true", "yes", "on"}
-                station.manual_confirmed = enabled
-                station.manual_confirmed_at = datetime.now(UTC).replace(tzinfo=None) if enabled else None
-                session.add(station)
-                session.commit()
-        return RedirectResponse(url=target, status_code=303)
+        return _read_only_redirect(target)
 
     @app.get("/station/delete")
     def station_delete(
@@ -1736,15 +1776,7 @@ def create_app() -> FastAPI:
         next_url: str = Query(default="/"),
     ) -> RedirectResponse:
         target = next_url if next_url.startswith("/") else "/"
-        with SessionLocal() as session:
-            station = session.get(Station, station_id)
-            if station is not None:
-                station.status = StationStatus.REJECTED
-                station.manual_confirmed = False
-                station.manual_confirmed_at = None
-                session.add(station)
-                session.commit()
-        return RedirectResponse(url=target, status_code=303)
+        return _read_only_redirect(target)
 
     @app.get("/email/manual-confirm")
     def email_manual_confirm(
@@ -1754,38 +1786,15 @@ def create_app() -> FastAPI:
         next_url: str = Query(default="/email"),
     ) -> RedirectResponse:
         target = next_url if next_url.startswith("/email") else "/email"
-        source_key = (source or "").strip().lower()
-        model_map: dict[str, Any] = {
-            "submission": SubmissionChannel,
-            "contact": StationContact,
-            "people": StationPerson,
-        }
-        model = model_map.get(source_key)
-        if model is None:
-            return RedirectResponse(url=target, status_code=303)
-        enabled = (value or "true").strip().lower() in {"1", "true", "yes", "on"}
-        with SessionLocal() as session:
-            entry = session.get(model, entry_id)
-            if entry is not None:
-                entry.manual_confirmed = enabled
-                entry.manual_confirmed_at = datetime.now(UTC).replace(tzinfo=None) if enabled else None
-                session.add(entry)
-                session.commit()
-        return RedirectResponse(url=target, status_code=303)
+        return _read_only_redirect(target, msg_key="email_msg")
 
     @app.get("/agent/run-country-now")
     def agent_run_country_now() -> RedirectResponse:
-        started = _start_country_discovery_background()
-        msg = "started" if started else "already_running"
-        return RedirectResponse(url=f"/agent?agent_msg={msg}", status_code=303)
+        return _read_only_redirect("/agent", msg_key="agent_msg")
 
     @app.get("/agent/mode/set")
     def agent_mode_set(mode: str = Query(default="on")) -> RedirectResponse:
-        safe_mode = (mode or "on").strip().lower()
-        if safe_mode not in {"off", "minimal", "on"}:
-            safe_mode = "on"
-        _write_env_updates(updates={"AGENT_MODE": safe_mode})
-        return RedirectResponse(url=f"/agent?agent_msg=mode_{safe_mode}", status_code=303)
+        return _read_only_redirect("/agent", msg_key="agent_msg")
 
     @app.get("/agent/config/save")
     def agent_config_save(
@@ -1812,37 +1821,7 @@ def create_app() -> FastAPI:
         browser_max_stations_per_run: int = Query(default=50, ge=1, le=10000),
         browser_max_forms_per_station: int = Query(default=5, ge=1, le=50),
     ) -> RedirectResponse:
-        mode = (country_discovery_search_mode or "openai_first").strip().lower()
-        if mode not in {"openai_only", "openai_first", "external_only"}:
-            mode = "openai_first"
-        updates = {
-            "PRIORITY_COUNTRIES": priority_countries.strip(),
-            "COUNTRY_DISCOVERY_SEARCH_MODE": mode,
-            "COUNTRY_DISCOVERY_AUTO_TRANSLATE_QUERIES": (
-                "true" if country_discovery_auto_translate_queries.lower() == "true" else "false"
-            ),
-            "QUERY_TRANSLATE_MODEL": query_translate_model.strip() or "gpt-4.1-mini",
-            "COUNTRY_DISCOVERY_MAX_QUERIES_PER_RUN": str(country_discovery_max_queries_per_run),
-            "COUNTRY_DISCOVERY_MAX_RESULTS_PER_QUERY": str(country_discovery_max_results_per_query),
-            "COUNTRY_DISCOVERY_MIN_CONFIDENCE": str(country_discovery_min_confidence),
-            "COUNTRY_DISCOVERY_INCLUDE_LINKUP": "true" if country_discovery_include_linkup.lower() == "true" else "false",
-            "ENABLE_OPENAI_WEB_SEARCH": "true" if enable_openai_web_search.lower() == "true" else "false",
-            "OPENAI_WEB_SEARCH_MODEL": openai_web_search_model.strip() or "gpt-4.1-mini",
-            "MAX_OPENAI_WEB_CALLS_PER_DAY": str(max_openai_web_calls_per_day),
-            "MAX_OPENAI_WEB_CALLS_PER_MONTH": str(max_openai_web_calls_per_month),
-            "MAX_DAILY_USD": str(max_daily_usd),
-            "MAX_LLM_CALLS_PER_DAY": str(max_llm_calls_per_day),
-            "MAX_LLM_CALLS_PER_RUN": str(max_llm_calls_per_run),
-            "MAX_LLM_CALLS_PER_DOMAIN_PER_RUN": str(max_llm_calls_per_domain_per_run),
-            "MAX_PAGE_FETCHES_PER_RUN": str(max_page_fetches_per_run),
-            "MAX_CODEX_CALLS_PER_DAY": str(max_codex_calls_per_day),
-            "MAX_CODEX_DAILY_USD": str(max_codex_daily_usd),
-            "BROWSER_WORKER_ENABLED": "true" if browser_worker_enabled.lower() == "true" else "false",
-            "BROWSER_MAX_STATIONS_PER_RUN": str(browser_max_stations_per_run),
-            "BROWSER_MAX_FORMS_PER_STATION": str(browser_max_forms_per_station),
-        }
-        _write_env_updates(updates=updates)
-        return RedirectResponse(url="/agent?agent_msg=config_saved", status_code=303)
+        return _read_only_redirect("/agent", msg_key="agent_msg")
 
     @app.get("/agent", response_class=HTMLResponse)
     def agent_dashboard(agent_msg: str = Query(default="")) -> str:
@@ -1929,7 +1908,7 @@ def create_app() -> FastAPI:
 <body>
   <div class="wrap">
     <div class="topnav">
-      <a href="/">Radio DB</a>
+      <a href="/legacy">Radio DB</a>
       <a class="secondary" href="/email">E-Mail</a>
       <a class="secondary" href="/markets">Markets</a>
       <a class="secondary" href="/history">History</a>
@@ -1945,6 +1924,7 @@ def create_app() -> FastAPI:
     {"<div class='k' style='color:var(--accent);margin-top:6px;'>Agent Mode gesetzt: OFF.</div>" if agent_msg == "mode_off" else ""}
     {"<div class='k' style='color:var(--accent);margin-top:6px;'>Agent Mode gesetzt: MINIMAL.</div>" if agent_msg == "mode_minimal" else ""}
     {"<div class='k' style='color:var(--accent);margin-top:6px;'>Agent Mode gesetzt: ON.</div>" if agent_msg == "mode_on" else ""}
+    {"<div class='k' style='color:var(--warn);margin-top:6px;'>Legacy ist read-only. Verwende die SPA fuer Agent-Aktionen.</div>" if agent_msg == "read_only" else ""}
 
     <div class="grid">
       <div class="card"><div class="k">Agent Mode</div><div class="v">{escape(agent_mode)}</div></div>
@@ -2401,7 +2381,7 @@ Last output:
 <body>
   <div class="wrap">
     <div class="topnav">
-      <a href="/">Radio DB</a>
+      <a href="/legacy">Radio DB</a>
       <a class="secondary" href="/email">E-Mail</a>
       <a class="secondary" href="/markets">Markets</a>
       <a class="secondary" href="/history">History</a>
@@ -2548,6 +2528,7 @@ Last output:
             "network_updated": "Network-Eintrag aktualisiert.",
             "invalid_market_code": "Market Code ist ungueltig.",
             "invalid_network_key": "Network Key fehlt.",
+            "read_only": "Legacy ist read-only. Bearbeite Markets nur noch ueber die neue App/API.",
         }
         market_notice = market_notice_map.get(market_msg, "")
 
@@ -2735,7 +2716,7 @@ Last output:
 <body>
   <div class="wrap">
     <div class="topnav">
-      <a href="/">Radio DB</a>
+      <a href="/legacy">Radio DB</a>
       <a class="secondary" href="/email">E-Mail</a>
       <a class="secondary" href="/markets">Markets</a>
       <a class="secondary" href="/history">History</a>
@@ -2848,22 +2829,7 @@ Last output:
         code = (market_code or "").strip().upper()
         if not code or len(code) > 8:
             return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}market_msg=invalid_market_code", status_code=303)
-        with SessionLocal() as session:
-            row = session.scalar(select(MarketIntelligence).where(MarketIntelligence.market_code == code))
-            networks = [item.strip() for item in (key_networks_csv or "").split(",") if item.strip()]
-            msg = "market_updated" if row else "market_added"
-            if row is None:
-                row = MarketIntelligence(market_code=code, market_name=(market_name or "").strip() or code)
-                session.add(row)
-            row.market_name = (market_name or "").strip() or row.market_name
-            row.language_context = (language_context or "").strip() or None
-            row.submission_norms = (submission_norms or "").strip() or None
-            row.editorial_notes = (editorial_notes or "").strip() or None
-            row.outreach_style = (outreach_style or "").strip() or None
-            row.key_networks_json = json.dumps(networks)
-            row.confidence = float(confidence)
-            session.commit()
-        return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}market_msg={msg}&focus_market={code}", status_code=303)
+        return _read_only_redirect(f"{target}{'&' if '?' in target else '?'}focus_market={code}", msg_key="market_msg")
 
     @app.get("/markets/network/add")
     def network_add(
@@ -2886,23 +2852,7 @@ Last output:
             return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}market_msg=invalid_network_key", status_code=303)
         if not code or len(code) > 8:
             return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}market_msg=invalid_market_code", status_code=303)
-        with SessionLocal() as session:
-            row = session.scalar(select(DistributionNetwork).where(DistributionNetwork.network_key == key))
-            msg = "network_updated" if row else "network_added"
-            if row is None:
-                row = DistributionNetwork(network_key=key, name=(name or "").strip() or key, market_code=code)
-                session.add(row)
-            row.market_code = code
-            row.name = (name or "").strip() or row.name
-            row.network_type = (network_type or "").strip() or "association"
-            row.submission_url = (submission_url or "").strip() or None
-            row.submission_email = (submission_email or "").strip().lower() or None
-            row.coverage_note = (coverage_note or "").strip() or None
-            row.rules_summary = (rules_summary or "").strip() or None
-            row.source_url = (source_url or "").strip() or None
-            row.confidence = float(confidence)
-            session.commit()
-        return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}market_msg={msg}&focus_network_key={key}", status_code=303)
+        return _read_only_redirect(f"{target}{'&' if '?' in target else '?'}focus_network_key={key}", msg_key="market_msg")
 
     @app.get("/email/add")
     def email_add(
@@ -2944,198 +2894,7 @@ Last output:
                 return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg=missing_required", status_code=303)
         elif not _is_valid_email(safe_email):
             return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg=invalid_email", status_code=303)
-
-        safe_name = (name or "").strip() or None
-        safe_show = (show_name or "").strip() or None
-        safe_notes = (notes or "").strip() or None
-        safe_requirements = (requirements or "").strip() or None
-        safe_station_name = (station_name or "").strip()
-        safe_station_country = (station_country or "").strip().upper()[:8]
-        safe_station_city = (station_city or "").strip() or None
-        safe_station_website = (station_website or "").strip() or None
-        auto_create_flag = (auto_create_station or "false").strip().lower() in {"1", "true", "yes", "on"}
-        newcomers_flag = (accepts_newcomers or "false").strip().lower() in {"1", "true", "yes", "on"}
-        role_str = (role or "unknown").strip().lower()
-        safe_role = ContactRole(role_str) if role_str in {r.value for r in ContactRole} else ContactRole.UNKNOWN
-
-        with SessionLocal() as session:
-            if safe_email in _load_blacklisted_emails(session):
-                return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg=blacklisted", status_code=303)
-            station = session.get(Station, station_id) if station_id is not None else None
-            station_created = False
-            if station is None and auto_create_flag:
-                if not safe_station_name:
-                    return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg=missing_required", status_code=303)
-                station = find_duplicate_station(
-                    session=session,
-                    canonical_name=safe_station_name,
-                    website_url=safe_station_website,
-                    country_code=safe_station_country,
-                )
-                if station is None:
-                    station = session.scalar(
-                        select(Station).where(
-                            Station.canonical_name == safe_station_name,
-                            Station.country_code == safe_station_country,
-                        )
-                    )
-                if station is None:
-                    station = Station(
-                        canonical_name=safe_station_name,
-                        normalized_name=normalize_text(safe_station_name),
-                        country_code=safe_station_country,
-                        language="",
-                        website_url=safe_station_website,
-                        stream_url=None,
-                        city=safe_station_city,
-                        status=StationStatus.VERIFIED,
-                        confidence_score=1.0,
-                        priority_tier=1,
-                        manual_confirmed=True,
-                        manual_confirmed_at=datetime.now(UTC).replace(tzinfo=None),
-                        fingerprint=station_fingerprint(safe_station_name, safe_station_website, safe_station_country),
-                    )
-                    session.add(station)
-                    try:
-                        session.flush()
-                        station_created = True
-                    except IntegrityError:
-                        session.rollback()
-                        station = session.scalar(
-                            select(Station).where(
-                                Station.canonical_name == safe_station_name,
-                                Station.country_code == safe_station_country,
-                            )
-                        )
-            if station is None:
-                return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg=invalid_station", status_code=303)
-            station_id = int(station.id)
-            manual_now = datetime.now(UTC).replace(tzinfo=None)
-            session.query(Station).where(Station.id == station_id).update(
-                {
-                    Station.status: StationStatus.VERIFIED,
-                    Station.priority_tier: max(int(station.priority_tier or 0), 1),
-                    Station.manual_confirmed: True,
-                    Station.manual_confirmed_at: manual_now,
-                },
-                synchronize_session=False,
-            )
-            station.status = StationStatus.VERIFIED
-            station.priority_tier = max(int(station.priority_tier or 0), 1)
-            station.manual_confirmed = True
-            station.manual_confirmed_at = manual_now
-            if safe_station_city and not station.city:
-                station.city = safe_station_city
-            if safe_station_website and not station.website_url:
-                station.website_url = safe_station_website
-
-            result_msg = "station_created" if station_created else "added"
-            if safe_type == "submission":
-                existing = session.scalar(
-                    select(SubmissionChannel).where(
-                        SubmissionChannel.station_id == station_id,
-                        SubmissionChannel.email == safe_email,
-                        SubmissionChannel.url == safe_url,
-                    )
-                )
-                manual_req = safe_requirements or safe_notes or "Manual dashboard entry."
-                if existing:
-                    existing.url = safe_url or existing.url
-                    existing.email = safe_email or existing.email
-                    existing.requirements = manual_req or existing.requirements
-                    existing.accepts_newcomers = existing.accepts_newcomers or newcomers_flag
-                    existing.method = SubmissionMethod.EMAIL if (safe_email or existing.email) else SubmissionMethod.FORM
-                    existing.manual_confirmed = True
-                    existing.manual_confirmed_at = manual_now
-                    result_msg = "updated"
-                else:
-                    session.add(
-                        SubmissionChannel(
-                            station_id=station_id,
-                            method=SubmissionMethod.EMAIL if safe_email else SubmissionMethod.FORM,
-                            url=safe_url,
-                            email=safe_email or None,
-                            requirements=manual_req,
-                            accepts_newcomers=newcomers_flag,
-                            manual_confirmed=True,
-                            manual_confirmed_at=datetime.now(UTC).replace(tzinfo=None),
-                        )
-                    )
-            elif safe_type == "contact":
-                existing = session.scalar(
-                    select(StationContact).where(
-                        StationContact.station_id == station_id,
-                        StationContact.name == safe_name,
-                        StationContact.role == safe_role,
-                        StationContact.show_name == safe_show,
-                        StationContact.email == safe_email,
-                    )
-                )
-                manual_note = safe_notes or safe_requirements or "Manual dashboard entry."
-                if existing:
-                    existing.contact_url = safe_url or existing.contact_url
-                    existing.notes = manual_note or existing.notes
-                    existing.confidence = max(float(existing.confidence or 0.0), 1.0)
-                    existing.manual_confirmed = True
-                    existing.manual_confirmed_at = manual_now
-                    result_msg = "updated"
-                else:
-                    session.add(
-                        StationContact(
-                            station_id=station_id,
-                            name=safe_name,
-                            role=safe_role,
-                            show_name=safe_show,
-                            email=safe_email,
-                            contact_url=safe_url,
-                            notes=manual_note,
-                            confidence=1.0,
-                            manual_confirmed=True,
-                            manual_confirmed_at=datetime.now(UTC).replace(tzinfo=None),
-                        )
-                    )
-            else:
-                existing = session.scalar(
-                    select(StationPerson).where(
-                        StationPerson.station_id == station_id,
-                        StationPerson.name == safe_name,
-                        StationPerson.role == safe_role,
-                        StationPerson.show_name == safe_show,
-                        StationPerson.email == safe_email,
-                    )
-                )
-                manual_note = safe_notes or safe_requirements or "Manual dashboard entry."
-                if existing:
-                    existing.contact_url = safe_url or existing.contact_url
-                    existing.notes = manual_note or existing.notes
-                    existing.confidence = max(float(existing.confidence or 0.0), 1.0)
-                    existing.last_seen_at = manual_now
-                    existing.manual_confirmed = True
-                    existing.manual_confirmed_at = manual_now
-                    result_msg = "updated"
-                else:
-                    session.add(
-                        StationPerson(
-                            station_id=station_id,
-                            name=safe_name,
-                            role=safe_role,
-                            show_name=safe_show,
-                            email=safe_email,
-                            contact_url=safe_url,
-                            linkedin_url=None,
-                            musical_preferences=None,
-                            genre_affinities_json="[]",
-                            source_count=1,
-                            confidence=1.0,
-                            notes=manual_note,
-                            last_seen_at=manual_now,
-                            manual_confirmed=True,
-                            manual_confirmed_at=manual_now,
-                        )
-                    )
-
-            session.commit()
-        return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg={result_msg}", status_code=303)
+        return _read_only_redirect(target, msg_key="email_msg")
 
     @app.get("/email/delete")
     def email_delete(
@@ -3147,35 +2906,9 @@ Last output:
     ) -> RedirectResponse:
         target = next_url if next_url.startswith("/email") else "/email"
         safe_email = (email or "").strip().lower()
-        source_key = (source or "").strip().lower()
-        model_map: dict[str, Any] = {
-            "submission": SubmissionChannel,
-            "contact": StationContact,
-            "people": StationPerson,
-        }
-        if entry_id > 0 and source_key in model_map:
-            with SessionLocal() as session:
-                row = session.get(model_map[source_key], entry_id)
-                if row is not None:
-                    row_email = (getattr(row, "email", "") or "").strip().lower()
-                    if _is_valid_email(row_email):
-                        blacklisted = session.scalar(select(EmailBlacklist).where(EmailBlacklist.email == row_email))
-                        if blacklisted is None:
-                            session.add(EmailBlacklist(email=row_email, reason=(reason or "").strip() or None))
-                    session.delete(row)
-                    session.commit()
-            return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg=deleted", status_code=303)
-        if not _is_valid_email(safe_email):
+        if entry_id <= 0 and not _is_valid_email(safe_email):
             return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg=invalid_email", status_code=303)
-        with SessionLocal() as session:
-            blacklisted = session.scalar(select(EmailBlacklist).where(EmailBlacklist.email == safe_email))
-            if blacklisted is None:
-                session.add(EmailBlacklist(email=safe_email, reason=(reason or "").strip() or None))
-            session.query(SubmissionChannel).where(SubmissionChannel.email == safe_email).delete(synchronize_session=False)
-            session.query(StationContact).where(StationContact.email == safe_email).delete(synchronize_session=False)
-            session.query(StationPerson).where(StationPerson.email == safe_email).delete(synchronize_session=False)
-            session.commit()
-        return RedirectResponse(url=f"{target}{'&' if '?' in target else '?'}email_msg=deleted", status_code=303)
+        return _read_only_redirect(target, msg_key="email_msg")
 
     @app.get("/email", response_class=HTMLResponse)
     def email_dashboard(
@@ -3223,6 +2956,7 @@ Last output:
             "invalid_email": "E-Mail-Adresse ist ungueltig.",
             "missing_required": "Pflichtfelder fehlen.",
             "invalid_type": "Eintragstyp ist ungueltig.",
+            "read_only": "Legacy ist read-only. Nutze Contact Center oder API fuer Aenderungen.",
         }
         email_notice = email_notice_map.get(email_msg, "")
         focused_station: Station | None = None
@@ -3639,7 +3373,7 @@ Last output:
 <body>
   <div class="wrap">
     <div class="topnav">
-      <a href="/">Radio DB</a>
+      <a href="/legacy">Radio DB</a>
       <a class="secondary" href="/email">E-Mail</a>
       <a class="secondary" href="/history">History</a>
       <a class="secondary" href="/agent">Agent Dashboard</a>
@@ -3762,7 +3496,7 @@ Last output:
 </body>
 </html>"""
 
-    @app.get("/", response_class=HTMLResponse)
+    @app.get("/legacy", response_class=HTMLResponse)
     def home(
         q: str = Query(default=""),
         country: str = Query(default=""),
@@ -3774,6 +3508,7 @@ Last output:
         boost_msg: str = Query(default=""),
         scan_msg: str = Query(default=""),
         hp_msg: str = Query(default=""),
+        legacy_msg: str = Query(default=""),
         min_confidence: float = Query(default=0.0, ge=0.0, le=1.0),
         limit: int = Query(default=100, ge=1, le=500),
     ) -> str:
@@ -4174,7 +3909,7 @@ Last output:
 <body>
   <div class="wrap">
     <div class="topnav">
-      <a href="/">Radio DB</a>
+      <a href="/legacy">Radio DB</a>
       <a class="secondary" href="/email">E-Mail</a>
       <a class="secondary" href="/markets">Markets</a>
       <a class="secondary" href="/history">History</a>
@@ -4183,6 +3918,7 @@ Last output:
     </div>
     <h1>Radio DB Dashboard</h1>
     <div class="k">Auto-Refresh alle 30s | UTC {monitor["now_utc"]}</div>
+    {"<div class='k bad' style='margin-top:6px;'>Legacy ist read-only. Verwende die neue SPA fuer alle Aenderungen.</div>" if legacy_msg == "read_only" else ""}
     <div class="grid">
       <div class="card"><div class="k">Stations Active</div><div class="v">{monitor["stations_active"]}</div></div>
       <div class="card"><div class="k">Verified</div><div class="v">{monitor["stations_verified"]} ({monitor["verified_ratio_active"]:.1%})</div></div>
@@ -4287,6 +4023,7 @@ verify checkpoint updated: {monitor["verify_checkpoint_updated_at"]}</div>
         </div>
         {"<div class='k ok' style='margin-top:6px;'>High-priority run gestartet.</div>" if hp_msg == "started" else ""}
         {"<div class='k bad' style='margin-top:6px;'>High-priority run läuft bereits.</div>" if hp_msg == "already_running" else ""}
+        {"<div class='k bad' style='margin-top:6px;'>Legacy ist read-only. Starte High-priority nur noch ueber neue Controls.</div>" if hp_msg == "read_only" else ""}
         {"<div class='k bad' style='margin-top:6px;'>Letzter Fehler: " + escape(str(monitor["high_priority_last_error"])) + "</div>" if monitor["high_priority_last_error"] else ""}
         <form method="get" action="/high-priority/start" style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:end;">
           <div>
@@ -4307,6 +4044,7 @@ verify checkpoint updated: {monitor["verify_checkpoint_updated_at"]}</div>
         </div>
         {"<div class='k ok' style='margin-top:6px;'>Scan Focus aktualisiert.</div>" if scan_msg.startswith("set_") else ""}
         {"<div class='k bad' style='margin-top:6px;'>Scan Focus deaktiviert.</div>" if scan_msg == "disabled" else ""}
+        {"<div class='k bad' style='margin-top:6px;'>Legacy ist read-only. Setze Scan Focus ueber Data Control.</div>" if scan_msg == "read_only" else ""}
         <form method="get" action="/scan-focus/set" style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:end;">
           <div>
             <label>Region</label>
@@ -4337,6 +4075,7 @@ verify checkpoint updated: {monitor["verify_checkpoint_updated_at"]}</div>
         </div>
         {"<div class='k ok' style='margin-top:6px;'>BOOST gestartet.</div>" if boost_msg == "started" else ""}
         {"<div class='k bad' style='margin-top:6px;'>BOOST läuft bereits.</div>" if boost_msg == "already_running" else ""}
+        {"<div class='k bad' style='margin-top:6px;'>Legacy ist read-only. Starte Boost nur noch ueber neue Controls.</div>" if boost_msg == "read_only" else ""}
         {"<div class='k bad' style='margin-top:6px;'>Letzter Fehler: " + escape(str(monitor["boost_last_error"])) + "</div>" if monitor["boost_last_error"] else ""}
         <form method="get" action="/boost/start" style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:end;">
           <div>
@@ -4431,5 +4170,19 @@ last spent usd: ${monitor["boost_last_spent_usd"]:.4f}</div>
   </div>
 </body>
 </html>"""
+
+    @app.get("/", include_in_schema=False)
+    def spa_root() -> FileResponse:
+        return _serve_spa_file()
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def spa_catchall(full_path: str) -> FileResponse:
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="not_found")
+        frontend_dist = _frontend_dist_dir().resolve()
+        target = (frontend_dist / full_path).resolve()
+        if target.is_file() and (target == frontend_dist or frontend_dist in target.parents):
+            return FileResponse(target)
+        return _serve_spa_file()
 
     return app

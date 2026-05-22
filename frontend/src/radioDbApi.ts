@@ -1,5 +1,13 @@
 const API_ROOT = "/api/v1";
 
+export type ApiPermissionMode = "read-only" | "dry-run" | "execute";
+
+let currentPermissionMode: ApiPermissionMode = "dry-run";
+
+export function setApiPermissionMode(mode: ApiPermissionMode): void {
+  currentPermissionMode = mode;
+}
+
 export interface StationListItem {
   id: number;
   canonical_name: string;
@@ -256,6 +264,20 @@ export interface CountryDiscoverySnapshotResponse {
   recent_runs: unknown[];
 }
 
+export interface DataControlOverviewResponse {
+  generated_at: string;
+  monitor: Record<string, unknown>;
+  country_discovery: Record<string, unknown>;
+  api_history: Array<Record<string, unknown>>;
+}
+
+export interface ScanFocusUpdateResponse {
+  enabled: boolean;
+  market_focus: string;
+  updated_by: string;
+  updated_at: string;
+}
+
 export interface BrowserSessionState {
   id: string;
   station_id: number | null;
@@ -296,6 +318,129 @@ export interface BrowserSessionActionRequest {
   value?: string | null;
 }
 
+export interface ContactRouteDTO {
+  kind: string;
+  label: string;
+  value: string;
+}
+
+export interface ContactDraftResponse {
+  station_id: number;
+  station_name: string;
+  locale: string;
+  language: string;
+  country_code: string;
+  city: string | null;
+  subject: string;
+  body: string;
+  locale_hint: string;
+  recommended_channel: string;
+  available_routes: ContactRouteDTO[];
+  evidence_summary: string[];
+  permission_mode: ApiPermissionMode;
+  template_id?: number | null;
+  campaign_id?: number | null;
+  draft_id?: number | null;
+  status?: string;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+export interface ContactTemplateLocaleDTO {
+  id: number;
+  locale_key: string;
+  language_code: string;
+  subject_template: string;
+  body_template: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ContactTemplateDTO {
+  id: number;
+  template_key: string;
+  name: string;
+  description: string | null;
+  channel: string;
+  variables: string[];
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  locales: ContactTemplateLocaleDTO[];
+}
+
+export interface ContactTemplateListResponse {
+  items: ContactTemplateDTO[];
+}
+
+export interface ContactDraftListResponse {
+  items: ContactDraftResponse[];
+}
+
+export interface ContactSendResponse {
+  id: number;
+  draft_id: number;
+  station_id: number;
+  channel: string;
+  target_value: string | null;
+  mode: string;
+  status: string;
+  payload: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+  outcome_count: number;
+}
+
+export interface ContactSendListResponse {
+  items: ContactSendResponse[];
+}
+
+export interface ContactOutcomeResponse {
+  id: number;
+  send_id: number;
+  outcome_type: string;
+  status: string;
+  details: string | null;
+  payload: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface ContactOutcomeListResponse {
+  items: ContactOutcomeResponse[];
+}
+
+export interface StationGroupListItem {
+  id: number;
+  name: string;
+  description: string | null;
+  artist_key: string | null;
+  color_hint: string | null;
+  is_active: boolean;
+  station_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface StationGroupStationDTO {
+  station_id: number;
+  canonical_name: string;
+  country_code: string;
+  city: string | null;
+  status: string;
+  confidence_score: number;
+  website_url: string | null;
+  added_at: string;
+  note: string | null;
+}
+
+export interface StationGroupDetailResponse extends StationGroupListItem {
+  stations: StationGroupStationDTO[];
+}
+
+export interface StationGroupListResponse {
+  items: StationGroupListItem[];
+}
+
 function toQuery(params: Record<string, string | number | boolean | undefined | null>): string {
   const searchParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -312,6 +457,7 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_ROOT}${path}`, {
     headers: {
       "Content-Type": "application/json",
+      "X-Radio-DB-Mode": currentPermissionMode,
       ...(init?.headers || {}),
     },
     ...init,
@@ -342,6 +488,7 @@ export function listStations(params: {
   q?: string;
   country?: string;
   status?: string;
+  outreach_tier?: string;
   has_submission?: "any" | "yes" | "no";
   has_people?: "any" | "yes" | "no";
   min_confidence?: number;
@@ -408,6 +555,17 @@ export function startCountryDiscovery(): Promise<{ started: boolean; message: st
   });
 }
 
+export function getDataControlOverview(params: { history_limit?: number; history_hours?: number } = {}): Promise<DataControlOverviewResponse> {
+  return requestJson<DataControlOverviewResponse>(`/data-control/overview${toQuery(params)}`);
+}
+
+export function updateScanFocus(payload: { enabled: boolean; market_focus: "international" | "dach" | "anglo" | "eu_core" | "top_major" }): Promise<ScanFocusUpdateResponse> {
+  return requestJson<ScanFocusUpdateResponse>(`/data-control/scan-focus`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 export function listBrowserSessions(): Promise<BrowserSessionListResponse> {
   return requestJson<BrowserSessionListResponse>(`/browser/sessions`);
 }
@@ -447,4 +605,196 @@ export function closeBrowserSession(sessionId: string): Promise<{ deleted: true;
   return requestJson<{ deleted: true; session_id: string }>(`/browser/sessions/${sessionId}`, {
     method: "DELETE",
   });
+}
+
+export function getStationContactDraft(stationId: number): Promise<ContactDraftResponse> {
+  return requestJson<ContactDraftResponse>(`/contact-center/stations/${stationId}/draft`);
+}
+
+export function listContactTemplates(): Promise<ContactTemplateListResponse> {
+  return requestJson<ContactTemplateListResponse>(`/contact-center/templates`);
+}
+
+export function listStationContactDrafts(stationId: number): Promise<ContactDraftListResponse> {
+  return requestJson<ContactDraftListResponse>(`/contact-center/stations/${stationId}/drafts`);
+}
+
+export function createStationContactDraft(
+  stationId: number,
+  payload: { template_id?: number | null; campaign_id?: number | null; subject?: string | null; body?: string | null },
+): Promise<ContactDraftResponse> {
+  return requestJson<ContactDraftResponse>(`/contact-center/stations/${stationId}/drafts`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function previewStationContactDraft(
+  draftId: number,
+  payload: { subject?: string | null; body?: string | null },
+): Promise<ContactDraftResponse> {
+  return requestJson<ContactDraftResponse>(`/contact-center/drafts/${draftId}/preview`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function createContactSend(
+  draftId: number,
+  payload: { mode?: "dry-run" | "execute"; channel?: string | null; target_value?: string | null } = {},
+): Promise<ContactSendResponse> {
+  return requestJson<ContactSendResponse>(`/contact-center/drafts/${draftId}/send`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function listDraftSends(draftId: number): Promise<ContactSendListResponse> {
+  return requestJson<ContactSendListResponse>(`/contact-center/drafts/${draftId}/sends`);
+}
+
+export function listSendOutcomes(sendId: number): Promise<ContactOutcomeListResponse> {
+  return requestJson<ContactOutcomeListResponse>(`/contact-center/sends/${sendId}/outcomes`);
+}
+
+export function listStationGroups(): Promise<StationGroupListResponse> {
+  return requestJson<StationGroupListResponse>(`/station-groups`);
+}
+
+export function getStationGroup(groupId: number): Promise<StationGroupDetailResponse> {
+  return requestJson<StationGroupDetailResponse>(`/station-groups/${groupId}`);
+}
+
+export function createStationGroup(payload: {
+  name: string;
+  description?: string | null;
+  artist_key?: string | null;
+  color_hint?: string | null;
+}): Promise<StationGroupDetailResponse> {
+  return requestJson<StationGroupDetailResponse>(`/station-groups`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function addStationsToGroup(groupId: number, payload: {
+  station_ids: number[];
+  note?: string | null;
+}): Promise<Array<{ group_id: number; station_id: number; created: boolean }>> {
+  return requestJson<Array<{ group_id: number; station_id: number; created: boolean }>>(`/station-groups/${groupId}/stations`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function listStationMemberships(stationId: number): Promise<StationGroupListResponse> {
+  return requestJson<StationGroupListResponse>(`/station-groups/stations/${stationId}`);
+}
+
+export function addStationToGroup(stationId: number, groupId: number): Promise<{ group_id: number; station_id: number; created: boolean }> {
+  return requestJson<{ group_id: number; station_id: number; created: boolean }>(`/station-groups/stations/${stationId}/${groupId}`, {
+    method: "POST",
+  });
+}
+
+export function removeStationFromGroup(stationId: number, groupId: number): Promise<{ group_id: number; station_id: number; created: boolean }> {
+  return requestJson<{ group_id: number; station_id: number; created: boolean }>(`/station-groups/stations/${stationId}/${groupId}`, {
+    method: "DELETE",
+  });
+}
+
+export interface OutreachCampaignDTO {
+  id: number;
+  name: string;
+  artist_name: string;
+  song_title: string;
+  release_date: string | null;
+  song_language: string | null;
+  pitch_text: string;
+  reference_template: string;
+  operator_notes: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OutreachCampaignListResponse {
+  items: OutreachCampaignDTO[];
+}
+
+export function listOutreachCampaigns(activeOnly = false): Promise<OutreachCampaignListResponse> {
+  return requestJson<OutreachCampaignListResponse>(`/outreach-campaigns${toQuery({ active_only: activeOnly || undefined })}`);
+}
+
+export function createOutreachCampaign(payload: {
+  name: string;
+  artist_name: string;
+  song_title: string;
+  release_date?: string | null;
+  song_language?: string | null;
+  pitch_text?: string;
+  reference_template?: string;
+  operator_notes?: string | null;
+}): Promise<OutreachCampaignDTO> {
+  return requestJson<OutreachCampaignDTO>(`/outreach-campaigns`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export function patchOutreachCampaign(
+  campaignId: number,
+  payload: {
+    name?: string | null;
+    artist_name?: string | null;
+    song_title?: string | null;
+    release_date?: string | null;
+    song_language?: string | null;
+    pitch_text?: string | null;
+    reference_template?: string | null;
+    operator_notes?: string | null;
+    is_active?: boolean | null;
+  },
+): Promise<OutreachCampaignDTO> {
+  return requestJson<OutreachCampaignDTO>(`/outreach-campaigns/${campaignId}`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+export interface LinkTrackingMetricRow {
+  code: string;
+  campaign_id: number | null;
+  recipient: string | null;
+  link_type: string;
+  original_url: string;
+  clicks: number;
+}
+
+export interface LinkTrackingMetricsResponse {
+  items: LinkTrackingMetricRow[];
+}
+
+export function getLinkTrackingMetrics(campaignId?: number): Promise<LinkTrackingMetricsResponse> {
+  const q = campaignId ? `?campaign_id=${campaignId}` : "";
+  return requestJson<LinkTrackingMetricsResponse>(`/link-tracking/metrics${q}`);
+}
+
+export function archiveOutreachCampaign(campaignId: number): Promise<OutreachCampaignDTO> {
+  return requestJson<OutreachCampaignDTO>(`/outreach-campaigns/${campaignId}`, {
+    method: "DELETE",
+  });
+}
+
+export function generateOutreachEmail(
+  campaignId: number,
+  payload: { station_id: number },
+): Promise<{ subject: string; body: string; subject_en: string; body_en: string }> {
+  return requestJson<{ subject: string; body: string; subject_en: string; body_en: string }>(
+    `/outreach-campaigns/${campaignId}/generate-email`,
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    },
+  );
 }
