@@ -660,6 +660,7 @@ class OutreachCampaign(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     drafts: Mapped[list["ContactDraft"]] = relationship(back_populates="campaign")
+    tracking_codes: Mapped[list["LinkTrackingCode"]] = relationship(back_populates="campaign", cascade="all, delete-orphan")
 
 
 class LinkTrackingCode(Base):
@@ -677,7 +678,7 @@ class LinkTrackingCode(Base):
     original_url: Mapped[str] = mapped_column(String(2048))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
-    campaign: Mapped[OutreachCampaign | None] = relationship(back_populates="drafts")
+    campaign: Mapped[OutreachCampaign | None] = relationship(back_populates="tracking_codes")
     clicks: Mapped[list["LinkClickEvent"]] = relationship(back_populates="tracking_code", cascade="all, delete-orphan")
 
 
